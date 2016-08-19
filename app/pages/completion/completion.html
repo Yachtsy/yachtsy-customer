@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Completion
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <h4 *ngIf="request">{{request.categoryName}}</h4>
+
+    <p>{{firstName}} {{lastName}} marked this request as complete on {{dateMarkedComplete}}?</p>
+
+    <p>Please confirm if this is correct</p>
+
+    <button block (click)="yes()">Yes</button>
+    <button block (click)="no()">No</button>
+
+</ion-content>

@@ -1,0 +1,35 @@
+.form {
+    
+}
+
+.pac-container:after{
+    content:none !important;
+
+}
+
+.pac-container {
+    left: 16px;
+}
+
+.loc_input {
+    min-height: 4.4rem;
+    background-color: whitesmoke;
+    width: 90%;
+    border:0px;
+    border-radius: 0px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#map_canvas {
+    height: 300px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    // background-color : transparent;
+}
+
+
+ion-app._gmaps_cdv_ .nav-decor {
+    background-color: rgba(0,0,0,0);
+}

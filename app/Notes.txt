@@ -1,0 +1,3 @@
+- Something to limit the number of request and messages that the users/supplier downloads so that it only looks up relevant data and does not get slowed down by large downloads
+- indicate when a supplier is looking at the user's request
+- add notification icon to show new response notifications

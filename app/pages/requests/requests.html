@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>REQUESTS</ion-title>
+        <ion-buttons end>
+            <button (click)="newRequestClick()">NEW</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <!--(click)="itemTapped($event)"-->
+    <ion-card tappable *ngFor="let item of items" (click)="requestClick(item)">
+
+        <ion-card-header>
+            {{item.data.categoryName}}<ion-note item-right>
+                <p>{{item.data.date | date: 'dd/MM/yy HH:mm'}}</p>
+            </ion-note>
+        </ion-card-header>
+
+        <ion-card-content>
+            <!--<p>State: {{item.data.state}}</p>-->
+            <p *ngIf="item.data.matches && item.data.matches > 1">{{item.data.matches}} matches</p>
+            <p *ngIf="item.data.matches && item.data.matches ===1">{{item.data.matches}} match</p>
+            <p *ngIf="item.data.passes && item.data.passes > 1">{{item.data.passes}} passes</p>
+            <p *ngIf="item.data.passes && item.data.passes ===1">{{item.data.passes}} pass</p>
+            <p *ngIf="item.data.quotesLength ===1">{{item.data.quotesLength}} quote</p>
+            <p *ngIf="item.data.quotesLength > 1">{{item.data.quotesLength}} quotes</p>
+            <p *ngIf="item.data.quotesLength === 0">Waiting for suppliers to respond...</p>
+        </ion-card-content>
+
+    </ion-card>
+</ion-content>

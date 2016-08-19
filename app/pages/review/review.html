@@ -1,0 +1,19 @@
+<ion-content padding class="review">
+
+  <div class="Aligner">
+    <div class="Aligner-item">
+
+      <img />
+
+      <h5 text-center>Please give your pro a review</h5>
+      <rating text-center score="0" max="5" fontsize="2" (update)="onRatingChange($event)"></rating>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer class="review">
+  <ion-toolbar no-border-top>
+    <button light full (click)="submitReview()">Submit</button>
+  </ion-toolbar>
+</ion-footer>

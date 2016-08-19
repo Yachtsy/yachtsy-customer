@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+       Request: {{requestId}}
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <span primary showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card *ngFor="let item of requestBody">
+        <ion-card-header text-wrap>
+           <ion-item text-wrap><b>{{item.qu}}</b></ion-item>
+
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-item *ngFor="let answer of item.ans">
+                {{answer}}
+            </ion-item>
+        </ion-card-content>
+
+    </ion-card>
+
+</ion-content>

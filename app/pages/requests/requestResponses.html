@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{request.data.categoryName}}
+        </ion-title>
+
+        <ion-buttons end>
+            <button (click)="showRequestOptions()">...</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+
+        <ion-item *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
+
+        <ion-card tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
+
+            <ion-card-content>
+                <h2 class="card-title">{{item.data.supplierNickName}}</h2>
+                <p></p>
+                <p>{{desc}}</p>
+
+                <ion-list nolines>
+                    <ion-item>
+                        {{totalReviews}} reviews
+                        <ion-note item-right>
+                            <rating text-center score="{{item.data.reviewRating}}" max="5"></rating>
+                        </ion-note>
+                    </ion-item>
+                    <ion-item>
+                        Quote
+                        <ion-note item-right>
+                            $ {{item.data.price}}
+                        </ion-note>
+                    </ion-item>
+                </ion-list>
+
+            </ion-card-content>
+        </ion-card>
+
+        <!--<button ion-item  (click)="gotoMessages(item)">
+
+            <ion-icon name="ios-contact" item-left></ion-icon>
+
+            <ion-note item-right>
+                $ {{item.data.price}}
+            </ion-note>
+            <p>{{item.data.supplierNickName}}</p>
+
+        </button>-->
+    </ion-list>
+
+</ion-content>
