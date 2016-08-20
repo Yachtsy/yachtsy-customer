@@ -47,7 +47,7 @@
 <ion-footer>
     <ion-toolbar>
         <!--[disabled]="request.hiring.supplierId !== supplierId"-->
-        <ion-input *ngIf="request" [(ngModel)]="message"></ion-input>
+        <input *ngIf="request" [(ngModel)]="message">
         <ion-buttons end>
              <!--[disabled]="request.hired.supplierId !== supplierId"-->
             <button royal *ngIf="request" (click)="sendMessage()">
