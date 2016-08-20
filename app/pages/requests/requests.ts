@@ -2,7 +2,7 @@ import {Component, NgZone} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
-import {RequestResponses} from './RequestResponses'
+import {RequestResponses} from './requestResponses'
 
 @Component({
     templateUrl: 'build/pages/requests/requests.html',

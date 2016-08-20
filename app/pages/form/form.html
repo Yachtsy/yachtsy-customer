@@ -41,8 +41,11 @@
                 <p [hidden]="locationSteps === 1">Please select the starting location</p>
             </ion-item>
 
-            <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" (keyup)="onInputChangeKeyUp()"
-                [(ngModel)]="fromValue">
+            <div class="input-wrapper">
+                <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" (keyup)="onInputChangeKeyUp()"
+                    [(ngModel)]="fromValue">
+                <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+            </div>
         </div>
         <div [hidden]="locationStep === 1">
             <ion-item no-lines>

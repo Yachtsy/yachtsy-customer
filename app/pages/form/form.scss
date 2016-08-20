@@ -15,10 +15,25 @@
     min-height: 4.4rem;
     background-color: whitesmoke;
     width: 90%;
-    border:0px;
-    border-radius: 0px;
+    height: 40px;
+    line-height: 40px;
     margin-left: 5%;
     margin-right: 5%;
+    border-radius: 5px;
+    padding: 0px 30px 0px 10px;
+    border: 1px solid #aaaaaa;
+}
+
+.input-wrapper {
+    width: 100%;
+}
+
+.input-wrapper ion-icon {
+    position: absolute;
+    right: 5%;
+    font-size: 3rem;
+    margin: 0px;
+    padding: 7px 10px;
 }
 
 #map_canvas {

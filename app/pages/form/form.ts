@@ -24,6 +24,7 @@ export class Form {
     formAnswers = null
     formAnswersLength = 0
     lastPage = false;
+    fromValue = "";
     answerObj;
     categoryName: string;
     locationType: string;
@@ -459,5 +460,9 @@ export class Form {
 
         }
 
+    }
+
+    cancelLocation() {
+        this.fromValue = "";
     }
 }
