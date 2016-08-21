@@ -1,6 +1,6 @@
 import {Component, ViewChild, NgZone} from '@angular/core';
 import {Platform, ionicBootstrap, ModalController, NavController, App } from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
+import {StatusBar, Keyboard} from 'ionic-native';
 import {Home} from './pages/home/home';
 import {FirebaseService} from './components/firebaseService';
 import {Requests} from './pages/requests/requests'
@@ -19,6 +19,8 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      // Keyboard.hideKeyboardAccessoryBar(true);
+      // Keyboard.disableScroll(true);
       StatusBar.styleDefault();
 
       this.start();
