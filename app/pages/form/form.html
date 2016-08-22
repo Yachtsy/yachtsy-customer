@@ -18,19 +18,25 @@
 
             <button ion-item detail-none text-wrap *ngFor="let item of field.possible_values" (click)="clicked(item)">
                 {{item.label}}
-            <ion-input clearInput *ngIf="item.can_describe" placeholder="{{item.label}}" type="text" 
-                  (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
-            </ion-input>
-            
-            <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && !lastPage" name='radio-button-off' item-right></ion-icon>
-            
-            <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
-            && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
-            
-            <ion-icon *ngIf="!field.allows_multiple_values && formAnswers[formPageIndex]['ans']
-            && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)  && lastPage" name='radio-button-off' item-right></ion-icon>
 
-        </button>
+                <ion-input clearInput *ngIf="item.can_describe" placeholder="{{item.label}}" type="text" 
+                      (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
+                </ion-input>
+                <!--                
+                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && !lastPage" name='radio-button-off' item-right></ion-icon>
+                <ion-icon *ngIf="!field.allows_multiple_values && formAnswers[formPageIndex]['ans']
+                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)  && lastPage" name='radio-button-off' item-right></ion-icon>
+                -->
+
+                <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
+                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
+
+                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
+                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='radio-button-on' item-right></ion-icon>
+                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
+                || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
+
+            </button>
         </ion-list>
 
     </ion-card>
