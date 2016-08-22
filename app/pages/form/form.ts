@@ -27,6 +27,7 @@ export class Form {
     formAnswersLength = 0
     lastPage = false;
     fromValue = "";
+    toValue = "";
     maxStep = 0;
     answerObj;
     categoryName: string;

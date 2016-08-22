@@ -53,6 +53,7 @@
                     [(ngModel)]="fromValue">
                 <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
             </div>
+            <div [hidden]="locationStep === 2" *ngIf="fromValue.length > 0" class="result-title-text">RESULTS</div>
         </div>
         <div [hidden]="locationStep === 1">
             <ion-item no-lines>
@@ -61,7 +62,7 @@
             <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" (keyup)="onInputChangeKeyUp()"
                 [(ngModel)]="toValue">
         </div>
-
+        <div [hidden]="locationStep === 1" *ngIf="toValue.length > 0" class="result-title-text">RESULTS</div>
 
     </div>
 
