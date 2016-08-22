@@ -1,13 +1,15 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
 import {ModalController, NavController, LoadingController, NavParams, Platform} from 'ionic-angular';
-import {FirebaseService} from '../../components/firebaseService'
+import {FirebaseService} from '../../components/firebaseService';
+import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Requests} from '../requests/requests';
 import {ModalsContentPage} from './modal'
 import {GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
 
 @Component({
     templateUrl: 'build/pages/form/form.html',
+    directives: [PROGRESSBAR_DIRECTIVES]
 })
 
 export class Form {
@@ -25,6 +27,7 @@ export class Form {
     formAnswersLength = 0
     lastPage = false;
     fromValue = "";
+    maxStep = 0;
     answerObj;
     categoryName: string;
     locationType: string;
@@ -311,6 +314,7 @@ export class Form {
     ngOnInit() {
         console.log('ngOnInit - form');
 
+        this.maxStep = 1;
         this.formPageIndex = this.navParams.get('index');
         this.cd = this.navParams.get('categoryData');
         this.categoryId = this.navParams.get('categoryId');
@@ -333,6 +337,7 @@ export class Form {
         if (this.formPageIndex === this.categoryData.fields.length - 1) {
             this.lastPage = true;
         }
+        this.maxStep = this.categoryData.fields.length + 1;
 
         if (!this.answerObj) {
             this.answerObj = {};
