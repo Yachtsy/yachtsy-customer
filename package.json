@@ -36,7 +36,6 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard",
     {
       "locator": "https://github.com/phonegap-googlemaps-plugin/cordova-plugin-googlemaps",
       "id": "cordova-plugin-googlemaps"
@@ -44,10 +43,10 @@
     {
       "locator": "https://bitbucket.org/nightstomp/cordova-plugin-googlemaps-sdk.git",
       "id": "com.googlemaps.ios"
-    }
+    },
+    "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
     {
       "platform": "ios",
       "version": "",

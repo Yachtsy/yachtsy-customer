@@ -13,46 +13,46 @@
 
 <ion-content>
 
+    <div class="message-wrapper" [ngStyle]="{bottom: contentsBottom + 'px'}">
+        <div class="message-contents">
+            <ion-item>
+                $ {{price}} total price
+            </ion-item>
 
+            <div *ngIf="true">
+                <ion-card *ngFor="let item of messages; let i = index">
+                    <ion-card-header *ngIf="item.data.uid === userId">
+                        Me:
+                    </ion-card-header>
 
-    <ion-item>
-        $ {{price}} total price
-    </ion-item>
+                    <ion-card-header *ngIf="item.data.uid !== userId">
+                        Pro:
+                    </ion-card-header>
 
+                    <ion-card-content>
+                        <p>
+                            {{item.data.body}}
+                        </p>
+                    </ion-card-content>
 
+                </ion-card>
+            </div>
+        </div>
 
-    <div *ngIf="true">
-        <ion-card *ngFor="let item of messages; let i = index">
-            <ion-card-header *ngIf="item.data.uid === userId">
-                Me:
-            </ion-card-header>
-
-            <ion-card-header *ngIf="item.data.uid !== userId">
-                Pro:
-            </ion-card-header>
-
-            <ion-card-content>
-                <p>
-                    {{item.data.body}}
-                </p>
-            </ion-card-content>
-
-        </ion-card>
+        <ion-toolbar class="message-bar">
+            <!--[disabled]="request.hiring.supplierId !== supplierId"-->
+            <ion-input *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
+            <ion-buttons end>
+                 <!--[disabled]="request.hired.supplierId !== supplierId"-->
+                <button royal *ngIf="request" (click)="sendMessage()">
+          <ion-icon name="send"></ion-icon>
+        </button>
+            </ion-buttons>
+        </ion-toolbar>
     </div>
 
 </ion-content>
 
 
-
 <ion-footer>
-    <ion-toolbar>
-        <!--[disabled]="request.hiring.supplierId !== supplierId"-->
-        <input *ngIf="request" [(ngModel)]="message" class="chatbox">
-        <ion-buttons end>
-             <!--[disabled]="request.hired.supplierId !== supplierId"-->
-            <button royal *ngIf="request" (click)="sendMessage()">
-      <ion-icon name="send"></ion-icon>
-    </button>
-        </ion-buttons>
-    </ion-toolbar>
 </ion-footer>

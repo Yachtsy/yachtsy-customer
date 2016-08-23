@@ -17,14 +17,13 @@ export class Messages {
     nickName: any;
     price: any;
     alreadyHiredSupplier;
+    contentsBottom = 0;
 
     constructor(public nav: NavController,
         public navParams: NavParams,
         public FBService: FirebaseService,
         private ngZone: NgZone,
         private alertCtrl: AlertController) {
-
-
 
         this.requestId = this.navParams.get('req').id;
 
@@ -37,7 +36,6 @@ export class Messages {
 
     ngOnDestroy() {
         console.log('ngOnDestroy - messages');
-
     }
 
     ngOnInit() {
@@ -73,6 +71,18 @@ export class Messages {
                 }
 
             });
+
+        this.contentsBottom = 0;
+        window.addEventListener('native.keyboardshow', (e) => {
+            this.ngZone.run(() => {
+                this.contentsBottom = e['keyboardHeight'];
+            });
+        });
+        window.addEventListener('native.keyboardhide', (e) => {
+            this.ngZone.run(() => {
+                this.contentsBottom = 0;
+            });
+        });
     }
 
     sendMessage() {
