@@ -23,7 +23,12 @@ export class MyApp {
       Keyboard.disableScroll(true);
       StatusBar.styleDefault();
 
-      this.start();
+      firebase.auth().onAuthStateChanged((authData) => {
+        console.log('auth state changed', authData);
+        this.start();
+      });
+
+      
 
     });
   }
