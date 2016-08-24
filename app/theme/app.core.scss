@@ -48,23 +48,16 @@
     padding: 0px 10px;
 }
 
-.message-wrapper {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    width: 100%;
-}
-
-.message-contents {
-    position: absolute;
-    width: 100%;
-    top: 0px;
-    bottom: 44px;
-    overflow: scroll;
+.message-content {
+    height: auto;
 }
 
 .message-bar {
     position: absolute;
     bottom: 0px;
-    height: 44px;    
+    height: 44px;
+}
+
+ion-page {
+    background: white;
 }

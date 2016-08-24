@@ -1,5 +1,5 @@
-import {Component, NgZone} from '@angular/core';
-import {AlertController, Page, NavController, NavParams} from 'ionic-angular';
+import {Component, NgZone, ViewChild} from '@angular/core';
+import {AlertController, Page, Content, NavController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 
@@ -18,6 +18,9 @@ export class Messages {
     price: any;
     alreadyHiredSupplier;
     contentsBottom = 0;
+    footerBottom = 0;
+
+    @ViewChild(Content) content: Content;
 
     constructor(public nav: NavController,
         public navParams: NavParams,
@@ -52,7 +55,6 @@ export class Messages {
                 this.ngZone.run(() => {
                     this.messages = data;
                 });
-
             });
 
         this.FBService.getRequest(this.requestId)
@@ -69,23 +71,28 @@ export class Messages {
                     console.log('setting already hired to true');
                     this.alreadyHiredSupplier = true;
                 }
-
             });
 
-        this.contentsBottom = 0;
+        this.contentsBottom = 44;
+        this.footerBottom   = 0;
         window.addEventListener('native.keyboardshow', (e) => {
             this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'];
+                this.contentsBottom = e['keyboardHeight'] + 44;
+                this.footerBottom   = e['keyboardHeight'];
+                setTimeout(() => {
+                    this.content.scrollToBottom(300);
+                });
             });
         });
         window.addEventListener('native.keyboardhide', (e) => {
             this.ngZone.run(() => {
-                this.contentsBottom = 0;
+                this.contentsBottom = 44;
+                this.footerBottom   = 0;
             });
         });
     }
 
-    sendMessage() {
+    sendMessage($event) {
         if (!this.message) {
             return;
         }

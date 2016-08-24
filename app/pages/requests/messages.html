@@ -11,48 +11,42 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="message-content" [ngStyle]="{bottom: contentsBottom + 'px'}">
 
-    <div class="message-wrapper" [ngStyle]="{bottom: contentsBottom + 'px'}">
-        <div class="message-contents">
-            <ion-item>
-                $ {{price}} total price
-            </ion-item>
+    <ion-item>
+        $ {{price}} total price
+    </ion-item>
 
-            <div *ngIf="true">
-                <ion-card *ngFor="let item of messages; let i = index">
-                    <ion-card-header *ngIf="item.data.uid === userId">
-                        Me:
-                    </ion-card-header>
+    <div *ngIf="true">
+        <ion-card *ngFor="let item of messages; let i = index">
+            <ion-card-header *ngIf="item.data.uid === userId">
+                Me:
+            </ion-card-header>
 
-                    <ion-card-header *ngIf="item.data.uid !== userId">
-                        Pro:
-                    </ion-card-header>
+            <ion-card-header *ngIf="item.data.uid !== userId">
+                Pro:
+            </ion-card-header>
 
-                    <ion-card-content>
-                        <p>
-                            {{item.data.body}}
-                        </p>
-                    </ion-card-content>
+            <ion-card-content>
+                <p>
+                    {{item.data.body}}
+                </p>
+            </ion-card-content>
 
-                </ion-card>
-            </div>
-        </div>
-
-        <ion-toolbar class="message-bar">
-            <!--[disabled]="request.hiring.supplierId !== supplierId"-->
-            <ion-input *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
-            <ion-buttons end>
-                 <!--[disabled]="request.hired.supplierId !== supplierId"-->
-                <button royal *ngIf="request" (click)="sendMessage()">
-          <ion-icon name="send"></ion-icon>
-        </button>
-            </ion-buttons>
-        </ion-toolbar>
+        </ion-card>
     </div>
 
 </ion-content>
 
-
-<ion-footer>
+<ion-footer [ngStyle]="{bottom: footerBottom + 'px'}">
+    <ion-toolbar class="message-bar">
+        <!--[disabled]="request.hiring.supplierId !== supplierId"-->
+        <ion-input id="chat-input" *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
+        <ion-buttons end>
+             <!--[disabled]="request.hired.supplierId !== supplierId"-->
+            <button royal *ngIf="request" (click)="sendMessage($event)">
+                <ion-icon name="send"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-footer>

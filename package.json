@@ -44,7 +44,7 @@
       "locator": "https://bitbucket.org/nightstomp/cordova-plugin-googlemaps-sdk.git",
       "id": "com.googlemaps.ios"
     },
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard@2.2.1"
   ],
   "cordovaPlatforms": [
     {
