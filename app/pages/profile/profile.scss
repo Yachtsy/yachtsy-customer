@@ -1,0 +1,20 @@
+
+.profile-wrapper {
+	padding: 40px 0px;
+	text-align: center;
+}
+
+.profile-wrapper .profile-image {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center center;
+    border-radius: 100px;
+    margin-bottom: 5px;
+}
+
+.profile-wrapper .profile-name {
+	font-size: 1.6rem;	
+}

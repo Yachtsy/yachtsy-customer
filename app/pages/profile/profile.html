@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            You
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="profile-wrapper">
+        <div class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+        <div class="profile-name">{{profile.name}}</div>
+    </div>
+
+    <ion-list text-wrap>
+        <button ion-item detail-none (click)="itemTapped(0)">
+            Settings
+        </button>
+        <button ion-item detail-none (click)="itemTapped(1)">
+            Help
+        </button>
+        <button ion-item detail-none (click)="itemTapped(2)">
+            Log Out
+        </button>
+    </ion-list>
+
+</ion-content>

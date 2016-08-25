@@ -6,6 +6,7 @@ import {FirebaseService} from './components/firebaseService';
 import {Requests} from './pages/requests/requests'
 import {CompletionModal} from './pages/completion/completion'
 import {ReviewModal} from './pages/review/review'
+import {Tabs} from './pages/tabs/tabs'
 
 @Component({
   template: '<ion-nav [root]="rootPage" swipeBackEnabled="false"></ion-nav>'
@@ -27,9 +28,6 @@ export class MyApp {
         console.log('auth state changed', authData);
         this.start();
       });
-
-      
-
     });
   }
 
@@ -46,19 +44,23 @@ export class MyApp {
           this.ngZone.run(() => {
             firebase.auth().signOut();
           });
-          this.rootPage = Home;
+          // this.rootPage = Home;
         } else {
           console.log('going to the requets page');
-          this.ngZone.run(() => {
-            this.rootPage = Requests;
-          });
+          // this.ngZone.run(() => {
+          //   this.rootPage = Requests;
+          // });
         }
       });
 
     } else {
       console.log('user not logged in. going to home page');
-      this.rootPage = Home;
+      // this.rootPage = Home;
     }
+
+    this.ngZone.run(() => {
+      this.rootPage = Tabs;
+    });
 
     firebase.auth().onAuthStateChanged(
       (user) => {
@@ -100,9 +102,6 @@ export class MyApp {
         }
       });
   }
-
-
-
 }
 
 // Pass the main app component as the first argument

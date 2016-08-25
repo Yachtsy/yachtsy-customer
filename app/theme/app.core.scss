@@ -11,6 +11,8 @@
 @import "../pages/form/form";
 @import "../pages/review/review";
 @import "../pages/requests/messages";
+@import "../pages/profile/profile";
+@import "../pages/tabs/tabs";
 
 .Aligner {
     display: flex;
@@ -39,24 +41,3 @@
 .pac-item .pac-icon {
     margin-top: 16px;
 }
-
-.chatbox {
-    width: 100%;
-    border: none;
-    background: none;
-    padding: 0px 10px;
-}
-
-.message-content {
-    height: auto;
-}
-
-.message-bar {
-    position: absolute;
-    bottom: 0px;
-    height: 44px;
-}
-
-// ion-page {
-//     background: white;
-// }
