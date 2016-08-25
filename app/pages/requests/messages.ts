@@ -2,6 +2,7 @@ import {Component, NgZone, ViewChild} from '@angular/core';
 import {AlertController, Page, Content, NavController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
+import {Keyboard} from 'ionic-native';
 
 @Page({
     templateUrl: 'build/pages/requests/messages.html',
@@ -37,7 +38,21 @@ export class Messages {
         this.message = "";
     }
 
+    @ViewChild('chat_input') input: any;
+
+    blur(event) {
+        console.log(event);
+
+
+
+        //setTimeout(() => {
+        this.input.nativeElement.focus();
+        //});
+        //event.preventDefault();
+    }
+
     ngOnDestroy() {
+
         console.log('ngOnDestroy - messages');
     }
 
@@ -74,25 +89,47 @@ export class Messages {
             });
 
         this.contentsBottom = 44;
-        this.footerBottom   = 0;
+        this.footerBottom = 0;
+
+
+
+
+
         window.addEventListener('native.keyboardshow', (e) => {
+
+            console.log('kb show', e['keyboardHeight']);
+
+
+
             this.ngZone.run(() => {
+
+
                 this.contentsBottom = e['keyboardHeight'] + 44;
-                this.footerBottom   = e['keyboardHeight'];
+                this.footerBottom = e['keyboardHeight']
+
                 setTimeout(() => {
                     this.content.scrollToBottom(300);
                 });
+
             });
         });
         window.addEventListener('native.keyboardhide', (e) => {
+
+            console.log('kb hide', e);
             this.ngZone.run(() => {
+
                 this.contentsBottom = 44;
-                this.footerBottom   = 0;
+                this.footerBottom = 0;
             });
         });
     }
 
+   
     sendMessage($event) {
+
+
+
+
         if (!this.message) {
             return;
         }
@@ -102,33 +139,40 @@ export class Messages {
     }
 
     hire() {
-        // the most important function ofthe app!   
-        console.log('hire requested');
-        let confirm = this.alertCtrl.create({
-            title: 'Hire ' + this.nickName + '?',
-            message: '',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => {
-                        console.log('cancelled hire');
-                    }
-                },
-                {
-                    text: 'Hire',
-                    handler: () => {
-                        console.log('confirmed hire');
-                        this.alreadyHiredSupplier = true;
-                        this.FBService.hire(this.requestId, this.supplierId)
-                            .subscribe(() => {
-                                console.log(this.supplierId + ' has been requested for hire');
-                            });
-                    }
-                }
-            ]
+
+        this.ngZone.run(() => {
+
+            //this.contentsBottom = 44;
+            this.footerBottom = 200;
         });
 
-        confirm.present();
+        // the most important function ofthe app!   
+        // console.log('hire requested');
+        // let confirm = this.alertCtrl.create({
+        //     title: 'Hire ' + this.nickName + '?',
+        //     message: '',
+        //     buttons: [
+        //         {
+        //             text: 'Cancel',
+        //             handler: () => {
+        //                 console.log('cancelled hire');
+        //             }
+        //         },
+        //         {
+        //             text: 'Hire',
+        //             handler: () => {
+        //                 console.log('confirmed hire');
+        //                 this.alreadyHiredSupplier = true;
+        //                 this.FBService.hire(this.requestId, this.supplierId)
+        //                     .subscribe(() => {
+        //                         console.log(this.supplierId + ' has been requested for hire');
+        //                     });
+        //             }
+        //         }
+        //     ]
+        // });
+
+        // confirm.present();
 
     }
 }

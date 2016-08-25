@@ -261,7 +261,7 @@ export class FirebaseService {
         var msgRef = firebase.database().ref().child('messages').child(requestId).child(authData.uid).child(supplierId);
 
         return new Observable(observer => {
-            msgRef.on('value',
+            msgRef.limitToLast(5).on('value',
                 (snapshot) => {
                     var arr = this.snapToArr(snapshot);
                     observer.next(arr);
