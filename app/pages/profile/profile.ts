@@ -14,7 +14,7 @@ import {Form} from '../form/form';
 })
 export class Profile {
 
-    profile = {};
+    profile: any = {};
     activeUser
 
     constructor(public FBService: FirebaseService,
