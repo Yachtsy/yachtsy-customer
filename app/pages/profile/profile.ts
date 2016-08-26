@@ -38,9 +38,9 @@ export class Profile {
         };
 
         this.activeUser = firebase.auth().currentUser;
-        if (this.activeUser) {
-            this.profile.name = this.activeUser.name;
-        }
+        // if (this.activeUser) {
+        //     this.profile.name = this.activeUser.name;
+        // }
     }
 
     itemTapped(idx) {

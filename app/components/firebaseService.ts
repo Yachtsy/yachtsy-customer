@@ -315,6 +315,22 @@ export class FirebaseService {
         });
     }
 
+    getCategoryGroup() {
+        var ref = firebase.database().ref().child('groups')
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    var arr = this.snapToArr(snapshot);
+                    observer.next(arr)
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
     getCategories() {
         var ref = firebase.database().ref().child('categories')
         var that = this
@@ -332,6 +348,24 @@ export class FirebaseService {
         });
     }
 
+    getPopularCategories() {
+        var ref = firebase.database().ref().child('popularCategories')
+        var that = this
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    var data = snapshot.val();
+                    var arr = data.split(',');
+                    observer.next(arr)
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });        
+    }
+
     getCategoryData(name) {
         return firebase.database().ref().child('categorySpec').child(name).once('value');
     }
@@ -339,7 +373,6 @@ export class FirebaseService {
     getCategorySpec() {
         return firebase.database().ref().child('categorySpec').once('value');
     }
-
 
     getCategoryName(categoryId) {
 
@@ -417,5 +450,13 @@ export class FirebaseService {
     }
 
 
+    getCategoryImage(item) {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function(url) {
+            item.image = url;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
 
 }
