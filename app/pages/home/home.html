@@ -14,7 +14,7 @@
     </div>
 
     <ion-slides *ngIf="popularCategoryList" (ionDidChange)="onPopularSlideChanged()" [options]="sliderOptions">
-        <ion-slide *ngFor="let idx of popularCategoryList">
+        <ion-slide *ngFor="let idx of popularCategoryList" (click)="itemTapped(categoryList[idx])">
             <div class="popular-image" *ngIf="categoryList[idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[idx].image ? categoryList[idx].image:'http://www.isic.cz/wp-content/plugins/orchitech-dm/resources/alive-dm/img/empty-image.png') + ')'}"></div>
             <div class="title-cover-back"></div>
         </ion-slide>
