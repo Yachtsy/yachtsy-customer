@@ -59,13 +59,13 @@ export class Form {
         GlobalService.mainTabBarElement.style.display = 'none';
     }
 
-    onInputChangeKeyUp() {
-        console.log('on key up');
+    // onInputChangeKeyUp() {
+    //     console.log('on key up');
 
-        if (this.map) {
-            this.map.setClickable(false);
-        }
-    }
+    //     if (this.map) {
+    //         this.map.setClickable(false);
+    //     }
+    // }
 
     onKeyUp(item) {
 
@@ -174,37 +174,37 @@ export class Form {
     lng
     lat
     placeName
-    private map: GoogleMap;
+    //private map: GoogleMap;
 
 
-    createMap() {
-        this.platform.ready().then(() => {
-            try {
-                this.map = new GoogleMap('map_canvas' /*, {'backgroundColor': 'red'}*/);
+    // createMap() {
+    //     this.platform.ready().then(() => {
+    //         try {
+    //             this.map = new GoogleMap('map_canvas' /*, {'backgroundColor': 'red'}*/);
 
-                return GoogleMap.isAvailable().then(() => {
+    //             return GoogleMap.isAvailable().then(() => {
 
-                    return this.map.one(GoogleMapsEvent.MAP_READY).then((data: any) => {
+    //                 return this.map.one(GoogleMapsEvent.MAP_READY).then((data: any) => {
 
 
 
-                        this.map.getMyLocation().then((location) => {
-                            console.log("latitude:" + location.latLng.lat, "longitude:" + location.latLng.lng);
-                            let myPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
-                            //console.log("My position is", myPosition);
-                            this.map.animateCamera({ target: myPosition, zoom: 10, duration: 1000 });
-                            this.map.setClickable(false);
-                            //loading.dismiss();
-                        });
-                        //alert("GoogleMap.onMapReady(): " + JSON.stringify(data));
+    //                     this.map.getMyLocation().then((location) => {
+    //                         console.log("latitude:" + location.latLng.lat, "longitude:" + location.latLng.lng);
+    //                         let myPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
+    //                         //console.log("My position is", myPosition);
+    //                         this.map.animateCamera({ target: myPosition, zoom: 10, duration: 1000 });
+    //                         this.map.setClickable(false);
+    //                         //loading.dismiss();
+    //                     });
+    //                     //alert("GoogleMap.onMapReady(): " + JSON.stringify(data));
 
-                    });
-                });
-            } catch (error) {
-                //loading.dismiss();
-            }
-        });
-    }
+    //                 });
+    //             });
+    //         } catch (error) {
+    //             //loading.dismiss();
+    //         }
+    //     });
+    // }
 
     autocomplete1
     autocomplete2
@@ -228,9 +228,9 @@ export class Form {
 
             // loading.present(loading)
 
-            setTimeout(() => {
-                this.createMap();
-            }, this.GOOGLE_MAP_TIMEOUT);
+            // setTimeout(() => {
+            //     this.createMap();
+            // }, this.GOOGLE_MAP_TIMEOUT);
 
             //let input_location = document.getElementById('autocomplete').getElementsByTagName('input')[0];
             //console.log(this.myElement);
@@ -290,21 +290,19 @@ export class Form {
                 this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
             });
 
-            try {
+            // try {
 
-                console.log(this.formAnswersLength);
-                console.log('set the map answer', this.formAnswers);
+            //     console.log(this.formAnswersLength);
+            //     console.log('set the map answer', this.formAnswers);
+            //     let myPosition = new GoogleMapsLatLng(this.lat, this.lng);
+            //     console.log("My position is", myPosition);
+            //     //this.map.animateCamera({ target: myPosition, zoom: 12, });
+            //     this.map.setCenter(myPosition);
+            //     this.map.addMarker({ position: myPosition });
+            //     this.map.setClickable(true);
+            // } catch (error) {
 
-                let myPosition = new GoogleMapsLatLng(this.lat, this.lng);
-                console.log("My position is", myPosition);
-                //this.map.animateCamera({ target: myPosition, zoom: 12, });
-                this.map.setCenter(myPosition);
-                this.map.addMarker({ position: myPosition });
-                this.map.setClickable(true);
-
-            } catch (error) {
-
-            }
+            // }
         }
 
     }
