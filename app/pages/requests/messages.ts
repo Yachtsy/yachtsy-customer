@@ -20,6 +20,7 @@ export class Messages {
     alreadyHiredSupplier;
     contentsBottom = 0;
     footerBottom = 0;
+    pageElement: any;
 
     @ViewChild(Content) content: Content;
 
@@ -85,10 +86,11 @@ export class Messages {
 
             this.ngZone.run(() => {
                 this.contentsBottom = e['keyboardHeight'] + 44;
-                this.footerBottom = e['keyboardHeight']
+                this.footerBottom   = e['keyboardHeight'];
+
                 setTimeout(() => {
                     this.content.scrollToBottom(300);
-                });
+                }, 100);
             });
             
         });
@@ -96,13 +98,21 @@ export class Messages {
         window.addEventListener('native.keyboardhide', (e) => {
 
             this.ngZone.run(() => {
-                this.contentsBottom = 44;
-                this.footerBottom = 0;
+                this.contentsBottom = 44 + 50;
+                this.footerBottom   = 50;
             });
         });
     }
 
-   
+    onPageWillEnter() {
+        this.pageElement = document.getElementsByClassName('messages')[0];
+        this.pageElement.style.background = 'white';
+    }
+
+    onPageWillLeave() {
+        this.pageElement.style.background = 'none';
+    }
+
     sendMessage($event) {
 
         if (!this.message) {
