@@ -74,7 +74,7 @@ export class Home {
                     this.categoryList = data;
                     console.log('category data', data);
                     for (var i = 0; i < this.categoryList.length; i++)
-                        this.FBService.getCategoryImage(this.categoryList[i]);
+                        this.FBService.getCategoryImage(this.categoryList[i], this.ngZone);
                 });
 
             });

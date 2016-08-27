@@ -394,10 +394,16 @@ export class FirebaseService {
         });
     }
 
-    getCategoryImage(item) {
+    getCategoryImage(item, zone) {
         var storageRef = firebase.storage().ref();
         storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function(url) {
-            item.image = url;
+            if (zone) {
+                zone.run(() => {
+                    item.image = url;
+                });
+            }
+            else
+                item.image = url;
         }).catch(function(error) {
             console.log(error);
         });
