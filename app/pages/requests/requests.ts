@@ -25,21 +25,7 @@ export class Requests {
 
     ngOnInit() {
         console.log('ngOnInit - request');
-    }
-
-    onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'flex';
-    }
-
-    ionViewWillEnter() {
-        console.log('ionViewWillEnter - requests')
-
-        var loading = this.navParams.get('loading');
-        if (loading){
-            loading.dismiss();
-        }
-
-        this.FBService.getMyRequests()
+         this.FBService.getMyRequests()
             .subscribe((data: any) => {
                
                 console.log('requests get')
@@ -54,6 +40,21 @@ export class Requests {
                     });
                 });
             });
+    }
+
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'flex';
+    }
+
+    ionViewWillEnter() {
+        console.log('ionViewWillEnter - requests')
+
+        var loading = this.navParams.get('loading');
+        if (loading){
+            loading.dismiss();
+        }
+
+       
     }
 
     newRequestClick() {
