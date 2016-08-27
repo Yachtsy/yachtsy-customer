@@ -41,8 +41,10 @@ export class Home {
         let self = this;
         this.sliderOptions = {
             initialSlide:   0,
+            autoplay:       5000,
+            speed:          300,
             pager:          true,
-            loop:           false,
+            loop:           true,
             onInit: function(slides) {
                 self.slides = slides;
             }
