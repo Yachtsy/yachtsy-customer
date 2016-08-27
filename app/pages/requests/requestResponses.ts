@@ -35,7 +35,15 @@ export class RequestResponses {
         return Math.round(num * 2) / 2;
     }
 
+
+    profile;
+
     ngOnInit() {
+
+        this.profile = {
+            image: "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
+        };
+
         console.log('ngOnInit - requestDetail = ', this.request);
 
         this.FBService.getMyResponses(this.request.id)

@@ -10,37 +10,41 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
-    <ion-list>
+<ion-content class="responses">
 
-        <ion-item *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
 
-        <ion-card tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
+    <ion-item *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
 
-            <ion-card-content>
-                <h2 class="card-title">{{item.data.supplierNickName}}</h2>
-                <p></p>
-                <p>{{desc}}</p>
+    <ion-card tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
 
-                <ion-list nolines>
-                    <ion-item>
-                        {{totalReviews}} reviews
-                        <ion-note item-right>
-                            <rating text-center score="{{item.data.reviewRating}}" max="5"></rating>
-                        </ion-note>
-                    </ion-item>
-                    <ion-item>
-                        Quote
-                        <ion-note item-right>
-                            $ {{item.data.price}}
-                        </ion-note>
-                    </ion-item>
-                </ion-list>
 
-            </ion-card-content>
-        </ion-card>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="{{profile.image}}">
+            </ion-avatar>
+            <h2>{{item.data.supplierNickName}}</h2>
+            <p>{{totalReviews}} reviews <rating score="{{item.data.reviewRating}}" max="5"></rating></p>
+        </ion-item>
+        <ion-card-content>
+            <h2 class="card-title"></h2>
+            <p></p>
+            <p>{{desc}}</p>
 
-        <!--<button ion-item  (click)="gotoMessages(item)">
+           
+            <!--<ion-item>
+                    Quote
+                    <ion-note item-right>
+                        $ {{item.data.price}}
+                    </ion-note>
+                </ion-item>-->
+
+
+            {{item.data.initialMessage}}
+
+        </ion-card-content>
+    </ion-card>
+
+    <!--<button ion-item  (click)="gotoMessages(item)">
 
             <ion-icon name="ios-contact" item-left></ion-icon>
 
@@ -50,6 +54,5 @@
             <p>{{item.data.supplierNickName}}</p>
 
         </button>-->
-    </ion-list>
 
 </ion-content>
