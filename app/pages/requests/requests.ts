@@ -12,9 +12,9 @@ export class Requests {
 
     items = []
 
-    constructor(public nav: NavController, 
-        public navParams: NavParams, 
-        public FBService: FirebaseService, 
+    constructor(public nav: NavController,
+        public navParams: NavParams,
+        public FBService: FirebaseService,
         private ngZone: NgZone) {
 
     }
@@ -25,9 +25,9 @@ export class Requests {
 
     ngOnInit() {
         console.log('ngOnInit - request');
-         this.FBService.getMyRequests()
+        this.FBService.getMyRequests()
             .subscribe((data: any) => {
-               
+
                 console.log('requests get')
 
                 this.ngZone.run(() => {
@@ -50,11 +50,13 @@ export class Requests {
         console.log('ionViewWillEnter - requests')
 
         var loading = this.navParams.get('loading');
-        if (loading){
+        if (loading) {
             loading.dismiss();
         }
 
-       
+
+
+
     }
 
     newRequestClick() {

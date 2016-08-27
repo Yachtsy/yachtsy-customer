@@ -1,5 +1,36 @@
 .form {
     
+    ion-card {
+        margin: 0px;
+        margin-bottom: 1px;
+        width: 100%;
+    }
+
+    ion-card ion-card-header {
+        background: #f8f8f8;
+    }
+
+    ion-card ion-card-header .item {
+        padding-left: 0px;
+        background: none;
+    }
+
+    ion-card ion-list .item {
+        padding-left: 0px;
+    }
+
+    ion-card ion-list .item .item-inner {
+        padding-left: 16px;
+    }
+
+    ion-card ion-list .item .item-inner input {
+        margin-left: 0px;
+    }
+
+    ion-footer .button {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
 }
 
 .pac-container:after{
@@ -46,37 +77,6 @@
     font-size: 1.2rem;
 }
 
-ion-card {
-    margin: 0px;
-    margin-bottom: 1px;
-    width: 100%;
-}
-
-ion-card ion-card-header {
-    background: #f8f8f8;
-}
-
-ion-card ion-card-header .item {
-    padding-left: 0px;
-    background: none;
-}
-
-ion-card ion-list .item {
-    padding-left: 0px;
-}
-
-ion-card ion-list .item .item-inner {
-    padding-left: 16px;
-}
-
-ion-card ion-list .item .item-inner input {
-    margin-left: 0px;
-}
-
-ion-footer .button {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
 
 #map_canvas {
     height: 300px;
