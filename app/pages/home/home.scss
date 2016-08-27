@@ -114,6 +114,11 @@
     font-size: 1.2rem;
 }
 
+.home .scroll-bar-indicator
+{
+	display: none;
+}
+
 .home .category-contents-wrapper {
 	position: relative;
 	top: -70px;
@@ -138,13 +143,14 @@
 
 .home .category-list .category-contents {
 	border-bottom: 1px solid #dad4a8;
-	padding: 10px 20px;
+	padding: 10px 0px;
 }
 
 .home .category-contents .category-title {
 	color: #105677;
 	margin-bottom: 10px;
     font-size: 1.6rem;
+    padding: 0px 20px;
 }
 
 .home .category-contents .service-list {
@@ -154,7 +160,7 @@
 
 .home .service-contents {
 	width: 100px;
-    margin-right: 20px;
+    margin: 0px 10px;
     text-align: center;
     display: inline-table;
 }

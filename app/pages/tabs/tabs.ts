@@ -1,14 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Home} from '../home/home';
 import {Requests} from '../requests/requests';
 import {Notifications} from '../notifications/notifications';
 import {Profile} from '../profile/profile';
+import GlobalService = require('../../components/globalService');
 
 @Component({
   templateUrl: 'build/pages/tabs/tabs.html'
 })
 
 export class Tabs {
+
+  @ViewChild('mainTabs') public tabRef: Tabs;
 
   private tab1Root: any;
   private tab2Root: any;
@@ -23,4 +26,10 @@ export class Tabs {
     this.tab3Root = Notifications;
     this.tab4Root = Profile;
   }
+
+  ngOnInit() {
+    GlobalService.mainTabRef = this.tabRef;
+    GlobalService.mainTabBarElement = document.querySelector('#mainTabs ion-tabbar');
+  }
+
 }

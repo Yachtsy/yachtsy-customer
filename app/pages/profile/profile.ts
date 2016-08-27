@@ -7,6 +7,7 @@ import {
     OnDestroy
 } from '@angular/core';
 import {Form} from '../form/form';
+import GlobalService = require('../../components/globalService');
 
 
 @Component({
@@ -45,8 +46,9 @@ export class Profile {
 
     itemTapped(idx) {
         if (idx === 2) {
-            if (this.activeUser)
-                firebase.auth().signOut();
+            this.FBService.logout().then((data: any) => {
+                GlobalService.mainTabRef.select(0);
+            });
         }
     }
 }

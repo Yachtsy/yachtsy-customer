@@ -90,23 +90,32 @@ export class ModalsContentPage {
                 console.log('user created');
                 
                 //console.log('the user AUTH DATA is ');
-                
                 //console.log(authData);
 
-                console.log('sumbitting request');
+                if (this.req) {
+                    console.log('sumbitting request');
 
-                this.FBService.submitRequest(this.req)
-                    .subscribe((requestId) => {
-                        console.log('after submit request')
-                        console.log(requestId)
-                        this.viewCtrl.dismiss();
-                      
-                    })
+                    this.FBService.submitRequest(this.req)
+                        .subscribe((requestId) => {
+                            console.log('after submit request')
+                            console.log(requestId)
+                            this.viewCtrl.dismiss({
+                                cancel: false
+                            });
+                        })
+                }
+                else {
+                    this.viewCtrl.dismiss({
+                        cancel: false
+                    });
+                }
             })
     }
 
 
     dismiss() {
-        this.viewCtrl.dismiss();
+        this.viewCtrl.dismiss({
+            cancel: true
+        });
     }
 }

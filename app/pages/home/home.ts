@@ -1,5 +1,5 @@
 import {Component, NgZone, ViewChild} from '@angular/core';
-import {NavController, LoadingController, NavParams, Slides} from 'ionic-angular';
+import {ModalController, NavController, LoadingController, NavParams, Slides} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests'
 import {
@@ -7,7 +7,8 @@ import {
     OnDestroy
 } from '@angular/core';
 import {Form} from '../form/form';
-
+import {ModalsContentPage} from '../form/modal'
+import GlobalService = require('../../components/globalService');
 
 @Component({
     templateUrl: 'build/pages/home/home.html',
@@ -17,6 +18,7 @@ export class Home {
     public slides: any;
     auth: any = {};
 
+    isLoggedIn = false;
     activeUser: String;
     goToRequestsPageIfLoggedIn = true;
 
@@ -33,6 +35,7 @@ export class Home {
         public navController: NavController,
         public navParams: NavParams,
         private ngZone: NgZone,
+        private modalCtrl: ModalController,
         private loadingCtrl: LoadingController) {
 
         let self = this;
@@ -46,41 +49,20 @@ export class Home {
         };
     }
 
-    doLogout() {
-
+    ngOnInit() {
+        this.getCategoryInfo();
     }
 
-    ngOnDestroy() {
-        console.log('ngOnDestroy - home');
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'flex';
     }
-
 
     ionViewWillEnter() {
-        // var els = document.getElementsByClassName("home show-page")
-        // console.log('ELEMENTS:', els);
-        // if (els) {
-        //     if (els[0].classList.contains('hideme')) {
-        //         console.log('going to remove..');
-        //         els[0].classList.remove('hideme');
-        //     }
-        // }
-    }
-
-    ngOnInit() {
-        console.log('ngOnInit');
-
-        // let loading = this.loadingCtrl.create({
-        //     content: ''
-        // });
-
-        // loading.present();
-
-        this.getCategoryInfo();
+        this.isLoggedIn = this.FBService.isAuthenticated();
     }
 
     onPopularSlideChanged() {
         if (this.slides)
-            // this.curPopularIndex = (this.slides.activeIndex - 1 + this.popularCategoryList.length) % this.popularCategoryList.length;
             this.curPopularIndex = this.slides.activeIndex;
     }
 
@@ -145,19 +127,10 @@ export class Home {
         this.FBService.getCategorySpec()
             .then((data) => {
                 this.categorySpec = data.val();
-                //loading.dismiss();
             });
     }
 
     itemTapped(item) {
-
-        // var loading = this.loadingCtrl.create({
-        //     content: "Loading...",
-        //     dismissOnPageChange: true
-        // });
-
-        // loading.present(loading)
-
         var categoryId = item.id;
 
         console.log(item);
@@ -177,6 +150,15 @@ export class Home {
             }
         }
 
+        // let modal = this.modalCtrl.create(Form, {
+        //     index: 0,
+        //     categoryData: categoryData,
+        //     categoryId: categoryId,
+        //     categoryName: categoryName,
+        //     locationType: locationType
+        // });
+        // modal.present();
+
         this.navController.push(Form, {
             index: 0,
             categoryData: categoryData,
@@ -184,18 +166,7 @@ export class Home {
             categoryName: categoryName,
             locationType: locationType
         }).then(() => {
-
-            // if (locationType === "single" || locationType === "multi") {
-            //     //var els = document.getElementsByTagName('ion-page');
-            //     var els = document.getElementsByClassName("home show-page")
-            //     //console.log('ELEMENTS:', els);
-            //     if (els) {
-            //         els[0].classList.add('hideme');
-            //     }
-            // }
-
         });
-
     }
 
     locationSingle() {
@@ -252,7 +223,11 @@ export class Home {
     }
 
     loginClick() {
-        
+        let modal = this.modalCtrl.create(ModalsContentPage, { req: null });
+
+        modal.present();
+        modal.onDidDismiss((data)=>{
+        });
     }
 
 }

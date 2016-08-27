@@ -1,11 +1,12 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ModalController, NavController, LoadingController, NavParams, Platform} from 'ionic-angular';
+import {ModalController, NavController, ViewController, LoadingController, NavParams, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
-import {Requests} from '../requests/requests';
+import {Home} from '../home/home';
 import {ModalsContentPage} from './modal'
 import {GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
+import GlobalService = require('../../components/globalService');
 
 @Component({
     templateUrl: 'build/pages/form/form.html',
@@ -42,6 +43,7 @@ export class Form {
 
     constructor(public nav: NavController,
         public navParams: NavParams,
+        public viewCtrl: ViewController,
         public FBService: FirebaseService,
         private ngZone: NgZone,
         private platform: Platform,
@@ -52,16 +54,17 @@ export class Form {
 
     itemDescribed = false;
 
-    onInputChangeKeyUp() {
+    onPageWillEnter() {
+        console.log('form - onPageWillEnter');
+        GlobalService.mainTabBarElement.style.display = 'none';
+    }
 
+    onInputChangeKeyUp() {
         console.log('on key up');
 
         if (this.map) {
             this.map.setClickable(false);
         }
-
-
-
     }
 
     onKeyUp(item) {
@@ -132,11 +135,6 @@ export class Form {
         console.log('after entry:', this.formAnswers);
 
 
-    }
-
-    ngOnDestroy() {
-        console.log('ngOnDestroy - form');
-         
     }
 
     ionViewDidLeave() {
@@ -212,7 +210,7 @@ export class Form {
     autocomplete2
 
     ionViewWillEnter() {
-
+        console.log('form - ionViewWillEnter');
         if (this.field.type === 'location') {
 
             this.locationValue = ""
@@ -436,14 +434,13 @@ export class Form {
             loading.present();
 
             this.FBService.submitRequest(request)
-
                 .subscribe((requestId) => {
-
                     console.log('after submit request');
                     console.log(requestId);
+                    loading.dismiss();
 
-
-                    this.nav.setRoot(Requests, {loading: loading}, {animate: true});
+                    GlobalService.mainTabRef.select(1);
+                    this.nav.setRoot(Home, {}, {animate: false});
                 }, (error) => {
                     console.log(error.message);
                     console.log(error);
@@ -461,7 +458,10 @@ export class Form {
             modal.present();
 
             modal.onDidDismiss((data)=>{
-                this.nav.setRoot(Requests, {}, {animate: true});
+                if (data.cancel !== true) {
+                    GlobalService.mainTabRef.select(1);
+                    this.nav.setRoot(Home, {}, {animate: false});
+                }
             });
 
         }

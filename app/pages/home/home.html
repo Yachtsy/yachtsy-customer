@@ -2,7 +2,7 @@
     <ion-navbar>
         <ion-title>Explore</ion-title>
         <ion-buttons end>
-            <button (click)="loginClick()">Log In</button>
+            <button *ngIf="!isLoggedIn" (click)="loginClick()">Log In</button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
@@ -35,7 +35,7 @@
             <div class="category-contents" *ngFor="let group of categoryGroup">
                 <div class="category-title">{{group.id}}</div>
                 <ion-scroll class="service-list" scrollX="true" *ngIf="categoryList">
-                    <div class="service-contents" *ngFor="let item of group.data.categories" (click)="itemTapped(categoryList[item.idx])">
+                    <div tappable class="service-contents" *ngFor="let item of group.data.categories" (click)="itemTapped(categoryList[item.idx])">
                         <div class="service-image" *ngIf="categoryList[item.idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[item.idx].image ? categoryList[item.idx].image:'http://www.isic.cz/wp-content/plugins/orchitech-dm/resources/alive-dm/img/empty-image.png') + ')'}"></div>
                         <div class="service-name" *ngIf="categoryList[item.idx]">{{categoryList[item.idx].data.name}}</div>
                     </div>

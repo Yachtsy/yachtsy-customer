@@ -41,9 +41,9 @@ export class MyApp {
       userRef.once('value', (snapshot) => {
         if (!snapshot.exists()) {
           console.log('user profile does not exist - logging out ' + user.uid);
-          this.ngZone.run(() => {
-            firebase.auth().signOut();
-          });
+          // this.ngZone.run(() => {
+          //   firebase.auth().signOut();
+          // });
           // this.rootPage = Home;
         } else {
           console.log('going to the requets page');

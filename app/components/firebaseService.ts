@@ -12,7 +12,11 @@ export class FirebaseService {
     }
 
     logout() {
-        firebase.auth().signOut();
+        return new Promise((resolve, reject) => {
+            firebase.auth().signOut().then((data: any) => {
+                resolve(data);
+            });
+        });
     }
 
     isAuthenticated() {
@@ -41,8 +45,6 @@ export class FirebaseService {
 
         return this.doOperation('userConfirmComplete', payload);
     }
-
-
 
     doOperation(operation, payload) {
 
@@ -275,8 +277,7 @@ export class FirebaseService {
 
     getMyMessagesForAllSuppliers(requestId) {
 
-        var authData = firebase.auth().currentUser
-
+        var authData = firebase.auth().currentUser;
         var userRequestsRef = firebase.database().ref().child('messages/' + requestId + '/' + authData.uid);
 
         return new Observable(observer => {
@@ -393,6 +394,15 @@ export class FirebaseService {
         });
     }
 
+    getCategoryImage(item) {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function(url) {
+            item.image = url;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
     submitRequest(request) {
 
         //console.log('request to submit is: ');
@@ -447,16 +457,6 @@ export class FirebaseService {
         };
 
         return this.doOperation('cancelRequest', payload);
-    }
-
-
-    getCategoryImage(item) {
-        var storageRef = firebase.storage().ref();
-        storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function(url) {
-            item.image = url;
-        }).catch(function(error) {
-            console.log(error);
-        });
     }
 
 }

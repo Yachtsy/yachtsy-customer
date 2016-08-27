@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {RequestResponses} from './requestResponses'
+import GlobalService = require('../../components/globalService');
 
 @Component({
     templateUrl: 'build/pages/requests/requests.html',
@@ -26,8 +27,12 @@ export class Requests {
         console.log('ngOnInit - request');
     }
 
-    onPageLoaded() {
-        console.log('onPageLoaded - requests')
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'flex';
+    }
+
+    ionViewWillEnter() {
+        console.log('ionViewWillEnter - requests')
 
         var loading = this.navParams.get('loading');
         if (loading){
@@ -52,7 +57,8 @@ export class Requests {
     }
 
     newRequestClick() {
-        this.nav.push(Home, { goToRequestsPageIfLoggedIn: false })
+        // this.nav.push(Home, { goToRequestsPageIfLoggedIn: false })
+        GlobalService.mainTabRef.select(0);
     }
 
     requestClick(item) {
