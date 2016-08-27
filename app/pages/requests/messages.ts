@@ -40,17 +40,6 @@ export class Messages {
 
     @ViewChild('chat_input') input: any;
 
-    blur(event) {
-        console.log(event);
-
-
-
-        //setTimeout(() => {
-        this.input.nativeElement.focus();
-        //});
-        //event.preventDefault();
-    }
-
     ngOnDestroy() {
 
         console.log('ngOnDestroy - messages');
@@ -92,32 +81,21 @@ export class Messages {
         this.footerBottom = 0;
 
 
-
-
-
         window.addEventListener('native.keyboardshow', (e) => {
 
-            console.log('kb show', e['keyboardHeight']);
-
-
-
             this.ngZone.run(() => {
-
-
                 this.contentsBottom = e['keyboardHeight'] + 44;
                 this.footerBottom = e['keyboardHeight']
-
                 setTimeout(() => {
                     this.content.scrollToBottom(300);
                 });
-
             });
+            
         });
+
         window.addEventListener('native.keyboardhide', (e) => {
 
-            console.log('kb hide', e);
             this.ngZone.run(() => {
-
                 this.contentsBottom = 44;
                 this.footerBottom = 0;
             });
@@ -126,9 +104,6 @@ export class Messages {
 
    
     sendMessage($event) {
-
-
-
 
         if (!this.message) {
             return;
@@ -140,39 +115,32 @@ export class Messages {
 
     hire() {
 
-        this.ngZone.run(() => {
-
-            //this.contentsBottom = 44;
-            this.footerBottom = 200;
+        console.log('hire requested');
+        let confirm = this.alertCtrl.create({
+            title: 'Hire ' + this.nickName + '?',
+            message: '',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {
+                        console.log('cancelled hire');
+                    }
+                },
+                {
+                    text: 'Hire',
+                    handler: () => {
+                        console.log('confirmed hire');
+                        this.alreadyHiredSupplier = true;
+                        this.FBService.hire(this.requestId, this.supplierId)
+                            .subscribe(() => {
+                                console.log(this.supplierId + ' has been requested for hire');
+                            });
+                    }
+                }
+            ]
         });
 
-        // the most important function ofthe app!   
-        // console.log('hire requested');
-        // let confirm = this.alertCtrl.create({
-        //     title: 'Hire ' + this.nickName + '?',
-        //     message: '',
-        //     buttons: [
-        //         {
-        //             text: 'Cancel',
-        //             handler: () => {
-        //                 console.log('cancelled hire');
-        //             }
-        //         },
-        //         {
-        //             text: 'Hire',
-        //             handler: () => {
-        //                 console.log('confirmed hire');
-        //                 this.alreadyHiredSupplier = true;
-        //                 this.FBService.hire(this.requestId, this.supplierId)
-        //                     .subscribe(() => {
-        //                         console.log(this.supplierId + ' has been requested for hire');
-        //                     });
-        //             }
-        //         }
-        //     ]
-        // });
-
-        // confirm.present();
+        confirm.present();
 
     }
 }

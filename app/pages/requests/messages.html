@@ -42,7 +42,7 @@
 <ion-footer [ngStyle]="{bottom: footerBottom + 'px'}" no-border-top>
     <ion-toolbar class="message-bar">
         <!--[disabled]="request.hiring.supplierId !== supplierId"-->
-        <input #chat_input *ngIf="request" [(ngModel)]="message" (blur)="blur()" class="chatbox"> 
+        <ion-input #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
         <ion-buttons end>
              <!--[disabled]="request.hired.supplierId !== supplierId"-->
             <button royal *ngIf="request" (click)="sendMessage($event)">
