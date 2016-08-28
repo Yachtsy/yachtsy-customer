@@ -98,8 +98,8 @@ export class Messages {
         window.addEventListener('native.keyboardhide', (e) => {
 
             this.ngZone.run(() => {
-                this.contentsBottom = 44 + 50;
-                this.footerBottom   = 50;
+                this.contentsBottom = 44;
+                this.footerBottom   = 0;
             });
         });
     }
