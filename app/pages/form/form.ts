@@ -346,9 +346,9 @@ export class Form {
 
             this.formAnswers[this.formPageIndex]['ans'] = [];
             this.formAnswers[this.formPageIndex]['ans'].push(item.label);
-            if (!this.lastPage) {
-                this.next();
-            }
+            // if (!this.lastPage) {
+            //     this.next();
+            // }
         }
 
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;

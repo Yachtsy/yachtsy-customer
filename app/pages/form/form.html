@@ -88,6 +88,7 @@
             
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
+                (!field.allows_multiple_values && formAnswersLength === 0 )  ||
                  (!field.allows_multiple_values && itemDescribed )
                   
                   )" (click)="next()">
@@ -101,6 +102,7 @@
             
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
+                (!field.allows_multiple_values && formAnswersLength === 0 )  ||
                  (!field.allows_multiple_values && itemDescribed )
                   
                   )" (click)="submitRequest()">
