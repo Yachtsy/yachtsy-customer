@@ -137,40 +137,12 @@ export class Form {
 
     }
 
-    ionViewDidLeave() {
-        console.log('ionViewDidLeave - form');
 
-        // var els = document.getElementsByClassName("home show-page")
-        // console.log('ELEMENTS:', els);
-        // if (els) {
-        //     if (els[0].classList.contains('hideme')) {
-        //         console.log('going to remove..');
-        //         els[0].classList.remove('hideme');
-        //     }
-        // }
+    back(){
+        this.nav.pop();
     }
 
-    ionViewWillLeave() {
-        console.log('ionViewWillLeave - form');
-       /// this.map.clear();
-       // this.map.remove();
-        //google.maps.event.clearListeners(this.autocomplete1, "place_changed")
-        //google.maps.event.clearListeners(this.autocomplete2, "place_changed")
-
-    }
-
-    ionViewWillUnload() {
-        console.log('ionViewWillUnload - form');
-        // this.map.clear();
-       // this.map.remove();
-    }
-    ionViewDidUnload() {
-        console.log('ionViewDidUnload - form');
-      //   this.map.clear();
-      //  this.map.remove();
-
-    }
-
+    
     lng
     lat
     placeName
@@ -209,6 +181,8 @@ export class Form {
     autocomplete1
     autocomplete2
 
+  
+
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
         if (this.field.type === 'location') {
@@ -242,24 +216,19 @@ export class Form {
 
             let input_location, input_location2;
 
-            //console.log('elements: ', this.myElement, this.myElement2);
-
             input_location = this.myElement.nativeElement;
             this.autocomplete1 = new google.maps.places.Autocomplete(input_location, options);
-            google.maps.event.addListener(this.autocomplete1, 'place_changed', () => {
 
-                this.placeChanged(this.autocomplete1);
-
-            });
-
-            //console.log('second listener');
             input_location2 = this.myElement2.nativeElement;
             this.autocomplete2 = new google.maps.places.Autocomplete(input_location2, options);
 
+
+            google.maps.event.addListener(this.autocomplete1, 'place_changed', () => {
+                this.placeChanged(this.autocomplete1);
+            });          
+
             google.maps.event.addListener(this.autocomplete2, 'place_changed', () => {
-
                 this.placeChanged(this.autocomplete2);
-
             });
 
         }

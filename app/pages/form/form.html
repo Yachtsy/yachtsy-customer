@@ -1,9 +1,10 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title text-wrap>
-            {{categoryName}}
+
+    <ion-toolbar no-border-top>
+        <ion-title> {{categoryName}}
+
         </ion-title>
-    </ion-navbar>
+    </ion-toolbar>
 </ion-header>
 
 
@@ -49,8 +50,7 @@
             </ion-item>
 
             <div class="input-wrapper">
-                <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location"
-                    [(ngModel)]="fromValue">
+                <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
                 <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
             </div>
             <div [hidden]="locationStep === 2" *ngIf="fromValue.length > 0" class="result-title-text">RESULTS</div>
@@ -59,8 +59,7 @@
             <ion-item no-lines>
                 <p>Please select the end location</p>
             </ion-item>
-            <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location"
-                [(ngModel)]="toValue">
+            <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
         </div>
         <div [hidden]="locationStep === 1" *ngIf="toValue.length > 0" class="result-title-text">RESULTS</div>
 
@@ -68,26 +67,54 @@
 
     <!--<div *ngIf="field.type === 'location'" id="map_canvas">
     </div>-->
-    
-     <button *ngIf="field.type === 'location' && formAnswersLength > 0" no-lines style="border-radius:0px;margin-left: 5%;margin-right:5%;width:90%" (click)="next()">
-           Next
-      </button>
+
 </ion-content>
 
 <ion-footer>
 
-    <button block *ngIf="(field.allows_multiple_values && (formAnswersLength > 0) ||    !field.allows_multiple_values && itemDescribed )
-      && !lastPage" (click)="next()">
-           Next
-      </button>
-<!--
-    <button *ngIf="field.type === 'location'" block [disabled]="formAnswersLength === 0" (click)="next()">
-           Next
-      </button>-->
+    <ion-toolbar no-border-bottom>
 
-    <!--( (field.type === 'location') && (formAnswersLength > 0) ) ) -->
-    <button block *ngIf="lastPage && (field.allows_multiple_values && (formAnswersLength > 0)  || 
-    !field.allows_multiple_values)" (click)="submitRequest()">
-           Submit Request
+        <ion-buttons start>
+            <button class="button button-icon button-clear" (click)="back()">
+             <ion-icon name="arrow-dropleft-circle"></ion-icon>
+        </button>
+
+
+        </ion-buttons>
+
+        <ion-buttons end>
+
+            <button class="button button-icon button-clear" *ngIf="!lastPage" [disabled]="(
+            
+                (field.allows_multiple_values && (formAnswersLength === 0)) ||  
+                (field.type === 'location' && formAnswersLength === 0) ||
+                 (!field.allows_multiple_values && itemDescribed )
+                  
+                  )" (click)="next()">
+                   <ion-icon name="arrow-dropright-circle"></ion-icon>
+
+
       </button>
+
+
+         <button class="button button-icon button-clear" *ngIf="lastPage" [disabled]="(
+            
+                (field.allows_multiple_values && (formAnswersLength === 0)) ||  
+                (field.type === 'location' && formAnswersLength === 0) ||
+                 (!field.allows_multiple_values && itemDescribed )
+                  
+                  )" (click)="submitRequest()">
+                  <ion-icon name="send"></ion-icon>
+
+
+
+      </button>
+
+
+
+        </ion-buttons>
+
+    </ion-toolbar>
+
+
 </ion-footer>

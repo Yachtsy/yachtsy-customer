@@ -1,23 +1,23 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            {{footerBottom}}
+    <ion-navbar no-border-bottom>
+        <ion-title> {{footerBottom}}
         </ion-title>
-
         <ion-buttons end>
             <button [disabled]="alreadyHiredSupplier" (click)="hire()">Hire</button>
         </ion-buttons>
     </ion-navbar>
-
+    <ion-toolbar no-border-top>
+        Details about the job and the pro
+    </ion-toolbar>
 </ion-header>
 
-<ion-content class="message-content" [ngStyle]="{bottom: contentsBottom + 'px'}">
+<ion-content class="message-content messages" [ngStyle]="{bottom: contentsBottom + 'px'}">
 
     <ion-item>
         $ {{price}} total price
     </ion-item>
 
-    <div>
+    <!--<div>
         <ion-card *ngFor="let item of messages; let i = index">
             <ion-card-header *ngIf="item.data.uid === userId">
                 Me:
@@ -34,16 +34,22 @@
             </ion-card-content>
 
         </ion-card>
-    </div>
+    </div>-->
+
+    <ion-list no-lines>
+        <ion-item *ngFor="let msg of messages">
+            <chat-bubble [message]="msg"></chat-bubble>
+        </ion-item>
+    </ion-list>
 
 </ion-content>
-
-<ion-footer [ngStyle]="{bottom: footerBottom + 'px'}" no-border-top>
+<!--[ngStyle]="{bottom: footerBottom + 'px'}"-->
+<ion-footer  no-border-top>
     <ion-toolbar class="message-bar">
         <!--[disabled]="request.hiring.supplierId !== supplierId"-->
         <ion-input #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
         <ion-buttons end>
-             <!--[disabled]="request.hired.supplierId !== supplierId"-->
+            <!--[disabled]="request.hired.supplierId !== supplierId"-->
             <button royal *ngIf="request" (click)="sendMessage($event)">
                 <ion-icon name="send"></ion-icon>
             </button>

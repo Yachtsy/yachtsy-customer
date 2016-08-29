@@ -3,9 +3,12 @@ import {AlertController, Page, Content, NavController, NavParams} from 'ionic-an
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {Keyboard} from 'ionic-native';
+import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
+import {ElasticTextarea} from '../../components/elastic-textarea';
 
 @Page({
     templateUrl: 'build/pages/requests/messages.html',
+    directives: [ChatBubble, ElasticTextarea]
 })
 export class Messages {
 
@@ -21,6 +24,7 @@ export class Messages {
     contentsBottom = 0;
     footerBottom = 0;
     pageElement: any;
+    profile;
 
     @ViewChild(Content) content: Content;
 
@@ -37,6 +41,10 @@ export class Messages {
         console.log('supplierId passed: ', this.supplierId);
 
         this.message = "";
+
+        this.profile = {
+            image: "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
+        };
     }
 
     @ViewChild('chat_input') input: any;
@@ -53,13 +61,26 @@ export class Messages {
         console.log('user id is: ' + this.userId)
 
         this.FBService.getMyMessages(this.requestId, this.supplierId)
-            .subscribe((data: any) => {
+            .subscribe((msgData: any) => {
+
                 console.log(' my messages for supplier ' + this.supplierId + 'are:');
-                console.log(data);
+                console.log(msgData);
 
                 this.ngZone.run(() => {
-                    this.messages = data;
+                    this.messages = Object.keys(msgData)
+                        .map((key) => {
+                            msgData[key].data.img = this.profile.image;
+                            msgData[key].data.position = 'right';
+                            if (this.userId === msgData[key].data.uid) {
+                                msgData[key].data.position = 'left';
+                            }
+                            return msgData[key].data;
+                        });
                 });
+
+                setTimeout(() => {
+                    this.content.scrollToBottom(300);
+                }, 0);
             });
 
         this.FBService.getRequest(this.requestId)
@@ -78,28 +99,34 @@ export class Messages {
                 }
             });
 
-        this.contentsBottom = 44;
-        this.footerBottom = 0;
 
+        this.ngZone.run(() => {
+            console.log('init positions')
+            this.contentsBottom = 44;
+            this.footerBottom = 0;
+        });
 
         window.addEventListener('native.keyboardshow', (e) => {
 
+            console.log('keyboard show')
             this.ngZone.run(() => {
                 this.contentsBottom = e['keyboardHeight'] + 44;
-                this.footerBottom   = e['keyboardHeight'];
+                this.footerBottom = e['keyboardHeight'];
 
                 setTimeout(() => {
                     this.content.scrollToBottom(300);
                 }, 100);
             });
-            
+
         });
 
         window.addEventListener('native.keyboardhide', (e) => {
 
+            console.log('keyboard hide')
             this.ngZone.run(() => {
+                console.log('initialising postions')
                 this.contentsBottom = 44;
-                this.footerBottom   = 0;
+                this.footerBottom = 0;
             });
         });
     }

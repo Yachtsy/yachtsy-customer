@@ -112,7 +112,8 @@ export class MyApp {
 let config = {
   prodMode: false, 
   statusbarPadding: true, 
-  tabsHideOnSubPages: true
+  tabsHideOnSubPages: true,
+   backButtonText: '',
 };
 
 ionicBootstrap(MyApp, [FirebaseService], config); 
