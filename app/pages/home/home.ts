@@ -26,6 +26,8 @@ export class Home {
     categoryList    = [];
     categorySpec    = [];
 
+    dateTimeOptions = [];
+
     sliderOptions   = {};
 
     curPopularIndex = 0;
@@ -130,18 +132,40 @@ export class Home {
             .then((data) => {
                 this.categorySpec = data.val();
             });
+
+        this.FBService.getDateTimeOptions()
+            .subscribe((data: Array<any>) => {
+                this.dateTimeOptions = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === 'date')
+                        this.dateTimeOptions[0] = [data[i].data];
+                    else if (data[i].id === 'time')
+                        this.dateTimeOptions[1] = [data[i].data];
+                }
+                console.log(this.dateTimeOptions);
+            });
     }
 
     itemTapped(item) {
         var categoryId = item.id;
-
-        console.log(item);
-
         var categoryName = item.data.name;
-        var locationType = item.data.locationType;
+        let categoryData = this.categorySpec[categoryId];
+
+        // dynamically add in the date/time question ;)
+        var dateType = item.data.dateType;
+        var timeType = item.data.timeType;
+
+        if (timeType === 'general') {
+            this.dateTimeOptions[1][0].isTimeForm = true;
+            categoryData.fields = this.dateTimeOptions[1].concat(categoryData.fields);
+        }
+        if (dateType === 'general') {
+            this.dateTimeOptions[0][0].isDateForm = true;
+            categoryData.fields = this.dateTimeOptions[0].concat(categoryData.fields);
+        }
 
         // dynamically add in the location question ;)
-        let categoryData = this.categorySpec[categoryId];
+        var locationType = item.data.locationType;
 
         if (categoryData.fields[0].type !== 'location') {
             if (locationType === "single") {

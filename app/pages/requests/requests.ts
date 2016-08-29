@@ -53,10 +53,6 @@ export class Requests {
         if (loading) {
             loading.dismiss();
         }
-
-
-
-
     }
 
     newRequestClick() {

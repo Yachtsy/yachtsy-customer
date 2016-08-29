@@ -31,6 +31,7 @@ export class Form {
     toValue = "";
     maxStep = 0;
     answerObj;
+    dateTime;
     categoryName: string;
     locationType: string;
     locationValue: string;
@@ -55,7 +56,6 @@ export class Form {
     itemDescribed = false;
 
     onPageWillEnter() {
-        console.log('form - onPageWillEnter');
         GlobalService.mainTabBarElement.style.display = 'none';
     }
 
@@ -133,8 +133,6 @@ export class Form {
 
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
         console.log('after entry:', this.formAnswers);
-
-
     }
 
 
@@ -320,6 +318,7 @@ export class Form {
 
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
 
+        this.dateTime = null;
     }
 
     clicked(item) {
@@ -367,6 +366,9 @@ export class Form {
             });
 
         } else {
+            if (this.dateTime !== null && (this.field.isDateForm === true || this.field.isTimeForm === true))
+                this.formAnswers[this.formAnswers.length - 1].ans = [this.dateTime];
+
             this.nav.push(Form, {
                 index: this.formPageIndex + 1,
                 categoryData: this.cd,

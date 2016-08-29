@@ -17,13 +17,18 @@
         </ion-card-header>
         <ion-list *ngIf="field.type === 'enumeration'">
 
-            <button ion-item detail-none text-wrap *ngFor="let item of field.possible_values" (click)="clicked(item)">
-                {{item.label}}
+            <ion-item detail-none text-wrap *ngFor="let item of field.possible_values" (click)="clicked(item)">
+                <ion-label>{{item.label}}</ion-label>
 
-                <ion-input clearInput *ngIf="item.can_describe" placeholder="{{item.label}}" type="text" 
-                      (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
+                <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
+                        (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
                 </ion-input>
-                <!--                
+                <ion-datetime *ngIf="item.can_describe && field.isDateForm == true" displayFormat="MM/DD/YYYY" [(ngModel)]="dateTime">
+                </ion-datetime>
+                <ion-datetime *ngIf="item.can_describe && field.isTimeForm == true" displayFormat="HH:mm" [(ngModel)]="dateTime">
+                </ion-datetime>
+
+                <!--
                 <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && !lastPage" name='radio-button-off' item-right></ion-icon>
                 <ion-icon *ngIf="!field.allows_multiple_values && formAnswers[formPageIndex]['ans']
                 && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)  && lastPage" name='radio-button-off' item-right></ion-icon>
@@ -37,7 +42,7 @@
                 <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
                 || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
 
-            </button>
+            </ion-item>
         </ion-list>
 
     </ion-card>

@@ -409,6 +409,23 @@ export class FirebaseService {
         });
     }
 
+    getDateTimeOptions() {
+        var ref = firebase.database().ref().child('dateTimeOptions')
+        var that = this
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    var arr = this.snapToArr(snapshot);
+                    observer.next(arr)
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
     submitRequest(request) {
 
         //console.log('request to submit is: ');

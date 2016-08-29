@@ -4,6 +4,7 @@ import {Home} from '../home/home';
 import {Messages} from './messages'
 import {RequestDetail} from './requestDetail'
 import {RatingComponentUpdateable} from '../../components/ratingsComponent';
+import GlobalService = require('../../components/globalService');
 
 @Page({
     templateUrl: 'build/pages/requests/requestResponses.html',
@@ -25,6 +26,10 @@ export class RequestResponses {
         public modalCtrl: ModalController) {
         this.request = this.navParams.get('req');
         console.log('req is:', this.request);
+    }
+
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'none';
     }
 
     ngOnDestroy() {
