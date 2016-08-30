@@ -125,8 +125,8 @@ export class Messages {
             console.log('keyboard hide')
             this.ngZone.run(() => {
                 console.log('initialising postions')
-                this.contentsBottom = 44;
-                this.footerBottom = 0;
+                this.contentsBottom = 44 + 50;
+                this.footerBottom = 50;
             });
         });
     }

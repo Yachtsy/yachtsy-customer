@@ -31,6 +31,14 @@
         margin-top: 0px;
         margin-bottom: 0px;
     }
+
+    .item-checkbox .item-inner {
+        border: none;
+    }
+
+    .item-checkbox .item-inner .input-wrapper ion-label {
+        margin: 0px;
+    }
 }
 
 .pac-container:after{

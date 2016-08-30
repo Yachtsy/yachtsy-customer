@@ -17,13 +17,14 @@
         </ion-card-header>
         <ion-list *ngIf="field.type === 'enumeration'">
 
-            <ion-item detail-none text-wrap *ngFor="let item of field.possible_values" (click)="clicked(item)">
-                <ion-label>{{item.label}}</ion-label>
+            <ion-item tappable *ngFor="let item of field.possible_values" (click)="clicked(item)">
+
+                <ion-label *ngIf="!item.can_describe || (field.isDateForm == true || field.isTimeForm == true)">{{item.label}}</ion-label>
 
                 <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
                         (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
                 </ion-input>
-                <ion-datetime *ngIf="item.can_describe && field.isDateForm == true" displayFormat="MM/DD/YYYY" [(ngModel)]="dateTime">
+                <ion-datetime *ngIf="item.can_describe && field.isDateForm == true" displayFormat="MM/DD/YYYY" [(ngModel)]="dateTime" (ionChange)="onDateTimeChange()">
                 </ion-datetime>
                 <ion-datetime *ngIf="item.can_describe && field.isTimeForm == true" displayFormat="HH:mm" [(ngModel)]="dateTime">
                 </ion-datetime>
@@ -61,12 +62,21 @@
             <div [hidden]="locationStep === 2" *ngIf="fromValue.length > 0" class="result-title-text">RESULTS</div>
         </div>
         <div [hidden]="locationStep === 1">
-            <ion-item no-lines>
-                <p>Please select the end location</p>
+            <ion-item>
+                <ion-label>Use start location</ion-label>
+                <ion-checkbox [(ngModel)]="userStartLocation"></ion-checkbox>
             </ion-item>
-            <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
+            <div [hidden]="userStartLocation">
+                <ion-item no-lines>
+                    <p>Please select the end location</p>
+                </ion-item>
+                <div class="input-wrapper">
+                    <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
+                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+                </div>
+            </div>
         </div>
-        <div [hidden]="locationStep === 1" *ngIf="toValue.length > 0" class="result-title-text">RESULTS</div>
+        <div [hidden]="locationStep === 1 || userStartLocation" *ngIf="toValue.length > 0" class="result-title-text">RESULTS</div>
 
     </div>
 
@@ -81,47 +91,30 @@
 
         <ion-buttons start>
             <button class="button button-icon button-clear" (click)="back()">
-             <ion-icon name="arrow-dropleft-circle"></ion-icon>
-        </button>
-
-
+                <ion-icon name="arrow-dropleft-circle"></ion-icon>
+            </button>
         </ion-buttons>
 
         <ion-buttons end>
-
             <button class="button button-icon button-clear" *ngIf="!lastPage" [disabled]="(
-            
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
                 (!field.allows_multiple_values && formAnswersLength === 0 )  ||
                  (!field.allows_multiple_values && itemDescribed )
-                  
                   )" (click)="next()">
                    <ion-icon name="arrow-dropright-circle"></ion-icon>
+            </button>
 
-
-      </button>
-
-
-         <button class="button button-icon button-clear" *ngIf="lastPage" [disabled]="(
-            
+            <button class="button button-icon button-clear" *ngIf="lastPage" [disabled]="(
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
                 (!field.allows_multiple_values && formAnswersLength === 0 )  ||
                  (!field.allows_multiple_values && itemDescribed )
-                  
                   )" (click)="submitRequest()">
                   <ion-icon name="send"></ion-icon>
-
-
-
-      </button>
-
-
-
+            </button>
         </ion-buttons>
 
     </ion-toolbar>
-
 
 </ion-footer>

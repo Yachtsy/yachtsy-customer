@@ -37,6 +37,7 @@ export class Form {
     locationValue: string;
     locationSteps: number;
     locationStep: number;
+    userStartLocation = true;
 
     @ViewChild('autocomplete') myElement: any;
     @ViewChild('autocomplete2') myElement2: any;
@@ -133,6 +134,17 @@ export class Form {
 
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
         console.log('after entry:', this.formAnswers);
+    }
+
+    onDateTimeChange() {
+        if (this.dateTime != null) {
+            this.itemDescribed = false;
+            this.formAnswers[this.formPageIndex]['ans'] = [];
+            this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);
+        } else {
+            this.itemDescribed = true;
+        }        
+        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
     }
 
 
@@ -253,7 +265,7 @@ export class Form {
             }
 
             this.ngZone.run(() => {
-                this.formAnswers[this.formPageIndex]['ans'].push(locationAnswer);
+                this.formAnswers[this.formPageIndex]['ans'][this.locationStep - 1] = locationAnswer;
                 this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
             });
 
@@ -366,8 +378,9 @@ export class Form {
             });
 
         } else {
-            if (this.dateTime !== null && (this.field.isDateForm === true || this.field.isTimeForm === true))
-                this.formAnswers[this.formAnswers.length - 1].ans = [this.dateTime];
+            if (this.userStartLocation && this.locationStep === this.locationSteps) {
+                this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
+            }
 
             this.nav.push(Form, {
                 index: this.formPageIndex + 1,
@@ -438,6 +451,9 @@ export class Form {
     }
 
     cancelLocation() {
-        this.fromValue = "";
+        if (this.locationStep === 1)
+            this.fromValue = "";
+        else
+            this.toValue = "";
     }
 }
