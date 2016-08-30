@@ -334,7 +334,6 @@ export class FirebaseService {
 
     getCategories() {
         var ref = firebase.database().ref().child('categories')
-        var that = this
 
         return new Observable(observer => {
             ref.on('value',
@@ -351,7 +350,6 @@ export class FirebaseService {
 
     getPopularCategories() {
         var ref = firebase.database().ref().child('popularCategories')
-        var that = this
 
         return new Observable(observer => {
             ref.on('value',
@@ -411,7 +409,22 @@ export class FirebaseService {
 
     getDateTimeOptions() {
         var ref = firebase.database().ref().child('dateTimeOptions')
-        var that = this
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    var arr = this.snapToArr(snapshot);
+                    observer.next(arr)
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
+    getBoatInfo() {
+        var ref = firebase.database().ref().child('boatInfo')
 
         return new Observable(observer => {
             ref.on('value',

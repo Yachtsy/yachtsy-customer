@@ -27,6 +27,7 @@ export class Home {
     categorySpec    = [];
 
     dateTimeOptions = [];
+    boatInfos       = [];
 
     sliderOptions   = {};
 
@@ -144,6 +145,15 @@ export class Home {
                 }
                 console.log(this.dateTimeOptions);
             });
+
+        this.FBService.getBoatInfo()
+            .subscribe((data: Array<any>) => {
+                this.boatInfos = [];
+                for (var i = 0; i < data.length; i++) {
+                    this.boatInfos.push(data[i].data);
+                }
+                console.log(this.boatInfos);
+            });
     }
 
     itemTapped(item) {
@@ -151,17 +161,27 @@ export class Home {
         var categoryName = item.data.name;
         let categoryData = this.categorySpec[categoryId];
 
+        var requiresBoatInfo = item.data.requiresBoatInfo;
+        if (requiresBoatInfo === true) {
+            if (this.boatInfos)
+                categoryData.fields = this.boatInfos.concat(categoryData.fields);
+        }
+
         // dynamically add in the date/time question ;)
         var dateType = item.data.dateType;
         var timeType = item.data.timeType;
 
         if (timeType === 'general') {
-            this.dateTimeOptions[1][0].isTimeForm = true;
-            categoryData.fields = this.dateTimeOptions[1].concat(categoryData.fields);
+            if (this.dateTimeOptions[1]) {
+                this.dateTimeOptions[1][0].isTimeForm = true;
+                categoryData.fields = this.dateTimeOptions[1].concat(categoryData.fields);
+            }
         }
         if (dateType === 'general') {
-            this.dateTimeOptions[0][0].isDateForm = true;
-            categoryData.fields = this.dateTimeOptions[0].concat(categoryData.fields);
+            if (this.dateTimeOptions[0]) {
+                this.dateTimeOptions[0][0].isDateForm = true;
+                categoryData.fields = this.dateTimeOptions[0].concat(categoryData.fields);
+            }
         }
 
         // dynamically add in the location question ;)

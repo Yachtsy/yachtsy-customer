@@ -54,8 +54,6 @@ export class Form {
 
     }
 
-    itemDescribed = false;
-
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = 'none';
     }
@@ -77,12 +75,6 @@ export class Form {
         console.log('current form answers:', this.formAnswers)
 
         var thisPageAnswers = this.formAnswers[this.formPageIndex]['ans'];
-
-        if (this.answerObj[item.label]) {
-            this.itemDescribed = true;
-        } else {
-            this.itemDescribed = false;
-        }
 
         if (this.field.allows_multiple_values) {
 
@@ -138,11 +130,8 @@ export class Form {
 
     onDateTimeChange() {
         if (this.dateTime != null) {
-            this.itemDescribed = false;
             this.formAnswers[this.formPageIndex]['ans'] = [];
             this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);
-        } else {
-            this.itemDescribed = true;
         }        
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
     }

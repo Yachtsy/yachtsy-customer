@@ -32,6 +32,10 @@
         margin-bottom: 0px;
     }
 
+    ion-list .item .item-inner ion-label {
+        margin-bottom: 0px;
+    }
+
     .item-checkbox .item-inner {
         border: none;
     }
@@ -43,7 +47,6 @@
 
 .pac-container:after{
     content:none !important;
-
 }
 
 .pac-container {
