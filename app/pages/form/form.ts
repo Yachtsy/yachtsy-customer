@@ -181,7 +181,11 @@ export class Form {
     autocomplete1
     autocomplete2
 
-  
+    locationPopup1:any
+    locationPopup2:any
+    locationTimer
+    isResultHidden1
+    isResultHidden2
 
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
@@ -231,6 +235,22 @@ export class Form {
                 this.placeChanged(this.autocomplete2);
             });
 
+            this.isResultHidden1 = true;
+            this.isResultHidden2 = true;
+
+            this.locationTimer = setInterval(()=>{
+                this.locationPopup1 = document.getElementsByClassName('pac-container')[0];
+                if (this.locationPopup1 && this.locationPopup1.style.display !== 'none')
+                    this.isResultHidden1 = false;
+                else
+                    this.isResultHidden1 = true;
+
+                this.locationPopup2 = document.getElementsByClassName('pac-container')[1];
+                if (this.locationPopup2 && this.locationPopup2.style.display !== 'none')
+                    this.isResultHidden2 = false;
+                else
+                    this.isResultHidden2 = true;
+            }, 100);
         }
     }
 
@@ -254,8 +274,13 @@ export class Form {
                 placeName: this.placeName
             }
 
+            var idx = 0;
+            if (autoComplete === this.autocomplete1)
+                idx = 0;
+            else
+                idx = 1;
             this.ngZone.run(() => {
-                this.formAnswers[this.formPageIndex]['ans'][this.locationStep - 1] = locationAnswer;
+                this.formAnswers[this.formPageIndex]['ans'][idx] = locationAnswer;
                 this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
             });
 
@@ -359,29 +384,22 @@ export class Form {
 
     next() {
 
-        if (this.field.type === "location" && (this.locationStep < this.locationSteps)) {
+        if (this.field.type === "location") {
+            if (this.locationTimer)
+                clearInterval(this.locationTimer);
 
-            this.ngZone.run(() => {
-                this.locationStep = 2;
-                console.log('incrementing the location step');
-                console.log(this.locationStep);
-            });
-
-        } else {
-            if (this.userStartLocation && this.locationStep === this.locationSteps) {
+            if (this.userStartLocation) {
                 this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
             }
-
-            this.nav.push(Form, {
-                index: this.formPageIndex + 1,
-                categoryData: this.cd,
-                categoryId: this.categoryId,
-                formAnswers: this.formAnswers,
-                categoryName: this.categoryName
-            });
         }
 
-
+        this.nav.push(Form, {
+            index: this.formPageIndex + 1,
+            categoryData: this.cd,
+            categoryId: this.categoryId,
+            formAnswers: this.formAnswers,
+            categoryName: this.categoryName
+        });
     }
 
     submitRequest() {
@@ -440,10 +458,15 @@ export class Form {
 
     }
 
-    cancelLocation() {
-        if (this.locationStep === 1)
+    cancelLocation(idx) {
+        if (idx === 0) {
             this.fromValue = "";
-        else
+            this.formAnswers[this.formPageIndex]['ans'][0] = null;
+            this.formAnswersLength = 0;
+        }
+        else {
             this.toValue = "";
+            this.formAnswers[this.formPageIndex]['ans'][1] = null;
+        }
     }
 }

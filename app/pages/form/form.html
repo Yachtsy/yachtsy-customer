@@ -59,35 +59,34 @@
     </ion-card>
 
     <div *ngIf="field.type === 'location'">
-        <div [hidden]="locationStep === 2">
-            <ion-item no-lines>
-                <p [hidden]="locationSteps === 2">Please select the location</p>
-                <p [hidden]="locationSteps === 1">Please select the starting location</p>
-            </ion-item>
+        <ion-item no-lines>
+            <p [hidden]="locationSteps === 2">Please select the location</p>
+            <p [hidden]="locationSteps === 1">Please select the starting location</p>
+        </ion-item>
 
-            <div class="input-wrapper">
-                <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
-                <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
-            </div>
-            <div [hidden]="locationStep === 2" *ngIf="fromValue.length > 0" class="result-title-text">RESULTS</div>
+        <div class="input-wrapper">
+            <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
+            <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation(0)"></ion-icon>
         </div>
-        <div [hidden]="locationStep === 1">
+        <div [hidden]="fromValue.length == 0 || isResultHidden1" class="result-title-text">RESULTS</div>
+
+        <div [hidden]="locationSteps === 1">
+            <br><br><br><br>
+            <ion-item class="disable-minheight" no-lines>
+                <p>Please select the end location</p>
+            </ion-item>
             <ion-item>
                 <ion-label>Use start location</ion-label>
                 <ion-checkbox [(ngModel)]="userStartLocation"></ion-checkbox>
             </ion-item>
             <div [hidden]="userStartLocation">
-                <ion-item no-lines>
-                    <p>Please select the end location</p>
-                </ion-item>
                 <div class="input-wrapper">
                     <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
-                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation(1)"></ion-icon>
                 </div>
             </div>
+            <div [hidden]="userStartLocation || toValue.length == 0 || isResultHidden2" class="result-title-text">RESULTS</div>
         </div>
-        <div [hidden]="locationStep === 1 || userStartLocation" *ngIf="toValue.length > 0" class="result-title-text">RESULTS</div>
-
     </div>
 
     <!--<div *ngIf="field.type === 'location'" id="map_canvas">

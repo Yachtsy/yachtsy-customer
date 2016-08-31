@@ -59,6 +59,10 @@
     .item-checkbox .item-inner .input-wrapper ion-label {
         margin: 0px;
     }
+
+    .disable-minheight {
+        min-height: 0px;
+    }
 }
 
 .pac-container:after{
