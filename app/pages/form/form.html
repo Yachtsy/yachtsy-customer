@@ -15,35 +15,45 @@
         <ion-card-header>
             <ion-item text-wrap><b>{{label}}</b></ion-item>
         </ion-card-header>
+
         <ion-list *ngIf="field.type === 'enumeration'">
 
-            <ion-item tappable *ngFor="let item of field.possible_values" (click)="clicked(item)">
+            <div tappable *ngFor="let item of field.possible_values" (click)="clicked(item)">
+                <ion-item *ngIf="!item.can_describe || (field.isDateForm != true && field.isTimeForm != true)">
+                    <ion-label *ngIf="!item.can_describe">{{item.label}}</ion-label>
 
-                <ion-label *ngIf="!item.can_describe || (field.isDateForm == true || field.isTimeForm == true)">{{item.label}}</ion-label>
+                    <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
+                            (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label]">
+                    </ion-input>
 
-                <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
-                        (keyup)="onKeyUp(item)"  name="answer" [(ngModel)]="answerObj[item.label]">
-                </ion-input>
-                <ion-datetime *ngIf="item.can_describe && field.isDateForm == true" displayFormat="MM/DD/YYYY" [(ngModel)]="dateTime" (ionChange)="onDateTimeChange()">
-                </ion-datetime>
-                <ion-datetime *ngIf="item.can_describe && field.isTimeForm == true" displayFormat="HH:mm" [(ngModel)]="dateTime">
-                </ion-datetime>
+                    <!--
+                    <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && !lastPage" name='radio-button-off' item-right></ion-icon>
+                    <ion-icon *ngIf="!field.allows_multiple_values && formAnswers[formPageIndex]['ans']
+                    && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)  && lastPage" name='radio-button-off' item-right></ion-icon>
+                    -->
 
+                    <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
+                    && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
+
+                    <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
+                    && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='radio-button-on' item-right></ion-icon>
+                    <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
+                    || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
+                </ion-item>
+
+                <div class="item item-datetime" *ngIf="item.can_describe && (field.isDateForm == true || field.isTimeForm == true)">
+                    <span class="input-label">{{item.label}}</span> 
+                    <input type="date" *ngIf="item.can_describe && field.isDateForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
+                    <input type="time" *ngIf="item.can_describe && field.isTimeForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
+                </div>
                 <!--
-                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && !lastPage" name='radio-button-off' item-right></ion-icon>
-                <ion-icon *ngIf="!field.allows_multiple_values && formAnswers[formPageIndex]['ans']
-                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)  && lastPage" name='radio-button-off' item-right></ion-icon>
+                <div class="item" *ngIf="item.can_describe && (field.isDateForm == true || field.isTimeForm == true)">
+                    <input placeholder="{{item.label}}" type="date" *ngIf="item.can_describe && field.isDateForm == true" [(ngModel)]="dateTime">
+                    <input placeholder="{{item.label}}" type="time" *ngIf="item.can_describe && field.isTimeForm == true" [(ngModel)]="dateTime">
+                </div>
                 -->
+            </div>
 
-                <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
-                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
-
-                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
-                && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='radio-button-on' item-right></ion-icon>
-                <ion-icon *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
-                || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
-
-            </ion-item>
         </ion-list>
 
     </ion-card>

@@ -128,7 +128,8 @@ export class Form {
         console.log('after entry:', this.formAnswers);
     }
 
-    onDateTimeChange() {
+    onDateTimeChange(event) {
+        this.dateTime = event.target.value;
         if (this.dateTime != null) {
             this.formAnswers[this.formPageIndex]['ans'] = [];
             this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);

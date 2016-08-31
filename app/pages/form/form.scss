@@ -36,6 +36,22 @@
         margin-bottom: 0px;
     }
 
+    .item.item-datetime .input-label {
+        position: absolute;
+        left: 16px;
+        top: 10px;
+        color: #aaa;
+    }
+
+    .item.item-datetime input {
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        width: 140px;
+        padding: 0px;
+        text-align: right;
+    }
+
     .item-checkbox .item-inner {
         border: none;
     }
