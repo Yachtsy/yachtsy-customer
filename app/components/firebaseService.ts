@@ -36,14 +36,24 @@ export class FirebaseService {
     }
 
     userConfirmComplete(requestId, supplierId, confirmed) {
-
         var payload = {
-            requestId: requestId,
-            supplierId: supplierId,
-            confirmed: confirmed
+            requestId:      requestId,
+            supplierId:     supplierId,
+            confirmed:      confirmed
         };
 
         return this.doOperation('userConfirmComplete', payload);
+    }
+
+    markRequestRead(requestId, supplierId) {
+        var uid = firebase.auth().currentUser.uid;
+        var payload = {
+            userId:         uid,
+            requestId:      requestId,
+            supplierId:     supplierId
+        };
+
+        return this.doOperation('markRequestRead', payload);
     }
 
     doOperation(operation, payload) {
@@ -136,6 +146,18 @@ export class FirebaseService {
                 });
             });
         }
+        return arr;
+    }
+
+    objectToArr(obj) {
+        var arr = []
+        var keys = Object.keys(obj);
+        keys.map((key) => {
+            arr.push({
+                id: key,
+                data: obj[key]
+            });
+        });
         return arr;
     }
 
