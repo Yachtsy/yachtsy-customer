@@ -461,12 +461,34 @@ export class FirebaseService {
         });
     }
 
+
+    getCreditBalance(){
+
+        var user = firebase.auth().currentUser;
+        // check the credits 
+        let ref = firebase.database().ref().child('users').child(user.uid).child('credits').child('balance');
+        
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    observer.next(snapshot.val())
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
     submitRequest(request) {
+
 
         //console.log('request to submit is: ');
         //console.log(request);
 
         var uid = this.getAuthData().uid;
+
+
         if (!uid) {
             throw new Error('Can not submit request without being authenticated');
         } else {
