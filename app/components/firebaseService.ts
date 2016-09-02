@@ -482,13 +482,10 @@ export class FirebaseService {
 
     submitRequest(request) {
 
-
         //console.log('request to submit is: ');
         //console.log(request);
 
         var uid = this.getAuthData().uid;
-
-
         if (!uid) {
             throw new Error('Can not submit request without being authenticated');
         } else {
