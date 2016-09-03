@@ -18,6 +18,8 @@ export class Tabs {
   private tab3Root: any;
   private tab4Root: any;
 
+  tabBadgeInfo: any;
+
   constructor() {
     // this tells the tabs component which Pages
     // should be each tab's root Page
@@ -28,6 +30,8 @@ export class Tabs {
   }
 
   ngOnInit() {
+    this.tabBadgeInfo = GlobalService.tabBadgeInfo;
+
     GlobalService.mainTabRef = this.tabRef;
     GlobalService.mainTabBarElement = document.querySelector('#mainTabs ion-tabbar');
   }

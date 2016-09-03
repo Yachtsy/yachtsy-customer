@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content class="requests">
-    <ion-card tappable *ngFor="let item of items" (click)="requestClick(item)">
+    <ion-card tappable *ngFor="let item of items.data" (click)="requestClick(item)">
 
         <ion-card-header>
             {{item.data.categoryName}}<ion-note item-right>

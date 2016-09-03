@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {App, Modal, Platform, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests';
+import GlobalService = require('../../components/globalService');
 
 import {
     FormBuilder,
@@ -77,8 +78,9 @@ export class ModalsContentPage {
     createUser(authData) {
         
         var user = {
-            email: this.form.value.email,
-            name: this.form.value.name,
+            email:      this.form.value.email,
+            name:       this.form.value.name,
+            pushToken:  GlobalService.pushToken
         }
 
         console.log('the auth data is as follows:');
