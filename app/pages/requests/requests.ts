@@ -10,7 +10,7 @@ import GlobalService = require('../../components/globalService');
 })
 export class Requests {
 
-    items = []
+    items: any = {};
 
     constructor(public nav: NavController,
         public navParams: NavParams,
@@ -25,29 +25,14 @@ export class Requests {
 
     ngOnInit() {
         console.log('ngOnInit - request');
-        this.FBService.getMyRequests()
-            .subscribe((data: any) => {
-
-                console.log('requests get')
-
-                this.ngZone.run(() => {
-                    this.items = data.map((it) => {
-                        it.data.quotesLength = 0;
-                        if (it.data.quotes) {
-                            it.data.quotesLength = Object.keys(it.data.quotes).length;
-                        }
-                        return it;
-                    });
-                });
-            });
-    }
-
-    onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'flex';
+        this.items = GlobalService.myRequests;
     }
 
     ionViewWillEnter() {
         console.log('ionViewWillEnter - requests')
+        this.ngZone.run(() => {
+            GlobalService.mainTabBarElement.style.display = 'flex';
+        });
 
         var loading = this.navParams.get('loading');
         if (loading) {

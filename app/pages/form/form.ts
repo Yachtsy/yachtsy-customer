@@ -54,10 +54,6 @@ export class Form {
 
     }
 
-    onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'none';
-    }
-
     // onInputChangeKeyUp() {
     //     console.log('on key up');
 
@@ -189,6 +185,8 @@ export class Form {
 
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
+        GlobalService.mainTabBarElement.style.display = 'none';
+        
         if (this.field.type === 'location') {
 
             this.locationValue = ""

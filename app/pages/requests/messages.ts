@@ -5,6 +5,7 @@ import {Home} from '../home/home';
 import {Keyboard} from 'ionic-native';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
 import {ElasticTextarea} from '../../components/elastic-textarea';
+import GlobalService = require('../../components/globalService');
 
 @Page({
     templateUrl: 'build/pages/requests/messages.html',
@@ -125,18 +126,19 @@ export class Messages {
             console.log('keyboard hide')
             this.ngZone.run(() => {
                 console.log('initialising postions')
-                this.contentsBottom = 44 + 50;
-                this.footerBottom = 50;
+                this.contentsBottom = 44;
+                this.footerBottom = 0;
             });
         });
     }
 
-    onPageWillEnter() {
+    ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
         this.pageElement.style.background = 'white';
+        GlobalService.mainTabBarElement.style.display = 'none';
     }
 
-    onPageWillLeave() {
+    ionViewWillLeave() {
         this.pageElement.style.background = 'none';
     }
 
