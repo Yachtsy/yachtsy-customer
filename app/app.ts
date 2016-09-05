@@ -35,11 +35,13 @@ export class MyApp {
       if (typeof FirebasePlugin !== 'undefined') {
         FirebasePlugin.getInstanceId(function(token) {
           // save this server-side and use it to push notifications to this device
-          console.log(token);
+          console.log('THE PUSH TOKEN IS', token);
           GlobalService.pushToken = token;
         }, function(error) {
           console.error(error);
         });
+      } else {
+        console.error('FIREBASE PLUGIN NOT DEFINED');
       }
     });
   }
