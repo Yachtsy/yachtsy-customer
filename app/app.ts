@@ -1,6 +1,6 @@
 import {Component, ViewChild, NgZone} from '@angular/core';
 import {Platform, ionicBootstrap, ModalController, NavController, App } from 'ionic-angular';
-import {StatusBar, Keyboard} from 'ionic-native';
+import {StatusBar, Keyboard, InAppPurchase} from 'ionic-native';
 import {Home} from './pages/home/home';
 import {FirebaseService} from './components/firebaseService';
 import {Requests} from './pages/requests/requests'

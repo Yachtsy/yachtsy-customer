@@ -2,10 +2,13 @@ import {Component, NgZone, ViewChild} from '@angular/core';
 import {AlertController, Page, Content, NavController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
-import {Keyboard} from 'ionic-native';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
 import {ElasticTextarea} from '../../components/elastic-textarea';
+
+import {Keyboard, InAppPurchase} from 'ionic-native';
+
 import GlobalService = require('../../components/globalService');
+
 
 @Page({
     templateUrl: 'build/pages/requests/messages.html',
@@ -155,28 +158,96 @@ export class Messages {
         this.message = "";
     }
 
-    hire() {
+    CREDITS_REQUIRED = 3;
 
-        console.log('hire requested');
+
+    promptCredits() {
+
         let confirm = this.alertCtrl.create({
-            title: 'Hire ' + this.nickName + '?',
+            title: 'Please buy some credits.',
+            message: 'You need to buy some credits in order to be able to contact',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {
+                        console.log('cancelled contact');
+                    }
+                },
+                {
+                    text: 'Buy Credits',
+                    handler: () => {
+                        console.log('want to buy credits');
+
+                        //credits
+                        let prod = "com.yachtsy.yachtsy.credits.100";
+
+                        let products = InAppPurchase.getProducts([prod])
+                            .then((prods) => {
+                                console.log(prods);
+
+                                InAppPurchase.buy(prod)
+
+                                    .then((data: any) => {
+                                        console.log(JSON.stringify(data));
+                                        console.log('consuming transactionId: ' + data.transactionId);
+                                        return InAppPurchase.consume(data.type, data.receipt, data.signature);
+
+                                    }).then(function () {
+                                        console.log('consume done!');
+                                    }).catch(function (err) {
+                                        console.log(err);
+                                    });
+                            })
+                    }
+                }
+            ]
+        });
+
+        confirm.present();
+
+
+
+    }
+
+    contact() {
+
+        console.log('contact requested');
+        let confirm = this.alertCtrl.create({
+            title: 'Contact ' + this.nickName + '?',
             message: '',
             buttons: [
                 {
                     text: 'Cancel',
                     handler: () => {
-                        console.log('cancelled hire');
+                        console.log('cancelled contact');
                     }
                 },
                 {
-                    text: 'Hire',
+                    text: 'Contact',
                     handler: () => {
-                        console.log('confirmed hire');
-                        this.alreadyHiredSupplier = true;
-                        this.FBService.hire(this.requestId, this.supplierId)
-                            .subscribe(() => {
-                                console.log(this.supplierId + ' has been requested for hire');
+                        console.log('confirmed contact');
+
+                        this.FBService.getCreditBalance()
+                            .subscribe((balance) => {
+
+                                console.log('got credits balance: ' + balance);
+
+                                if (balance < this.CREDITS_REQUIRED) {
+                                    console.log('insufficient credits');
+
+                                    this.promptCredits();
+
+
+                                } else {
+                                    this.alreadyHiredSupplier = true;
+
+                                    this.FBService.hire(this.requestId, this.supplierId)
+                                        .subscribe(() => {
+                                            console.log(this.supplierId + ' has been requested for hire');
+                                        });
+                                }
                             });
+
                     }
                 }
             ]
