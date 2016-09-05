@@ -60,7 +60,7 @@ export class Home {
     }
 
     onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'flex';
+        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
     }
 
     ionViewWillEnter() {

@@ -36,4 +36,10 @@ export class Tabs {
     GlobalService.mainTabBarElement = document.querySelector('#mainTabs ion-tabbar');
   }
 
+  onPageWillEnter() {
+    GlobalService.mainTabBarDefaultDisplayInfo = GlobalService.mainTabBarElement.style.display;
+    if (GlobalService.mainTabBarDefaultDisplayInfo === '')
+      GlobalService.mainTabBarDefaultDisplayInfo = window.getComputedStyle(GlobalService.mainTabBarElement).display;
+  }
+
 }

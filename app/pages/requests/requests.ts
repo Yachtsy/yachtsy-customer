@@ -29,15 +29,14 @@ export class Requests {
     }
 
     ionViewWillEnter() {
-        console.log('ionViewWillEnter - requests')
-        this.ngZone.run(() => {
-            GlobalService.mainTabBarElement.style.display = 'flex';
-        });
-
         var loading = this.navParams.get('loading');
         if (loading) {
             loading.dismiss();
         }
+    }
+
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
     }
 
     newRequestClick() {

@@ -183,9 +183,12 @@ export class Form {
     isResultHidden1
     isResultHidden2
 
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'none';
+    }
+
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
-        GlobalService.mainTabBarElement.style.display = 'none';
         
         if (this.field.type === 'location') {
 

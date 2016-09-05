@@ -37,28 +37,17 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     {
-      "locator": "https://github.com/phonegap-googlemaps-plugin/cordova-plugin-googlemaps",
-      "id": "cordova-plugin-googlemaps"
-    },
-    {
-      "locator": "https://bitbucket.org/nightstomp/cordova-plugin-googlemaps-sdk.git",
-      "id": "com.googlemaps.ios"
-    },
-    {
       "variables": {
-        "SENDER_ID": "XXXXXXXXXX"
+        "API_KEY_FOR_ANDROID": "AIzaSyB_p-nRZY_k2hNqFdzFYoYUq3GOLE8cKVg",
+        "API_KEY_FOR_IOS": "AIzaSyA2H9Ef91VCzrn9c8A3OlIkFTXw0DwaNHo"
       },
-      "locator": "phonegap-plugin-push"
+      "locator": "https://github.com/phonegap-googlemaps-plugin/cordova-plugin-googlemaps"
     },
     "ionic-plugin-keyboard@2.2.1",
-    "cordova-plugin-fcm"
+    "cordova-plugin-firebase"
   ],
   "cordovaPlatforms": [
-    {
-      "platform": "ios",
-      "version": "",
-      "locator": "ios"
-    }
+    "ios"
   ],
   "name": "yachtsy",
   "description": "yachtsy desc"

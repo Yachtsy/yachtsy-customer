@@ -29,7 +29,8 @@ export class Profile {
     ngOnDestroy() {
     }
 
-    ionViewWillEnter() {
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
     }
 
     ngOnInit() {

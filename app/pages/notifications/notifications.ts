@@ -33,7 +33,7 @@ export class Notifications {
     }
 
     ionViewWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'flex';
+        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
     }
 
     quoteClick(item, quote) {

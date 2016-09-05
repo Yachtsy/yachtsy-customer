@@ -9,7 +9,7 @@ import {ReviewModal} from './pages/review/review'
 import {Tabs} from './pages/tabs/tabs'
 import GlobalService = require('./components/globalService');
 
-declare var FCMPlugin;
+declare var FirebasePlugin;
 
 @Component({
   template: '<ion-nav [root]="rootPage" swipeBackEnabled="false"></ion-nav>'
@@ -32,34 +32,14 @@ export class MyApp {
         this.start();
       });
 
-      if (typeof FCMPlugin !== 'undefined') {
-        FCMPlugin.getToken(
-          function(token){
-            console.log('Push Token = ' + token);
-            GlobalService.pushToken = token;
-          },
-          function(err){
-            console.log('error retrieving token: ' + err);
-          }
-        );
-
-        FCMPlugin.onNotification(
-            function(data){
-                if(data.wasTapped){
-                    //Notification was received on device tray and tapped by the user.
-                    console.log( JSON.stringify(data) );
-                }else{
-                    //Notification was received in foreground. Maybe the user needs to be notified.
-                    console.log( JSON.stringify(data) );
-                }
-            },
-            function(msg){
-                console.log('onNotification callback successfully registered: ' + msg);
-            },
-            function(err){
-                console.log('Error registering onNotification callback: ' + err);
-            }
-        );
+      if (typeof FirebasePlugin !== 'undefined') {
+        FirebasePlugin.getInstanceId(function(token) {
+          // save this server-side and use it to push notifications to this device
+          console.log(token);
+          GlobalService.pushToken = token;
+        }, function(error) {
+          console.error(error);
+        });
       }
     });
   }

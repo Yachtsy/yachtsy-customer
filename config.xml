@@ -2,7 +2,7 @@
 <widget id="com.yachtsy.yachtsy" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Yachtsy</name>
   <description>Yachtsy</description>
-  <author email="alex@yachtsy.co" href="yachtsy.com">Yachtsy Pro</author>
+  <author email="alex@yachtsy.com" href="yachtsy.com">Yachtsy</author>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-navigation href="*"/>

@@ -132,10 +132,13 @@ export class Messages {
         });
     }
 
+    onPageWillEnter() {
+        GlobalService.mainTabBarElement.style.display = 'none';
+    }
+
     ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
         this.pageElement.style.background = 'white';
-        GlobalService.mainTabBarElement.style.display = 'none';
     }
 
     ionViewWillLeave() {
