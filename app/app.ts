@@ -37,6 +37,8 @@ export class MyApp {
           // save this server-side and use it to push notifications to this device
           console.log('THE PUSH TOKEN IS', token);
           GlobalService.pushToken = token;
+          FirebasePlugin.grantPermission();
+
         }, function(error) {
           console.error(error);
         });

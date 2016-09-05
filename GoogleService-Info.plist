@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>865054182519-up85ip9nt9f2d0j9s9r4ban89hablo9l.apps.googleusercontent.com</string>
+	<string>865054182519-eqa4qdq3ro938dmjdr54vrqsudt75k7q.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.865054182519-up85ip9nt9f2d0j9s9r4ban89hablo9l</string>
+	<string>com.googleusercontent.apps.865054182519-eqa4qdq3ro938dmjdr54vrqsudt75k7q</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDnVVfYndTzYv1CEEIpuAnd8SwM1Q9ca98</string>
 	<key>GCM_SENDER_ID</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:865054182519:ios:7c655423dbb3a716</string>
+	<string>1:865054182519:ios:c7098c0c427c3c22</string>
 	<key>DATABASE_URL</key>
 	<string>https://yachtsy-test.firebaseio.com</string>
 </dict>
