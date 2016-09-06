@@ -1,5 +1,11 @@
 .form {
     
+    .header {
+        background-color: white;
+    }
+
+
+
     .toolbar {
         padding: 0px;
     }
@@ -8,13 +14,27 @@
         border-radius: 0px;
     }
 
+    .radio {
+        color: #005677;
+    }
+
     ion-card {
         margin: 0px;
         margin-bottom: 1px;
         width: 100%;
     }
 
-    ion-card ion-card-header {
+    .label {
+        color: white;
+        text-align: center;
+    }
+
+    ion-card-header {
+        background-color: #005677;
+        color: white;
+    }
+
+    ion-card {
         background: #f8f8f8;
     }
 
