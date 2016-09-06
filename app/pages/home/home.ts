@@ -22,14 +22,14 @@ export class Home {
     activeUser: String;
     goToRequestsPageIfLoggedIn = true;
 
-    categoryGroup   = [];
-    categoryList    = [];
-    categorySpec    = [];
+    categoryGroup = [];
+    categoryList = [];
+    categorySpec = [];
 
     dateTimeOptions = [];
-    boatInfos       = [];
+    boatInfos = [];
 
-    sliderOptions   = {};
+    sliderOptions = {};
 
     curPopularIndex = 0;
     popularCategoryList = [];
@@ -43,12 +43,12 @@ export class Home {
 
         let self = this;
         this.sliderOptions = {
-            initialSlide:   0,
-            autoplay:       5000,
-            speed:          300,
-            pager:          true,
-            loop:           true,
-            onInit: function(slides) {
+            initialSlide: 0,
+            autoplay: 5000,
+            speed: 300,
+            pager: true,
+            loop: true,
+            onInit: function (slides) {
                 self.slides = slides;
             }
         };
@@ -107,7 +107,7 @@ export class Home {
                     else
                         data[i].data.quotesLength = 0;
                 }
-                
+
                 if (unreadTotalCount === 0)
                     GlobalService.tabBadgeInfo.count = '';
                 else
@@ -127,7 +127,7 @@ export class Home {
         mm = dur % 60; dur = (dur - mm) / 60;
         hh = dur % 24; dur = (dur - hh) / 24;
         dd = dur % 30; dur = (dur - dd) / 30;
-        oo = dur % 12; yy  = (dur - oo) / 12;
+        oo = dur % 12; yy = (dur - oo) / 12;
 
         if (yy > 0)
             return yy + 'y';
@@ -224,7 +224,9 @@ export class Home {
             .subscribe((data: Array<any>) => {
                 this.boatInfos = [];
                 for (var i = 0; i < data.length; i++) {
-                    this.boatInfos.push(data[i].data);
+                    if (data[i].data.required === true) {
+                        this.boatInfos.push(data[i].data);
+                    }
                 }
                 console.log(this.boatInfos);
             });
@@ -346,7 +348,7 @@ export class Home {
         let modal = this.modalCtrl.create(ModalsContentPage, { req: null });
 
         modal.present();
-        modal.onDidDismiss((data)=>{
+        modal.onDidDismiss((data) => {
         });
     }
 
