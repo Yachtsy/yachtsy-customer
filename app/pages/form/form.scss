@@ -1,5 +1,13 @@
 .form {
     
+    .toolbar {
+        padding: 0px;
+    }
+
+    .button {
+        border-radius: 0px;
+    }
+
     ion-card {
         margin: 0px;
         margin-bottom: 1px;
@@ -109,17 +117,17 @@
 }
 
 
-#map_canvas {
-    height: 300px;
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    // background-color : transparent;
-}
+// #map_canvas {
+//     height: 300px;
+//     width: 90%;
+//     margin-left: 5%;
+//     margin-right: 5%;
+//     // background-color : transparent;
+// }
 
-ion-app._gmaps_cdv_ .nav-decor {
-    background-color: rgba(0,0,0,0);
-}
+// ion-app._gmaps_cdv_ .nav-decor {
+//     background-color: rgba(0,0,0,0);
+// }
 
 .progress-bar {
     background: #337ab7;

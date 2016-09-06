@@ -1,10 +1,13 @@
 <ion-header>
-
-    <ion-toolbar no-border-top>
+  <ion-buttons start>
+            <button class="button button-icon button-clear" (click)="back()">
+                <ion-icon name="arrow-dropleft-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+<!--<ion-toolbar no-border-top>
         <ion-title> {{categoryName}}
-
         </ion-title>
-    </ion-toolbar>
+    </ion-toolbar>-->
 </ion-header>
 
 
@@ -98,29 +101,22 @@
 
     <ion-toolbar no-border-bottom>
 
-        <ion-buttons start>
-            <button class="button button-icon button-clear" (click)="back()">
-                <ion-icon name="arrow-dropleft-circle"></ion-icon>
-            </button>
-        </ion-buttons>
-
-        <ion-buttons end>
-            <button class="button button-icon button-clear" *ngIf="!lastPage" [disabled]="(
+            <button class="button" block *ngIf="!lastPage" [disabled]="(
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
                 (!field.allows_multiple_values && formAnswersLength === 0 )
-                  )" (click)="next()">
-                   <ion-icon name="arrow-dropright-circle"></ion-icon>
+                  )" (click)="next()">Next
+                   <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
             </button>
 
-            <button class="button button-icon button-clear" *ngIf="lastPage" [disabled]="(
+            <button class="button" *ngIf="lastPage" [disabled]="(
                 (field.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (field.type === 'location' && formAnswersLength === 0) ||
                 (!field.allows_multiple_values && formAnswersLength === 0 )
-                  )" (click)="submitRequest()">
-                  <ion-icon name="send"></ion-icon>
+                  )" (click)="submitRequest()"> Send
+                  <!--<ion-icon name="send"></ion-icon>-->
             </button>
-        </ion-buttons>
+      
 
     </ion-toolbar>
 
