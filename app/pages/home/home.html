@@ -8,10 +8,10 @@
 </ion-header>
 
 <ion-content>
-    <div class="search-bar">
+    <!--<div class="search-bar">
         <ion-icon name="search"></ion-icon>
         <input placeholder="What do you need?">
-    </div>
+    </div>-->
 
     <ion-slides *ngIf="popularCategoryList" (ionDidChange)="onPopularSlideChanged()" [options]="sliderOptions">
         <ion-slide tappable *ngFor="let idx of popularCategoryList" (click)="itemTapped(categoryList[idx])">
