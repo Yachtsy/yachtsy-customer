@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
+import {Device} from 'ionic-native';
 
 // declare var firebase: any;
 
@@ -35,11 +36,26 @@ export class FirebaseService {
         return this.doOperation('addReview', review);
     }
 
+    validateReceipt(receipt) {
+
+        let platform = "google";
+        if (Device.device.platform === 'iOS') {
+            platform = 'apple';
+        }
+
+        var payload = {
+            receipt: receipt,
+            platform: platform
+        };
+
+        return this.doOperation('validateReceipt', payload);
+    }
+
     userConfirmComplete(requestId, supplierId, confirmed) {
         var payload = {
-            requestId:      requestId,
-            supplierId:     supplierId,
-            confirmed:      confirmed
+            requestId: requestId,
+            supplierId: supplierId,
+            confirmed: confirmed
         };
 
         return this.doOperation('userConfirmComplete', payload);
@@ -48,9 +64,9 @@ export class FirebaseService {
     markRequestRead(requestId, supplierId) {
         var uid = firebase.auth().currentUser.uid;
         var payload = {
-            userId:         uid,
-            requestId:      requestId,
-            supplierId:     supplierId
+            userId: uid,
+            requestId: requestId,
+            supplierId: supplierId
         };
 
         return this.doOperation('markRequestRead', payload);
@@ -384,7 +400,7 @@ export class FirebaseService {
                     console.log("ERROR:", error)
                     observer.error(error)
                 });
-        });        
+        });
     }
 
     getCategoryData(name) {
@@ -416,7 +432,7 @@ export class FirebaseService {
 
     getCategoryImage(item, zone) {
         var storageRef = firebase.storage().ref();
-        storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function(url) {
+        storageRef.child('categories/' + item.id + '.jpg').getDownloadURL().then(function (url) {
             if (zone) {
                 zone.run(() => {
                     item.image = url;
@@ -424,7 +440,7 @@ export class FirebaseService {
             }
             else
                 item.image = url;
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error);
         });
     }
@@ -461,13 +477,32 @@ export class FirebaseService {
         });
     }
 
+    getUserProfile() {
 
-    getCreditBalance(){
+        var user = firebase.auth().currentUser;
+        // check the credits 
+        let ref = firebase.database().ref().child('users').child(user.uid);
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    observer.next(snapshot.val())
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+
+    }
+
+
+    getCreditBalance() {
 
         var user = firebase.auth().currentUser;
         // check the credits 
         let ref = firebase.database().ref().child('users').child(user.uid).child('credits').child('balance');
-        
+
         return new Observable(observer => {
             ref.on('value',
                 (snapshot) => {

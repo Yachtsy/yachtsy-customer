@@ -161,51 +161,69 @@ export class Messages {
     CREDITS_REQUIRED = 3;
 
 
+    confirm = this.alertCtrl.create({
+        title: 'Please buy some credits.',
+        message: 'You need to buy some credits in order to be able to contact',
+        buttons: [
+            {
+                text: 'Cancel',
+                handler: () => {
+                    console.log('cancelled contact');
+                }
+            },
+            {
+                text: 'Buy Credits',
+                handler: () => {
+                    console.log('want to buy credits');
+
+                    //credits
+                    let prod = "com.yachtsy.yachtsy.credits.100";
+
+                    let products = InAppPurchase.getProducts([prod])
+                        .then((prods) => {
+                            console.log(prods);
+
+                            InAppPurchase.buy(prod)
+
+                                .then((data: any) => {
+                                    console.log(JSON.stringify(data));
+                                    console.log('consuming transactionId: ' + data.transactionId);
+
+                                    this.FBService.validateReceipt(data.receipt)
+                                        .then(() => {
+
+                                            console.log('receipt was validated');
+
+                                            this.FBService.getCreditBalance()
+                                                .subscribe((balance) => {
+
+                                                    console.log('New credit balance is: ' + balance);
+
+                                                });
+
+                                        }).catch((error) => {
+                                            console.error('error validating receipt');
+                                            console.error(error);
+                                        });
+
+                                    return InAppPurchase.consume(data.type, data.receipt, data.signature);
+
+                                }).then(function () {
+                                    console.log('consume done!');
+                                }).catch(function (err) {
+                                    console.log(err);
+                                });
+                        })
+                }
+            }
+        ]
+    });
+
+
     promptCredits() {
 
-        let confirm = this.alertCtrl.create({
-            title: 'Please buy some credits.',
-            message: 'You need to buy some credits in order to be able to contact',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => {
-                        console.log('cancelled contact');
-                    }
-                },
-                {
-                    text: 'Buy Credits',
-                    handler: () => {
-                        console.log('want to buy credits');
-
-                        //credits
-                        let prod = "com.yachtsy.yachtsy.credits.100";
-
-                        let products = InAppPurchase.getProducts([prod])
-                            .then((prods) => {
-                                console.log(prods);
-
-                                InAppPurchase.buy(prod)
-
-                                    .then((data: any) => {
-                                        console.log(JSON.stringify(data));
-                                        console.log('consuming transactionId: ' + data.transactionId);
-                                        return InAppPurchase.consume(data.type, data.receipt, data.signature);
-
-                                    }).then(function () {
-                                        console.log('consume done!');
-                                    }).catch(function (err) {
-                                        console.log(err);
-                                    });
-                            })
-                    }
-                }
-            ]
-        });
-
-        confirm.present();
-
-
+        console.log('prompt for credits...');
+        this.confirm.present();
 
     }
 

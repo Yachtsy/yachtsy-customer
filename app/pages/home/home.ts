@@ -235,7 +235,7 @@ export class Home {
     itemTapped(item) {
         var categoryId = item.id;
         var categoryName = item.data.name;
-        let categoryData = this.categorySpec[categoryId];
+        let categoryData = JSON.parse(JSON.stringify(this.categorySpec[categoryId]));
 
         var requiresBoatInfo = item.data.requiresBoatInfo;
         if (requiresBoatInfo === true) {

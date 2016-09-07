@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {Form} from '../form/form';
 import GlobalService = require('../../components/globalService');
-
+import {DebugPage} from '../debug/debug';
 
 @Component({
     templateUrl: 'build/pages/profile/profile.html',
@@ -35,8 +35,8 @@ export class Profile {
 
     ngOnInit() {
         this.profile = {
-            image:  "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
-            name:   "Al Grata"
+            image: "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
+            name: "Al Grata"
         };
 
         this.activeUser = firebase.auth().currentUser;
@@ -51,5 +51,12 @@ export class Profile {
                 GlobalService.mainTabRef.select(0);
             });
         }
+
+        if (idx === 3) {
+            this.navController.push(DebugPage);
+            
+
+        }
+
     }
 }

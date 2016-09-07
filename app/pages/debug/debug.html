@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            DEBUG
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list text-wrap>
+
+        <ion-item *ngIf="user">
+            Credits: {{user.credits.balance}}
+        </ion-item>
+
+        <ion-item *ngIf="user">
+            Push token: {{user.pushToken}}
+        </ion-item>
+
+        <ion-item *ngIf="user">
+            FCM: {{user.freeCreditsMode}}
+        </ion-item>
+
+    </ion-list>
+
+</ion-content>
