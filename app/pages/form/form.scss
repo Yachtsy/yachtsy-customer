@@ -1,12 +1,40 @@
 .form {
     
+    .header {
+        background-color: white;
+    }
+
+
+
+    .toolbar {
+        padding: 0px;
+    }
+
+    .button {
+        border-radius: 0px;
+    }
+
+    .radio {
+        color: #005677;
+    }
+
     ion-card {
         margin: 0px;
         margin-bottom: 1px;
         width: 100%;
     }
 
-    ion-card ion-card-header {
+    .label {
+        color: white;
+        text-align: center;
+    }
+
+    ion-card-header {
+        background-color: #005677;
+        color: white;
+    }
+
+    ion-card {
         background: #f8f8f8;
     }
 
@@ -109,17 +137,17 @@
 }
 
 
-#map_canvas {
-    height: 300px;
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    // background-color : transparent;
-}
+// #map_canvas {
+//     height: 300px;
+//     width: 90%;
+//     margin-left: 5%;
+//     margin-right: 5%;
+//     // background-color : transparent;
+// }
 
-ion-app._gmaps_cdv_ .nav-decor {
-    background-color: rgba(0,0,0,0);
-}
+// ion-app._gmaps_cdv_ .nav-decor {
+//     background-color: rgba(0,0,0,0);
+// }
 
 .progress-bar {
     background: #337ab7;
