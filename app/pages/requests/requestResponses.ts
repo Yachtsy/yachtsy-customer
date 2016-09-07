@@ -85,6 +85,12 @@ export class RequestResponses {
     gotoMessages(item) {
         console.log('going to message for item: ');
         console.log(item);
+        
+        if (item.data.initialQuoteSeen != true)
+            this.FBService.markRequestRead(this.request.id, item.id)
+                .then((data) => {
+                    console.log(data);
+                });
         this.nav.push(Messages, { req: this.request, supplierId: item.id });
     }
 

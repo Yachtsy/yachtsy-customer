@@ -37,17 +37,10 @@ export class Notifications {
     }
 
     quoteClick(item, quote) {
-        let loading = this.loadingCtrl.create({
-            content: 'Waiting...'
-        });
-
-        loading.present();
-
         this.FBService.markRequestRead(item.id, quote.id)
             .then((data) => {
                 console.log(data);
-                loading.dismiss();
-                this.nav.push(Messages, { req: item, supplierId: quote.id });
             });
+        this.nav.push(Messages, { req: item, supplierId: quote.id });
     }
 }

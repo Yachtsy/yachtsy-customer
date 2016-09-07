@@ -62,7 +62,7 @@
 	}
 
 	ion-list .item {
-        padding: 10px 0px 10px 16px;
+        padding: 10px 0px 5px 16px;
 	    border-bottom: 1px solid #ccc;
 	    color: grey;
 	    font-size: 1.2rem;
@@ -72,6 +72,10 @@
 	    border: none;
 	}
 
+	ion-list .item .item-inner ion-label {
+		margin-top: 25px;
+	}
+
 	.right-item {
 		min-width: 70px;
     	text-align: right;
@@ -79,7 +83,7 @@
 
 	.right-item .price-desc {
 	    position: absolute;
-	    top: 10px;
+	    top: 6px;
 	    right: 10px;
 	    padding: 5px 8px;
 		background: none;

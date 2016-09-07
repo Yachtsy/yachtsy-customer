@@ -33,18 +33,29 @@ export class MyApp {
       });
 
       if (typeof FirebasePlugin !== 'undefined') {
-        FirebasePlugin.getInstanceId(function(token) {
-          // save this server-side and use it to push notifications to this device
-          console.log('THE PUSH TOKEN IS', token);
-          GlobalService.pushToken = token;
-          FirebasePlugin.grantPermission();
-
-        }, function(error) {
-          console.error(error);
-        });
+        FirebasePlugin.grantPermission();
+        this.pushTokenCallCount = 0;
+        this.getPushToken();
       } else {
         console.error('FIREBASE PLUGIN NOT DEFINED');
       }
+    });
+  }
+
+  pushTokenCallCount = 0;
+  getPushToken() {
+    let self = this;
+    FirebasePlugin.getInstanceId(function(token) {
+      // save this server-side and use it to push notifications to this device
+      console.log('THE PUSH TOKEN IS', token);
+      GlobalService.pushToken = token;
+    }, function(error) {
+      console.log((self.pushTokenCallCount + 1) + 'th trying error: ' + error);
+      setTimeout(() => {
+        self.pushTokenCallCount++;
+        if (self.pushTokenCallCount < 30)
+          self.getPushToken();
+      }, 2000);
     });
   }
 
