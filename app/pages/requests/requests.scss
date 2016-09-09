@@ -1,11 +1,51 @@
 .requests {
 
-    background: #f8f8f8;
+    background: #dce2e0;
 
     ion-card {
         margin-bottom: 18px;
-        border-radius: 5px;
+        border-radius: 0px;
         text-align: center;
+        padding: 20px 0px;
+    }
+
+    ion-card-header {
+    	padding: 0px;
+    }
+
+    ion-card-content {
+    	padding-bottom: 0px;
+	    margin-top: 5px;
+    }
+
+    .date-desc {
+	    margin-top: 5px;
+	    font-size: 1.4rem;
+	    color: grey;
+    }
+
+    .image-wrapper {
+    	margin-top: 10px;
+    	text-align: center;
+    }
+
+    .profile-image {
+    	display: inline-block;
+    	width: 50px;
+    	height: 50px;
+    	margin: 0px 5px;
+    	border-radius: 50px;
+    	background-size: cover;
+    	background-repeat: no-repeat;
+    	background-position: center center;
+    }
+
+    ion-icon {
+	    position: relative;
+	    top: 2px;
+	    color: #0a5b7a;
+	    margin-right: 5px;
+	    font-weight: bold;
     }
 
 }

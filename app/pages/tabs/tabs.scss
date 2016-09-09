@@ -1,0 +1,30 @@
+#mainTabs {
+
+	ion-tabbar {
+		background: #0a5b7a;
+	}
+
+	ion-tabbar a {
+		color: white;
+	}
+
+	ion-tabbar a ion-icon {
+		color: #f0e968;
+	}
+
+	.tab-button {
+		color: white;
+	}
+
+	.tab-button ion-icon {
+	    color: #f0e968;
+	}
+
+	.tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] {
+		color: #f0e968;
+	}
+
+	.tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] ion-icon {
+		color: #083547;
+	}
+}

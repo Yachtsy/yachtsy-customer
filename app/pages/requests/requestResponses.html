@@ -12,47 +12,24 @@
 
 <ion-content class="responses">
 
-
     <ion-item *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
 
-    <ion-card tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
-
-
+    <div class="quote-wrapper" tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
         <ion-item>
             <ion-avatar item-left>
-                <img src="{{profile.image}}">
+                <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
             </ion-avatar>
-            <h2>{{item.data.supplierNickName}}</h2>
-            <p>{{totalReviews}} reviews <rating score="{{item.data.reviewRating}}" max="5"></rating></p>
+            <div class="supplier-name">{{item.data.supplierNickName}}</div>
+            <rating score="{{item.data.reviewRating}}" max="5"></rating><span class="review-count">{{totalReviews}} reviews</span>
+            <div item-right class="right-item">
+                <div class="price-value">${{item.data.price}}</div>
+            </div>
         </ion-item>
-        <ion-card-content>
-            <h2 class="card-title"></h2>
-            <p></p>
-            <p>{{desc}}</p>
-
-           
-            <!--<ion-item>
-                    Quote
-                    <ion-note item-right>
-                        $ {{item.data.price}}
-                    </ion-note>
-                </ion-item>-->
-
-
-            {{item.data.initialMessage}}
-
-        </ion-card-content>
-    </ion-card>
-
-    <!--<button ion-item  (click)="gotoMessages(item)">
-
-            <ion-icon name="ios-contact" item-left></ion-icon>
-
-            <ion-note item-right>
-                $ {{item.data.price}}
-            </ion-note>
-            <p>{{item.data.supplierNickName}}</p>
-
-        </button>-->
+        <div class="quote-content">{{item.data.initialMessage}}</div>
+    </div>
 
 </ion-content>
+
+<ion-footer>
+    <button class="button">Who are you hiring?</button>
+</ion-footer>

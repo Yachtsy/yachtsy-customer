@@ -27,6 +27,9 @@
     .label {
         color: white;
         text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1.4rem;
     }
 
     ion-card-header {
@@ -87,18 +90,26 @@
     .item-checkbox .item-inner .input-wrapper ion-label {
         margin: 0px;
     }
+}
 
-    .disable-minheight {
-        min-height: 0px;
-    }
+.pac-container {
+    width: 100% !important;
+    left: 0px !important;
+    margin-top: 30px;
 }
 
 .pac-container:after{
     content:none !important;
 }
 
-.pac-container {
-    left: 16px;
+.pac-item {
+    height: 50px;
+    line-height: 50px;
+    background: whitesmoke;
+}
+
+.pac-item .pac-icon {
+    margin-top: 16px;
 }
 
 .loc_input {

@@ -1,11 +1,11 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ModalController, NavController, ViewController, LoadingController, NavParams, Platform} from 'ionic-angular';
+import {ModalController, NavController, ViewController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Home} from '../home/home';
 import {ModalsContentPage} from './modal'
-import {GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
+import {Keyboard, GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
 import GlobalService = require('../../components/globalService');
 
 @Component({
@@ -38,6 +38,8 @@ export class Form {
     locationSteps: number;
     locationStep: number;
     userStartLocation = true;
+    contentsBottom = 0;
+    footerBottom = 0;
 
     @ViewChild('autocomplete') myElement: any;
     @ViewChild('autocomplete2') myElement2: any;
@@ -46,6 +48,7 @@ export class Form {
     constructor(public nav: NavController,
         public navParams: NavParams,
         public viewCtrl: ViewController,
+        public actionSheetCtrl: ActionSheetController,
         public FBService: FirebaseService,
         private ngZone: NgZone,
         private platform: Platform,
@@ -177,11 +180,8 @@ export class Form {
     autocomplete1
     autocomplete2
 
-    locationPopup1:any
-    locationPopup2:any
     locationTimer
-    isResultHidden1
-    isResultHidden2
+    isResultHidden
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = 'none';
@@ -189,7 +189,7 @@ export class Form {
 
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
-        
+
         if (this.field.type === 'location') {
 
             this.locationValue = ""
@@ -236,21 +236,26 @@ export class Form {
                 this.placeChanged(this.autocomplete2);
             });
 
-            this.isResultHidden1 = true;
-            this.isResultHidden2 = true;
+            this.isResultHidden = true;
 
             this.locationTimer = setInterval(()=>{
-                this.locationPopup1 = document.getElementsByClassName('pac-container')[0];
-                if (this.locationPopup1 && this.locationPopup1.style.display !== 'none')
-                    this.isResultHidden1 = false;
-                else
-                    this.isResultHidden1 = true;
+                var i = 0;
+                var popup_list = document.getElementsByClassName('pac-container');
 
-                this.locationPopup2 = document.getElementsByClassName('pac-container')[1];
-                if (this.locationPopup2 && this.locationPopup2.style.display !== 'none')
-                    this.isResultHidden2 = false;
-                else
-                    this.isResultHidden2 = true;
+                if (!popup_list)
+                    this.isResultHidden = true;
+                else {
+                    for (i = 0; i < popup_list.length; i++) {
+                        var popup:any;
+                        popup = popup_list[i];
+                        if (popup && popup.style.display !== 'none') {
+                            this.isResultHidden = false;
+                            break;
+                        }
+                    }
+                    if (i >= popup_list.length)
+                        this.isResultHidden = true;
+                }
             }, 100);
         }
     }
@@ -275,13 +280,8 @@ export class Form {
                 placeName: this.placeName
             }
 
-            var idx = 0;
-            if (autoComplete === this.autocomplete1)
-                idx = 0;
-            else
-                idx = 1;
             this.ngZone.run(() => {
-                this.formAnswers[this.formPageIndex]['ans'][idx] = locationAnswer;
+                this.formAnswers[this.formPageIndex]['ans'][this.locationStep - 1] = locationAnswer;
                 this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
             });
 
@@ -347,6 +347,28 @@ export class Form {
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
 
         this.dateTime = null;
+
+
+        window.addEventListener('native.keyboardshow', (e) => {
+
+            console.log('keyboard show')
+            this.ngZone.run(() => {
+                this.contentsBottom = e['keyboardHeight'] + 44;
+                this.footerBottom = e['keyboardHeight'];
+            });
+
+        });
+
+        window.addEventListener('native.keyboardhide', (e) => {
+
+            console.log('keyboard hide')
+            this.ngZone.run(() => {
+                console.log('initialising postions')
+                this.contentsBottom = 44;
+                this.footerBottom = 0;
+            });
+        });
+
     }
 
     clicked(item) {
@@ -385,22 +407,28 @@ export class Form {
 
     next() {
 
-        if (this.field.type === "location") {
-            if (this.locationTimer)
-                clearInterval(this.locationTimer);
-
-            if (this.userStartLocation) {
-                this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
-            }
+        if (this.field.type === "location" && (this.locationStep < this.locationSteps)) {
+            this.ngZone.run(() => {
+                this.locationStep = 2;
+            });
         }
+        else {
+            if (this.locationStep === 2) {
+                if (this.locationTimer)
+                    clearInterval(this.locationTimer);
 
-        this.nav.push(Form, {
-            index: this.formPageIndex + 1,
-            categoryData: this.cd,
-            categoryId: this.categoryId,
-            formAnswers: this.formAnswers,
-            categoryName: this.categoryName
-        });
+                if (this.userStartLocation)
+                    this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
+            }
+
+            this.nav.push(Form, {
+                index: this.formPageIndex + 1,
+                categoryData: this.cd,
+                categoryId: this.categoryId,
+                formAnswers: this.formAnswers,
+                categoryName: this.categoryName
+            });
+        }
     }
 
     submitRequest() {
@@ -460,7 +488,7 @@ export class Form {
     }
 
     cancelLocation(idx) {
-        if (idx === 0) {
+        if (this.locationStep === 1) {
             this.fromValue = "";
             this.formAnswers[this.formPageIndex]['ans'][0] = null;
             this.formAnswersLength = 0;
@@ -469,5 +497,25 @@ export class Form {
             this.toValue = "";
             this.formAnswers[this.formPageIndex]['ans'][1] = null;
         }
+    }
+
+    clickClose() {
+        let actionSheet = this.actionSheetCtrl.create({
+            buttons: [
+                {
+                    text: 'Cancel Project',
+                    role: 'destructive',
+                    handler: () => {
+                        this.nav.setRoot(Home, {}, {animate: false});
+                    }
+                }, {
+                    text: 'Continue Project',
+                    role: 'cancel',
+                    handler: () => {
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
     }
 }

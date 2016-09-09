@@ -30,19 +30,7 @@
     flex: 1;
 }
 
-.pac-container {
-    width: 100% !important;
-    left: 0px !important;
-    margin-top: 30px;
+ion-navbar {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
 }
-
-.pac-item {
-    height: 50px;
-    line-height: 50px;
-    background: whitesmoke;
-}
-
-.pac-item .pac-icon {
-    margin-top: 16px;
-}
-

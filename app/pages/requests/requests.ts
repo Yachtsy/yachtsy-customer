@@ -11,6 +11,7 @@ import GlobalService = require('../../components/globalService');
 export class Requests {
 
     items: any = {};
+    profile;
 
     constructor(public nav: NavController,
         public navParams: NavParams,
@@ -26,6 +27,10 @@ export class Requests {
     ngOnInit() {
         console.log('ngOnInit - request');
         this.items = GlobalService.myRequests;
+
+        this.profile = {
+            image: GlobalService.avatarImage,
+        };
     }
 
     ionViewWillEnter() {

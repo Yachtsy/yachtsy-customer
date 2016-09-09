@@ -2,7 +2,7 @@
     <ion-navbar>
         <ion-title>PROJECTS</ion-title>
         <ion-buttons end>
-            <button (click)="newRequestClick()">NEW</button>
+            <button (click)="newRequestClick()"><ion-icon name="add"></ion-icon></button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
@@ -11,20 +11,23 @@
     <ion-card tappable *ngFor="let item of items.data" (click)="requestClick(item)">
 
         <ion-card-header>
-            {{item.data.categoryName}}<ion-note item-right>
-                <p>{{item.data.date | date: 'dd/MM/yy HH:mm'}}</p>
-            </ion-note>
+            {{item.data.categoryName}}
+            <div class="date-desc">Created on {{item.data.date | date: 'MMMM dd'}}</div>
+            <div class="image-wrapper">
+                <div class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+                <div class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+            </div>
         </ion-card-header>
 
         <ion-card-content>
-            <!--<p>State: {{item.data.state}}</p>-->
-            <p *ngIf="item.data.matches && item.data.matches > 1">{{item.data.matches}} matches</p>
-            <p *ngIf="item.data.matches && item.data.matches ===1">{{item.data.matches}} match</p>
-            <p *ngIf="item.data.passes && item.data.passes > 1">{{item.data.passes}} passes</p>
-            <p *ngIf="item.data.passes && item.data.passes ===1">{{item.data.passes}} pass</p>
-            <p *ngIf="item.data.quotesLength ===1">{{item.data.quotesLength}} quote</p>
-            <p *ngIf="item.data.quotesLength > 1">{{item.data.quotesLength}} quotes</p>
-            <p *ngIf="item.data.quotesLength === 0">Waiting for suppliers to respond...</p>
+            <ion-icon name="radio-button-off"></ion-icon>
+            <span *ngIf="item.data.matches && item.data.matches > 1">{{item.data.matches}} matches</span>
+            <span *ngIf="item.data.matches && item.data.matches ===1">{{item.data.matches}} match</span>
+            <span *ngIf="item.data.passes && item.data.passes > 1">{{item.data.passes}} passes</span>
+            <span *ngIf="item.data.passes && item.data.passes ===1">{{item.data.passes}} pass</span>
+            <span *ngIf="item.data.quotesLength ===1">{{item.data.quotesLength}} quote</span>
+            <span *ngIf="item.data.quotesLength > 1">{{item.data.quotesLength}} quotes</span>
+            <span *ngIf="item.data.quotesLength === 0">Waiting for suppliers to respond...</span>
         </ion-card-content>
 
     </ion-card>

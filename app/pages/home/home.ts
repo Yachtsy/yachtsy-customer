@@ -108,6 +108,17 @@ export class Home {
                         data[i].data.quotesLength = 0;
                 }
 
+                for (var i = 0; i < data.length; i++) {
+                    for (var j = i + 1; j < data.length; j++) {
+                        if (data[i].data.date < data[j].data.date) {
+                            var tmp = {};
+                            Object.assign(tmp, data[i]);
+                            data[i] = data[j];
+                            data[j] = tmp;
+                        }
+                    }
+                }
+
                 if (unreadTotalCount === 0)
                     GlobalService.tabBadgeInfo.count = '';
                 else

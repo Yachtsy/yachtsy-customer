@@ -13,3 +13,5 @@ export var pushToken = '';
 export var myRequests = {
 	data: 	[]
 };
+
+export var avatarImage = 'http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg';

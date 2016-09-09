@@ -1,6 +1,11 @@
 <ion-header class="header">
 
 <ion-navbar>
+    <ion-buttons end>
+        <button (click)="clickClose()">
+            <ion-icon name="close"></ion-icon>
+        </button>
+    </ion-buttons>
 </ion-navbar>
 
   <!--<ion-buttons start>
@@ -15,7 +20,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content [ngStyle]="{bottom: contentsBottom + 'px'}">
 
     <ion-card *ngIf="field.type !== 'location'">
         <progressbar [animate]="false" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color:white; white-space:nowrap;">&nbsp;</span></progressbar>
@@ -74,20 +79,21 @@
             <div class="label"><i>{{label}}</i></div>
         </ion-card-header>
 
-        <!--<ion-item no-lines>
-            <p [hidden]="locationSteps === 2">Please select the location</p>
-            <p [hidden]="locationSteps === 1">Please select the starting location</p>
-        </ion-item>-->
+        <div [hidden]="locationStep === 2">
+            <ion-item no-lines>
+                <p [hidden]="locationSteps === 2">Please select the location</p>
+                <p [hidden]="locationSteps === 1">Please select the starting location</p>
+            </ion-item>
 
-        <div class="input-wrapper">
-            <input #autocomplete class="loc_input" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
-            <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation(0)"></ion-icon>
+            <div class="input-wrapper">
+                <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
+                <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+            </div>
+            <div [hidden]="fromValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
         </div>
-        <div [hidden]="fromValue.length == 0 || isResultHidden1" class="result-title-text">RESULTS</div>
 
-        <div [hidden]="locationSteps === 1">
-            <br><br><br><br>
-            <ion-item class="disable-minheight" no-lines>
+        <div [hidden]="locationStep === 1">
+            <ion-item no-lines>
                 <p>Please select the end location</p>
             </ion-item>
             <ion-item>
@@ -97,10 +103,10 @@
             <div [hidden]="userStartLocation">
                 <div class="input-wrapper">
                     <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
-                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation(1)"></ion-icon>
+                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
                 </div>
             </div>
-            <div [hidden]="userStartLocation || toValue.length == 0 || isResultHidden2" class="result-title-text">RESULTS</div>
+            <div [hidden]="userStartLocation || toValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
         </div>
     </ion-card>
 
@@ -109,7 +115,7 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer [ngStyle]="{bottom: footerBottom + 'px'}">
 
     <ion-toolbar no-border-bottom>
 
