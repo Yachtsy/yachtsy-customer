@@ -11,6 +11,10 @@
     <ion-list text-wrap>
 
         <ion-item *ngIf="user">
+            User ID: {{userId}}
+        </ion-item>
+
+        <ion-item *ngIf="user">
             Credits: {{user.credits.balance}}
         </ion-item>
 
@@ -19,7 +23,7 @@
         </ion-item>
 
         <ion-item *ngIf="user">
-            FCM: {{user.freeCreditsMode}}
+            Free Credits Mode: {{user.freeCreditsMode}}
         </ion-item>
 
     </ion-list>

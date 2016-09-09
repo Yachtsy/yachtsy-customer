@@ -158,7 +158,7 @@ export class Messages {
         this.message = "";
     }
 
-    CREDITS_REQUIRED = 3;
+    CREDITS_REQUIRED = 1;
 
 
     confirm = this.alertCtrl.create({
@@ -177,13 +177,15 @@ export class Messages {
                     console.log('want to buy credits');
 
                     //credits
-                    let prod = "com.yachtsy.yachtsy.credits.100";
+                    let prod1 = "com.yachtsy.yachtsy.1credit";
+                    let prod3 = "com.yachtsy.yachtsy.3credits";
+                    let prod5 = "com.yachtsy.yachtsy.5credits";
 
-                    let products = InAppPurchase.getProducts([prod])
+                    let products = InAppPurchase.getProducts([prod1, prod3, prod5])
                         .then((prods) => {
                             console.log(prods);
 
-                            InAppPurchase.buy(prod)
+                            InAppPurchase.buy(prod1)
 
                                 .then((data: any) => {
                                     console.log(JSON.stringify(data));

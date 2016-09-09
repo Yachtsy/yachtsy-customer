@@ -20,6 +20,7 @@ import {
 export class DebugPage {
 
     user
+    userId
 
     constructor(
         public platform: Platform,
@@ -35,6 +36,8 @@ export class DebugPage {
             console.log(usr);
             this.user = usr;
         });
+
+        this.userId = firebase.auth().currentUser.uid
 
     }
 
