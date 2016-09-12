@@ -41,6 +41,6 @@ export class Notifications {
             .then((data) => {
                 console.log(data);
             });
-        this.nav.push(Messages, { req: item, supplierId: quote.id });
+        this.nav.push(Messages, { requestId: item.id, supplierId: quote.id });
     }
 }

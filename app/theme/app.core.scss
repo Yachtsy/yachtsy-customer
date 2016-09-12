@@ -34,3 +34,8 @@ ion-navbar {
     padding-left: 4px !important;
     padding-right: 4px !important;
 }
+
+ion-navbar .no-buttons {
+	padding-left: 0px;
+	padding-right: 0px;
+}

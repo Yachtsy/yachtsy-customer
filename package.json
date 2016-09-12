@@ -44,7 +44,8 @@
       "locator": "https://github.com/phonegap-googlemaps-plugin/cordova-plugin-googlemaps"
     },
     "ionic-plugin-keyboard@2.2.1",
-    "cordova-plugin-firebase"
+    "cordova-plugin-firebase",
+    "cordova-plugin-network-information"
   ],
   "cordovaPlatforms": [
     "ios"

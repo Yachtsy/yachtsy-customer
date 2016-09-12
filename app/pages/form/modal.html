@@ -17,7 +17,7 @@
         </ion-item>
         <ion-item [class.error]="!email.valid && email.touched">
             <ion-label floating>Email</ion-label>
-            <ion-input type="text" value="" [formControl]="email"></ion-input>
+            <ion-input type="email" value="" [formControl]="email"></ion-input>
         </ion-item>
         <br/><br/>
         <button (click)="submitRequest()" class="btn btn-primary" [disabled]="!form.valid" block>Submit</button>

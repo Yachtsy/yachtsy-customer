@@ -29,6 +29,7 @@ export class Messages {
     footerBottom = 0;
     pageElement: any;
     profile;
+    tabBarDisplayStatus = '';
 
     @ViewChild(Content) content: Content;
 
@@ -38,8 +39,7 @@ export class Messages {
         private ngZone: NgZone,
         private alertCtrl: AlertController) {
 
-        this.requestId = this.navParams.get('req').id;
-
+        this.requestId = this.navParams.get('requestId');
         console.log('the request id is', this.requestId);
         this.supplierId = this.navParams.get('supplierId');
         console.log('supplierId passed: ', this.supplierId);
@@ -61,48 +61,55 @@ export class Messages {
     ngOnInit() {
         console.log('ngOnInit - messages reqid = ', this.request);
         console.log('--------');
-        this.userId = this.FBService.getAuthData().uid;
-        console.log('user id is: ' + this.userId)
 
-        this.FBService.getMyMessages(this.requestId, this.supplierId)
-            .subscribe((msgData: any) => {
+        if (this.FBService.getAuthData()) {
+            this.userId = this.FBService.getAuthData().uid;
+            console.log('user id is: ' + this.userId)
+        }
+        else
+            this.userId = '';
 
-                console.log(' my messages for supplier ' + this.supplierId + 'are:');
-                console.log(msgData);
+        if (this.requestId !== '' && typeof this.requestId !== 'undefined' &&
+            this.supplierId !== '' && typeof this.supplierId !== 'undefined') {
+            this.FBService.getMyMessages(this.requestId, this.supplierId)
+                .subscribe((msgData: any) => {
 
-                this.ngZone.run(() => {
-                    this.messages = Object.keys(msgData)
-                        .map((key) => {
-                            msgData[key].data.img = this.profile.image;
-                            msgData[key].data.position = 'right';
-                            if (this.userId === msgData[key].data.uid) {
-                                msgData[key].data.position = 'left';
-                            }
-                            return msgData[key].data;
-                        });
+                    console.log(' my messages for supplier ' + this.supplierId + 'are:');
+                    console.log(msgData);
+
+                    this.ngZone.run(() => {
+                        this.messages = Object.keys(msgData)
+                            .map((key) => {
+                                msgData[key].data.img = this.profile.image;
+                                msgData[key].data.position = 'right';
+                                if (this.userId === msgData[key].data.uid) {
+                                    msgData[key].data.position = 'left';
+                                }
+                                return msgData[key].data;
+                            });
+                    });
+
+                    setTimeout(() => {
+                        this.content.scrollToBottom(300);
+                    }, 0);
                 });
 
-                setTimeout(() => {
-                    this.content.scrollToBottom(300);
-                }, 0);
-            });
+            this.FBService.getRequest(this.requestId)
+                .subscribe((res: any) => {
+                    console.log('the request is');
+                    this.request = res.data;
 
-        this.FBService.getRequest(this.requestId)
-            .subscribe((res: any) => {
-                console.log('the request is');
-                this.request = res.data;
+                    this.nickName = this.request.quotes[this.supplierId].supplierNickName
+                    this.price = this.request.quotes[this.supplierId].price;
+                    this.alreadyHiredSupplier = false;
 
-                this.nickName = this.request.quotes[this.supplierId].supplierNickName
-                this.price = this.request.quotes[this.supplierId].price;
-                this.alreadyHiredSupplier = false;
+                    if (this.request.hiring.suppliers && this.request.hiring.suppliers[this.supplierId]) {
 
-                if (this.request.hiring.suppliers && this.request.hiring.suppliers[this.supplierId]) {
-
-                    console.log('setting already hired to true');
-                    this.alreadyHiredSupplier = true;
-                }
-            });
-
+                        console.log('setting already hired to true');
+                        this.alreadyHiredSupplier = true;
+                    }
+                });
+        }
 
         this.ngZone.run(() => {
             console.log('init positions')
@@ -136,7 +143,12 @@ export class Messages {
     }
 
     onPageWillEnter() {
+        this.tabBarDisplayStatus = GlobalService.mainTabBarElement.style.display;
         GlobalService.mainTabBarElement.style.display = 'none';
+    }
+
+    onPageWillLeave() {
+        GlobalService.mainTabBarElement.style.display = this.tabBarDisplayStatus;
     }
 
     ionViewWillEnter() {

@@ -1,5 +1,5 @@
 import {Component, ViewChild, NgZone} from '@angular/core';
-import {Platform, ionicBootstrap, ModalController, NavController, App } from 'ionic-angular';
+import {Platform, ionicBootstrap, ModalController, NavController, App, AlertController} from 'ionic-angular';
 import {StatusBar, Keyboard, InAppPurchase} from 'ionic-native';
 import {Home} from './pages/home/home';
 import {FirebaseService} from './components/firebaseService';
@@ -7,6 +7,9 @@ import {Requests} from './pages/requests/requests'
 import {CompletionModal} from './pages/completion/completion'
 import {ReviewModal} from './pages/review/review'
 import {Tabs} from './pages/tabs/tabs'
+import {Messages} from './pages/requests/messages'
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
 import GlobalService = require('./components/globalService');
 
 declare var FirebasePlugin;
@@ -18,7 +21,7 @@ export class MyApp {
   rootPage: any;
   //@ViewChild(Nav) nav: Nav;
 
-  constructor(platform: Platform, private app: App, public ngZone: NgZone, public modalCtrl: ModalController) {
+  constructor(platform: Platform, private app: App, public ngZone: NgZone, public modalCtrl: ModalController, private alertCtrl: AlertController, public fbService: FirebaseService) {
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -27,6 +30,8 @@ export class MyApp {
       Keyboard.disableScroll(true);
       StatusBar.styleDefault();
 
+      var nav: NavController = this.app.getActiveNav();
+
       firebase.auth().onAuthStateChanged((authData) => {
         console.log('auth state changed', authData);
         this.start();
@@ -34,11 +39,69 @@ export class MyApp {
 
       if (typeof FirebasePlugin !== 'undefined') {
         FirebasePlugin.grantPermission();
+
         this.pushTokenCallCount = 0;
         this.getPushToken();
+
+        let self = this;
+        FirebasePlugin.onNotificationOpen(function(notification) {
+          console.log(notification);
+          var requestId = '';
+          var supplierId = '';
+          if (notification.aps) {
+            requestId   = notification.aps.requestId;
+            supplierId  = notification.aps.supplierId;
+          }
+
+          let alert = self.alertCtrl.create({
+            title: 'Thumbtack',
+            message: '',
+            buttons: [
+              {
+                text: 'Ignore',
+                role: 'cancel',
+                handler: () => {
+                }
+              },
+              {
+                text: 'View Quote',
+                handler: () => {
+                  nav.push(Messages, { requestId: requestId, supplierId: supplierId });
+                }
+              }
+            ]
+          });
+          alert.present();
+
+        }, function(error) {
+          console.log(error);
+        });
       } else {
-        console.error('FIREBASE PLUGIN NOT DEFINED');
+        console.log('FIREBASE PLUGIN NOT DEFINED');
       }
+
+      var offline = Observable.fromEvent(document, "offline");
+      var online = Observable.fromEvent(document, "online");
+
+      offline.subscribe(() => {
+        let alert = this.alertCtrl.create({
+          title: 'No Internet Connection',
+          message: 'To use Thumbtack, please connect to Wi-Fi or enable cellular data.',
+          buttons: [
+            {
+              text: 'OK',
+              role: 'cancel',
+              handler: () => {
+              }
+            }
+          ]
+        });
+        alert.present();
+      });
+
+      online.subscribe(()=>{
+      });
+
     });
   }
 

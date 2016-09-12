@@ -1,31 +1,31 @@
 <ion-header class="header">
 
-<ion-navbar>
-    <ion-buttons end>
-        <button (click)="clickClose()">
-            <ion-icon name="close"></ion-icon>
-        </button>
-    </ion-buttons>
-</ion-navbar>
-
-  <!--<ion-buttons start>
-            <button class="button button-icon button-clear" (click)="back()">
+    <ion-navbar hideBackButton>
+        <ion-buttons start>
+            <button class="button button-icon button-clear" (click)="clickBack()">
                 <ion-icon name="arrow-dropleft-circle"></ion-icon>
             </button>
-        </ion-buttons>-->
-<!--<ion-toolbar no-border-top>
-        <ion-title> {{categoryName}}
-        </ion-title>
-    </ion-toolbar>-->
+        </ion-buttons>
+        <ion-buttons end>
+            <button (click)="clickClose()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
 </ion-header>
 
 
 <ion-content [ngStyle]="{bottom: contentsBottom + 'px'}">
 
+    <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
+
+    <ion-slides [options]="sliderOptions">
+        <ion-slide *ngFor="let field of categoryData.fields; let field_id = index;" (touchstart)="touchSlide($event)">
+
     <ion-card *ngIf="field.type !== 'location'">
-        <progressbar [animate]="false" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color:white; white-space:nowrap;">&nbsp;</span></progressbar>
         <ion-card-header>
-            <div class="label"><i>{{label}}</i></div>
+            <div class="label"><i>{{field.label}}</i></div>
         </ion-card-header>
 
         <ion-list *ngIf="field.type === 'enumeration'">
@@ -35,7 +35,7 @@
                     <ion-label *ngIf="!item.can_describe">{{item.label}}</ion-label>
 
                     <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
-                            (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label]">
+                            (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label + field_id]">
                     </ion-input>
 
                     <!--
@@ -74,17 +74,15 @@
 
     <ion-card *ngIf="field.type === 'location'">
 
-        <progressbar [animate]="false" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color:white; white-space:nowrap;">&nbsp;</span></progressbar>
         <ion-card-header>
-            <div class="label"><i>{{label}}</i></div>
+            <div class="label">
+                <i [hidden]="(locationStep === 2) || (locationSteps === 2)">Please select the location</i>
+                <i [hidden]="(locationStep === 2) || (locationSteps === 1)">Please select the starting location</i>
+                <i [hidden]="(locationStep === 1)">Please select the end location</i>
+            </div>
         </ion-card-header>
 
         <div [hidden]="locationStep === 2">
-            <ion-item no-lines>
-                <p [hidden]="locationSteps === 2">Please select the location</p>
-                <p [hidden]="locationSteps === 1">Please select the starting location</p>
-            </ion-item>
-
             <div class="input-wrapper">
                 <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
                 <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
@@ -93,9 +91,6 @@
         </div>
 
         <div [hidden]="locationStep === 1">
-            <ion-item no-lines>
-                <p>Please select the end location</p>
-            </ion-item>
             <ion-item>
                 <ion-label>Use start location</ion-label>
                 <ion-checkbox [(ngModel)]="userStartLocation"></ion-checkbox>
@@ -110,6 +105,9 @@
         </div>
     </ion-card>
 
+        </ion-slide>
+    </ion-slides>
+
     <!--<div *ngIf="field.type === 'location'" id="map_canvas">
     </div>-->
 
@@ -120,17 +118,17 @@
     <ion-toolbar no-border-bottom>
 
             <button class="button" block *ngIf="!lastPage" [disabled]="(
-                (field.allows_multiple_values && (formAnswersLength === 0)) ||  
-                (field.type === 'location' && formAnswersLength === 0) ||
-                (!field.allows_multiple_values && formAnswersLength === 0 )
+                (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
+                (curField.type === 'location' && formAnswersLength === 0) ||
+                (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="next()">Next
                    <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
             </button>
 
             <button class="button" block *ngIf="lastPage" [disabled]="(
-                (field.allows_multiple_values && (formAnswersLength === 0)) ||  
-                (field.type === 'location' && formAnswersLength === 0) ||
-                (!field.allows_multiple_values && formAnswersLength === 0 )
+                (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
+                (curField.type === 'location' && formAnswersLength === 0) ||
+                (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="submitRequest()"> Send
                   <!--<ion-icon name="send"></ion-icon>-->
             </button>

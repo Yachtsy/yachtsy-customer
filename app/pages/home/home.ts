@@ -10,6 +10,8 @@ import {Form} from '../form/form';
 import {ModalsContentPage} from '../form/modal'
 import GlobalService = require('../../components/globalService');
 
+declare var FirebasePlugin;
+
 @Component({
     templateUrl: 'build/pages/home/home.html',
 })
@@ -123,6 +125,9 @@ export class Home {
                     GlobalService.tabBadgeInfo.count = '';
                 else
                     GlobalService.tabBadgeInfo.count = unreadTotalCount + '';
+
+                if (typeof FirebasePlugin !== 'undefined')
+                    FirebasePlugin.setBadgeNumber(unreadTotalCount);
 
                 GlobalService.myRequests.data = data;
                 console.log(data);
@@ -293,11 +298,11 @@ export class Home {
         // modal.present();
 
         this.navController.push(Form, {
-            index: 0,
-            categoryData: categoryData,
-            categoryId: categoryId,
-            categoryName: categoryName,
-            locationType: locationType
+            index:          0,
+            categoryData:   categoryData,
+            categoryId:     categoryId,
+            categoryName:   categoryName,
+            locationType:   locationType
         }).then(() => {
         });
     }

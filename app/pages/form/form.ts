@@ -1,6 +1,6 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ModalController, NavController, ViewController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
+import {ModalController, Slides, NavController, ViewController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Home} from '../home/home';
@@ -21,7 +21,7 @@ export class Form {
 
     GOOGLE_MAP_TIMEOUT = 1000;
 
-    field = null
+    curField = null
     cd = null
     label = ""
     formAnswers = null
@@ -41,6 +41,9 @@ export class Form {
     contentsBottom = 0;
     footerBottom = 0;
 
+    sliderOptions = {};
+    slides: any;
+
     @ViewChild('autocomplete') myElement: any;
     @ViewChild('autocomplete2') myElement2: any;
 
@@ -55,6 +58,82 @@ export class Form {
         private modalCtrl: ModalController,
         private loadingCtrl: LoadingController) {
 
+        let self = this;
+        this.sliderOptions = {
+            initialSlide: 0,
+            speed: 300,
+            pager: false,
+            loop: false,
+            onInit: function (slides) {
+                self.slides = slides;
+                // self.slides.lockSwipes();
+            }
+        };
+    }
+
+    ngOnInit() {
+        console.log('ngOnInit - form');
+
+        this.maxStep = 1;
+        this.cd = this.navParams.get('categoryData');
+        this.categoryId = this.navParams.get('categoryId');
+
+        console.log('the category id is ', this.categoryId);
+
+        this.categoryData = this.cd
+        this.categoryName = this.navParams.get('categoryName');
+
+        console.log('category data', this.categoryData)
+
+        this.formPageIndex = 0;
+        this.formAnswers = [];
+        this.answerObj = {};
+        this.maxStep = this.categoryData.fields.length + 1;
+        this.dateTime = null;
+
+        this.initFields();
+
+        window.addEventListener('native.keyboardshow', (e) => {
+
+            console.log('keyboard show')
+            this.ngZone.run(() => {
+                this.contentsBottom = e['keyboardHeight'] + 44;
+                this.footerBottom = e['keyboardHeight'];
+            });
+
+        });
+
+        window.addEventListener('native.keyboardhide', (e) => {
+
+            console.log('keyboard hide')
+            this.ngZone.run(() => {
+                console.log('initialising postions')
+                this.contentsBottom = 44;
+                this.footerBottom = 0;
+            });
+        });
+    }
+
+    initFields() {
+        if (this.formPageIndex === this.categoryData.fields.length - 1) {
+            this.lastPage = true;
+        }
+
+        this.curField = this.categoryData.fields[this.formPageIndex];
+        if (!this.formAnswers[this.formPageIndex]) {
+            this.formAnswers[this.formPageIndex] = {
+                'qu':       this.curField.label,
+                'ans':      []
+            };
+
+        }
+        console.log('init form answers', this.formAnswers);
+
+        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;        
+    }
+
+    touchSlide(event) {
+        event.stopPropagation();
     }
 
     // onInputChangeKeyUp() {
@@ -74,8 +153,9 @@ export class Form {
         console.log('current form answers:', this.formAnswers)
 
         var thisPageAnswers = this.formAnswers[this.formPageIndex]['ans'];
+        var answerObj = this.answerObj[item.label + this.formPageIndex];
 
-        if (this.field.allows_multiple_values) {
+        if (this.curField.allows_multiple_values) {
 
             // search through to see if a can describe item has already been entered
             // by looking for Description: in the results
@@ -98,9 +178,9 @@ export class Form {
             // }
 
 
-            if (this.answerObj[item.label]) {
+            if (answerObj) {
 
-                var desription = descriptionIdentifier + this.answerObj[item.label];
+                var desription = descriptionIdentifier + answerObj;
 
                 if (descIndex === -1) {
                     thisPageAnswers.push(desription);
@@ -113,10 +193,10 @@ export class Form {
             }
         } else {
 
-            if (this.answerObj[item.label]) {
-                console.log('pushing the item on', this.answerObj[item.label]);
+            if (answerObj) {
+                console.log('pushing the item on', answerObj);
                 this.formAnswers[this.formPageIndex]['ans'] = [];
-                this.formAnswers[this.formPageIndex]['ans'].push(descriptionIdentifier + this.answerObj[item.label]);
+                this.formAnswers[this.formPageIndex]['ans'].push(descriptionIdentifier + answerObj);
             } else {
                 this.formAnswers[this.formPageIndex]['ans'] = [];
             }
@@ -190,7 +270,7 @@ export class Form {
     ionViewWillEnter() {
         console.log('form - ionViewWillEnter');
 
-        if (this.field.type === 'location') {
+        if (this.curField.type === 'location') {
 
             this.locationValue = ""
             this.locationType = this.navParams.get('locationType');
@@ -302,75 +382,6 @@ export class Form {
 
     }
 
-
-    ngOnInit() {
-        console.log('ngOnInit - form');
-
-        this.maxStep = 1;
-        this.formPageIndex = this.navParams.get('index');
-        this.cd = this.navParams.get('categoryData');
-        this.categoryId = this.navParams.get('categoryId');
-
-        console.log('the category id is ', this.categoryId);
-
-        this.categoryData = this.cd
-        this.categoryName = this.navParams.get('categoryName');
-
-        console.log('category data', this.categoryData)
-
-        this.field = this.categoryData.fields[this.formPageIndex];
-        this.label = this.categoryData.fields[this.formPageIndex].label;
-        this.formAnswers = this.navParams.get('formAnswers');
-
-        if (!this.formAnswers) {
-            this.formAnswers = [];
-        }
-
-        if (this.formPageIndex === this.categoryData.fields.length - 1) {
-            this.lastPage = true;
-        }
-        this.maxStep = this.categoryData.fields.length + 1;
-
-        if (!this.answerObj) {
-            this.answerObj = {};
-        }
-
-        if (!this.formAnswers[this.formPageIndex]) {
-            var thisPageObj = {};
-            thisPageObj['qu'] = this.label;
-            thisPageObj['ans'] = [];
-            this.formAnswers[this.formPageIndex] = thisPageObj;
-
-        }
-        console.log('init form answers', this.formAnswers);
-
-        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
-
-        this.dateTime = null;
-
-
-        window.addEventListener('native.keyboardshow', (e) => {
-
-            console.log('keyboard show')
-            this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'] + 44;
-                this.footerBottom = e['keyboardHeight'];
-            });
-
-        });
-
-        window.addEventListener('native.keyboardhide', (e) => {
-
-            console.log('keyboard hide')
-            this.ngZone.run(() => {
-                console.log('initialising postions')
-                this.contentsBottom = 44;
-                this.footerBottom = 0;
-            });
-        });
-
-    }
-
     clicked(item) {
 
         if (item.can_describe) {
@@ -378,7 +389,7 @@ export class Form {
             return;
         }
 
-        if (this.field.allows_multiple_values) {
+        if (this.curField.allows_multiple_values) {
 
             // if already present and tapped again remove it
             var alreadyPresent
@@ -407,7 +418,7 @@ export class Form {
 
     next() {
 
-        if (this.field.type === "location" && (this.locationStep < this.locationSteps)) {
+        if (this.curField.type === "location" && (this.locationStep < this.locationSteps)) {
             this.ngZone.run(() => {
                 this.locationStep = 2;
             });
@@ -421,13 +432,17 @@ export class Form {
                     this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
             }
 
-            this.nav.push(Form, {
-                index: this.formPageIndex + 1,
-                categoryData: this.cd,
-                categoryId: this.categoryId,
-                formAnswers: this.formAnswers,
-                categoryName: this.categoryName
-            });
+            // this.nav.push(Form, {
+            //     index: this.formPageIndex + 1,
+            //     categoryData: this.cd,
+            //     categoryId: this.categoryId,
+            //     formAnswers: this.formAnswers,
+            //     categoryName: this.categoryName
+            // });
+
+            this.formPageIndex++;
+            this.initFields();
+            this.slides.slideNext(true, 300);
         }
     }
 
@@ -496,6 +511,17 @@ export class Form {
         else {
             this.toValue = "";
             this.formAnswers[this.formPageIndex]['ans'][1] = null;
+        }
+    }
+
+    clickBack() {
+        if (this.formPageIndex > 0) {
+            this.formPageIndex--;
+            this.initFields();
+            this.slides.slidePrev(true, 300);
+        }
+        else {
+            this.nav.setRoot(Home, {}, {animate: false});
         }
     }
 

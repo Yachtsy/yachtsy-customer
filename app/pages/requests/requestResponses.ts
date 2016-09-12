@@ -91,7 +91,7 @@ export class RequestResponses {
                 .then((data) => {
                     console.log(data);
                 });
-        this.nav.push(Messages, { req: this.request, supplierId: item.id });
+        this.nav.push(Messages, { requestId: this.request.id, supplierId: item.id });
     }
 
     showRequestOptions() {

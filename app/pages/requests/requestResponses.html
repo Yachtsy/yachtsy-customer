@@ -12,7 +12,7 @@
 
 <ion-content class="responses">
 
-    <ion-item *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
+    <ion-item class="no-quotes" *ngIf="responses.length ===0">You'll soon start to see quotes here</ion-item>
 
     <div class="quote-wrapper" tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
         <ion-item>
