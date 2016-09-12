@@ -37,6 +37,8 @@ export class Home {
     curPopularIndex = 0;
     popularCategoryList = [];
 
+    profile
+
     constructor(public FBService: FirebaseService,
         public navController: NavController,
         public navParams: NavParams,
@@ -54,6 +56,10 @@ export class Home {
             onInit: function (slides) {
                 self.slides = slides;
             }
+        };
+
+        this.profile = {
+            image: GlobalService.serviceImage,
         };
     }
 

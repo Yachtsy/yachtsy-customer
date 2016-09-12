@@ -499,8 +499,10 @@ export class Form {
                     console.log(requestId);
                     loading.dismiss();
 
-                    GlobalService.mainTabRef.select(1);
-                    this.nav.setRoot(Home, {}, {animate: false});
+                    setTimeout(() => {
+                        this.nav.pop();
+                        GlobalService.mainTabRef.select(1);
+                    }, 100);
                 }, (error) => {
                     console.log(error.message);
                     console.log(error);
@@ -519,8 +521,10 @@ export class Form {
 
             modal.onDidDismiss((data)=>{
                 if (data.cancel !== true) {
-                    GlobalService.mainTabRef.select(1);
-                    this.nav.setRoot(Home, {}, {animate: false});
+                    setTimeout(() => {
+                        this.nav.pop();
+                        GlobalService.mainTabRef.select(1);
+                    }, 100);
                 }
             });
 
@@ -554,7 +558,7 @@ export class Form {
             }
         }
         else {
-            this.nav.setRoot(Home, {}, {animate: false});
+            this.nav.popToRoot();
         }
     }
 
@@ -565,7 +569,8 @@ export class Form {
                     text: 'Cancel Project',
                     role: 'destructive',
                     handler: () => {
-                        this.nav.setRoot(Home, {}, {animate: false});
+                        // this.nav.setRoot(Home, {}, {animate: false});
+                        this.nav.pop();
                     }
                 }, {
                     text: 'Continue Project',

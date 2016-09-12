@@ -15,6 +15,7 @@ export var myRequests = {
 };
 
 export var avatarImage = 'http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg';
+export var serviceImage = 'http://www.isic.cz/wp-content/plugins/orchitech-dm/resources/alive-dm/img/empty-image.png';
 
 export var categoryData = [];
 export var myBoats:any;

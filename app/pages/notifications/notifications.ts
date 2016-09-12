@@ -16,6 +16,7 @@ export class Notifications {
 
     auth: any = {};
     items: any = {};
+    profile
 
     constructor(public FBService: FirebaseService,
         public nav: NavController,
@@ -23,6 +24,10 @@ export class Notifications {
         public navParams: NavParams,
         private ngZone: NgZone,
         private loadingCtrl: LoadingController) {
+
+        this.profile = {
+            image: GlobalService.avatarImage,
+        };
     }
 
     ngOnDestroy() {

@@ -47,7 +47,7 @@ export class Messages {
         this.message = "";
 
         this.profile = {
-            image: "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
+            image: GlobalService.avatarImage,
         };
     }
 

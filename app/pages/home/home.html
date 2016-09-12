@@ -15,7 +15,7 @@
 
     <ion-slides *ngIf="popularCategoryList" (ionDidChange)="onPopularSlideChanged()" [options]="sliderOptions">
         <ion-slide tappable *ngFor="let idx of popularCategoryList" (click)="itemTapped(categoryList[idx])">
-            <div class="popular-image" *ngIf="categoryList[idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[idx].image ? categoryList[idx].image:'http://www.isic.cz/wp-content/plugins/orchitech-dm/resources/alive-dm/img/empty-image.png') + ')'}"></div>
+            <div class="popular-image" *ngIf="categoryList[idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[idx].image ? categoryList[idx].image:profile.image) + ')'}"></div>
             <div class="title-cover-back"></div>
         </ion-slide>
     </ion-slides>
@@ -36,7 +36,7 @@
                 <div class="category-title">{{group.id}}</div>
                 <ion-scroll class="service-list" scrollX="true" *ngIf="categoryList">
                     <div tappable class="service-contents" *ngFor="let item of group.data.categories" (click)="itemTapped(categoryList[item.idx])">
-                        <div class="service-image" *ngIf="categoryList[item.idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[item.idx].image ? categoryList[item.idx].image:'http://www.isic.cz/wp-content/plugins/orchitech-dm/resources/alive-dm/img/empty-image.png') + ')'}"></div>
+                        <div class="service-image" *ngIf="categoryList[item.idx]" [ngStyle]="{'background-image': 'url(' + (categoryList[item.idx].image ? categoryList[item.idx].image:profile.image) + ')'}"></div>
                         <div class="service-name" *ngIf="categoryList[item.idx]">{{categoryList[item.idx].data.name}}</div>
                     </div>
                 </ion-scroll>
