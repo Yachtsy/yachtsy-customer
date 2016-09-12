@@ -30,6 +30,7 @@ export class Home {
 
     dateTimeOptions = [];
     boatInfos = [];
+    myBoats:any;
 
     sliderOptions = {};
 
@@ -246,6 +247,13 @@ export class Home {
                 }
                 console.log(this.boatInfos);
             });
+
+        this.FBService.getMyBoats()
+            .subscribe((data: Array<any>) => {
+                this.myBoats = {
+                    data:   data
+                };
+            });
     }
 
     itemTapped(item) {
@@ -259,6 +267,44 @@ export class Home {
                 categoryData.fields = this.boatInfos.concat(categoryData.fields);
         }
 
+        // allows_multiple_values: false
+        // label: "In what location do you require this service?"
+        // name: "Service location"
+        // possible_values: Array[2]
+        // pro_category_preferences: false
+        // render_as_tally: false
+        // required: true
+        // type: "location"
+
+        var boatListField = [{
+            allows_multiple_values: false,
+            label: "Which boat is this request for?",
+            name: "Boat Information",
+            possible_values: [],
+            required: true,
+            type: "enumeration",
+            isBoatInfo: true,
+        }];
+
+        var myBoats = this.myBoats.data;
+        for (var i = 0; i < myBoats.length; i++) {
+            boatListField[0].possible_values.push({
+                can_describe: false,
+                label: myBoats[i].data.boatName,
+                value: (i + 1)
+            });
+        }
+        boatListField[0].possible_values.push({
+            can_describe: true,
+            label: 'New Boat',
+            value: (myBoats.length + 1)
+        });
+
+        categoryData.fields = boatListField.concat(categoryData.fields);
+
+        GlobalService.boatStartFormIndex = 1;
+        GlobalService.boatInfoCount = this.boatInfos.length;
+
         // dynamically add in the date/time question ;)
         var dateType = item.data.dateType;
         var timeType = item.data.timeType;
@@ -267,12 +313,14 @@ export class Home {
             if (this.dateTimeOptions[1]) {
                 this.dateTimeOptions[1][0].isTimeForm = true;
                 categoryData.fields = this.dateTimeOptions[1].concat(categoryData.fields);
+                GlobalService.boatStartFormIndex++;
             }
         }
         if (dateType === 'general') {
             if (this.dateTimeOptions[0]) {
                 this.dateTimeOptions[0][0].isDateForm = true;
                 categoryData.fields = this.dateTimeOptions[0].concat(categoryData.fields);
+                GlobalService.boatStartFormIndex++;
             }
         }
 
@@ -286,20 +334,13 @@ export class Home {
             } else if (locationType === "multi") {
                 categoryData.fields = this.locationMulti().concat(categoryData.fields);
             }
+            GlobalService.boatStartFormIndex++;
         }
 
-        // let modal = this.modalCtrl.create(Form, {
-        //     index: 0,
-        //     categoryData: categoryData,
-        //     categoryId: categoryId,
-        //     categoryName: categoryName,
-        //     locationType: locationType
-        // });
-        // modal.present();
+        GlobalService.categoryData = categoryData;
+        GlobalService.myBoats = this.myBoats;
 
         this.navController.push(Form, {
-            index:          0,
-            categoryData:   categoryData,
             categoryId:     categoryId,
             categoryName:   categoryName,
             locationType:   locationType

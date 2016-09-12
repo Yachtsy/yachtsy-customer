@@ -238,6 +238,55 @@ export class FirebaseService {
         });
     }
 
+    getBoatInfo() {
+        var ref = firebase.database().ref().child('boatInfo')
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    var arr = this.snapToArr(snapshot);
+                    observer.next(arr)
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
+    getMyBoats() {
+
+        var authData = firebase.auth().currentUser
+        var userRequestsRef = firebase.database().ref().child('users').child(authData.uid).child('boats');
+
+        return new Observable(observer => {
+            userRequestsRef.on('value',
+                (snapshot) => {
+                    var arr = this.snapToArr(snapshot);
+                    observer.next(arr);
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+    }
+
+    addMyBoat(boatInfo) {
+        var authData = firebase.auth().currentUser
+        var userBoatsRef = firebase.database().ref().child('users').child(authData.uid).child('boats');
+
+        userBoatsRef.push(boatInfo, (error) => {
+
+            if (!error) {
+                console.log('pushed new boat: ' + boatInfo);
+            } else {
+                console.log('error pushing boat');
+            }
+
+        });
+    }
+
 
     sendMessage(requestId, supplierId, message) {
         var authData = firebase.auth().currentUser
@@ -447,22 +496,6 @@ export class FirebaseService {
 
     getDateTimeOptions() {
         var ref = firebase.database().ref().child('dateTimeOptions')
-
-        return new Observable(observer => {
-            ref.on('value',
-                (snapshot) => {
-                    var arr = this.snapToArr(snapshot);
-                    observer.next(arr)
-                },
-                (error) => {
-                    console.log("ERROR:", error)
-                    observer.error(error)
-                });
-        });
-    }
-
-    getBoatInfo() {
-        var ref = firebase.database().ref().child('boatInfo')
 
         return new Observable(observer => {
             ref.on('value',

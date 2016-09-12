@@ -41,6 +41,10 @@ export class Form {
     contentsBottom = 0;
     footerBottom = 0;
 
+    myBoats = [];
+    boatIndex = 0;
+    boatName = "";
+
     sliderOptions = {};
     slides: any;
 
@@ -75,15 +79,16 @@ export class Form {
         console.log('ngOnInit - form');
 
         this.maxStep = 1;
-        this.cd = this.navParams.get('categoryData');
         this.categoryId = this.navParams.get('categoryId');
 
         console.log('the category id is ', this.categoryId);
 
-        this.categoryData = this.cd
+        this.categoryData = GlobalService.categoryData;
         this.categoryName = this.navParams.get('categoryName');
 
         console.log('category data', this.categoryData)
+
+        this.myBoats = GlobalService.myBoats;
 
         this.formPageIndex = 0;
         this.formAnswers = [];
@@ -197,6 +202,10 @@ export class Form {
                 console.log('pushing the item on', answerObj);
                 this.formAnswers[this.formPageIndex]['ans'] = [];
                 this.formAnswers[this.formPageIndex]['ans'].push(descriptionIdentifier + answerObj);
+                if (this.curField.isBoatInfo === true) {
+                    this.boatName = answerObj;
+                    this.boatIndex = -1;
+                }
             } else {
                 this.formAnswers[this.formPageIndex]['ans'] = [];
             }
@@ -412,8 +421,10 @@ export class Form {
         }
 
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
-        //console.log(this.formAnswers);
-        //console.log('form ans len: ' + this.formAnswersLength);
+
+        if (this.curField.isBoatInfo === true) {
+            this.boatIndex = item.value - 1;
+        }
     }
 
     next() {
@@ -432,17 +443,20 @@ export class Form {
                     this.formAnswers[this.formPageIndex]['ans'][1] = this.formAnswers[this.formPageIndex]['ans'][0];
             }
 
-            // this.nav.push(Form, {
-            //     index: this.formPageIndex + 1,
-            //     categoryData: this.cd,
-            //     categoryId: this.categoryId,
-            //     formAnswers: this.formAnswers,
-            //     categoryName: this.categoryName
-            // });
+            if (this.curField.isBoatInfo === true && this.boatIndex >= 0) {
+                var boatData = GlobalService.myBoats.data[this.boatIndex].data.data;
+                for (var i = 0; i < boatData.length; i++)
+                    this.formAnswers.push(boatData[i]);
 
-            this.formPageIndex++;
-            this.initFields();
-            this.slides.slideNext(true, 300);
+                this.formPageIndex += (GlobalService.boatInfoCount + 1);
+                this.initFields();
+                this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 300, true);
+            }
+            else {
+                this.formPageIndex++;
+                this.initFields();
+                this.slides.slideNext(true, 300);
+            }
         }
     }
 
@@ -466,6 +480,18 @@ export class Form {
             });
 
             loading.present();
+
+            if (this.boatIndex < 0) {
+                var boatInfo = {
+                    boatName:   this.boatName,
+                    data:       []
+                };
+
+                for (var i = 0; i < GlobalService.boatInfoCount; i++) {
+                    boatInfo.data.push(this.formAnswers[GlobalService.boatStartFormIndex + i]);
+                }
+                this.FBService.addMyBoat(boatInfo);
+            }
 
             this.FBService.submitRequest(request)
                 .subscribe((requestId) => {
@@ -516,9 +542,16 @@ export class Form {
 
     clickBack() {
         if (this.formPageIndex > 0) {
-            this.formPageIndex--;
-            this.initFields();
-            this.slides.slidePrev(true, 300);
+            if (this.boatIndex >= 0 && this.formPageIndex === GlobalService.boatStartFormIndex + GlobalService.boatInfoCount) {
+                this.formPageIndex = GlobalService.boatStartFormIndex - 1;
+                this.initFields();
+                this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 300, true);
+            }
+            else {
+                this.formPageIndex--;
+                this.initFields();
+                this.slides.slidePrev(true, 300);
+            }
         }
         else {
             this.nav.setRoot(Home, {}, {animate: false});

@@ -15,3 +15,8 @@ export var myRequests = {
 };
 
 export var avatarImage = 'http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg';
+
+export var categoryData = [];
+export var myBoats:any;
+export var boatStartFormIndex = 0;
+export var boatInfoCount = 0;
