@@ -1,57 +1,81 @@
 <ion-header>
     <ion-navbar no-border-bottom>
-        <ion-title> {{footerBottom}}
+        <ion-title>
         </ion-title>
         <ion-buttons end>
             <button [disabled]="alreadyHiredSupplier" (click)="contact()">Contact</button>
         </ion-buttons>
     </ion-navbar>
-    <ion-toolbar no-border-top>
-        Details about the job and the pro
-    </ion-toolbar>
 </ion-header>
 
 <ion-content class="message-content messages" [ngStyle]="{bottom: contentsBottom + 'px'}">
 
-    <ion-item>
-        $ {{price}} total price
-    </ion-item>
+    <div class="profile-wrapper">
+        <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+        <div class="supplier-name">Ty's Steam Cleaning</div>
+        <rating score="5" max="5"></rating>
+        <div class="review-count">96 reviews</div>
+        <div class="togglebutton-wrapper">
+            <div [ngClass]="(curTab === 0) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(0);">Quote</div>
+            <div [ngClass]="(curTab === 1) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(1);">Profile</div>
+        </div>
+    </div>
 
-    <!--<div>
-        <ion-card *ngFor="let item of messages; let i = index">
-            <ion-card-header *ngIf="item.data.uid === userId">
-                Me:
-            </ion-card-header>
+    <div *ngIf="curTab === 1">
+        <ion-list>
+            <ion-item>Ty's Steam Cleaning</ion-item>
+            <ion-item>10 years of experience</ion-item>
+            <ion-item>New York, NY</ion-item>
+            <ion-item>(718) 514-0137</ion-item>
+            <ion-item>tystreamcleaning.com</ion-item>
+        </ion-list>
+    </div>
 
-            <ion-card-header *ngIf="item.data.uid !== userId">
-                Pro:
-            </ion-card-header>
+    <div *ngIf="curTab === 0">
+        <div class="price-header">
+            $ {{price}} <span class="desc">total price</span>
+        </div>
 
-            <ion-card-content>
-                <p>
-                    {{item.data.body}}
-                </p>
-            </ion-card-content>
+        <!--<div>
+            <ion-card *ngFor="let item of messages; let i = index">
+                <ion-card-header *ngIf="item.data.uid === userId">
+                    Me:
+                </ion-card-header>
 
-        </ion-card>
-    </div>-->
+                <ion-card-header *ngIf="item.data.uid !== userId">
+                    Pro:
+                </ion-card-header>
 
-    <ion-list no-lines>
-        <ion-item *ngFor="let msg of messages">
-            <chat-bubble [message]="msg"></chat-bubble>
-        </ion-item>
-    </ion-list>
+                <ion-card-content>
+                    <p>
+                        {{item.data.body}}
+                    </p>
+                </ion-card-content>
+
+            </ion-card>
+        </div>-->
+
+        <ion-list no-lines>
+            <ion-item *ngFor="let msg of messages">
+                <chat-bubble [message]="msg"></chat-bubble>
+            </ion-item>
+        </ion-list>
+    </div>
 
 </ion-content>
+
 <!--[ngStyle]="{bottom: footerBottom + 'px'}"-->
-<ion-footer no-border-top [ngStyle]="{bottom: footerBottom + 'px'}">
+<ion-footer no-border-top [ngStyle]="{bottom: footerBottom + 'px'}" *ngIf="curTab === 0">
+    <ion-input #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox" placeholder="Write a message..."></ion-input>
     <ion-toolbar class="message-bar">
-        <!--[disabled]="request.hiring.supplierId !== supplierId"-->
-        <ion-input #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox"></ion-input>
+        <ion-buttons start>
+            <button royal *ngIf="request" (click)="attachMessage($event)">
+                Attach
+            </button>
+        </ion-buttons>
         <ion-buttons end>
-            <!--[disabled]="request.hired.supplierId !== supplierId"-->
             <button royal *ngIf="request" (click)="sendMessage($event)">
-                <ion-icon name="send"></ion-icon>
+                Send
             </button>
         </ion-buttons>
     </ion-toolbar>

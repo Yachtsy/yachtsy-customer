@@ -1,22 +1,109 @@
 
-.chatbox {
+.messages {
+
+  scroll-content {
+    margin-bottom: 0px !important;
+  }
+
+  .chatbox {
     width: 100%;
     height: 44px;
     border: none;
     background: none;
     padding: 0px 10px;
-}
+    border-top: 1px solid #005677;
+  }
 
-.message-content {
+  .message-content {
     height: auto;
-}
+  }
 
-.message-bar {
+  .message-bar {
     position: absolute;
     bottom: 0px;
     height: 44px;
-}
+  }
 
   ion-label {
       margin: 0px 8px 13px 0;
   }
+
+  .profile-wrapper {
+    padding: 0px 20px 20px 20px;
+    background: #005677;
+    text-align: center;
+    color: white;
+  }
+
+  .avatar-image {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .supplier-name {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 3px;
+    word-break: break-all;
+    white-space: normal;
+  }
+
+  .review-count {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .togglebutton-wrapper {
+    display: inline-block;  
+    width: 165px;
+    height: 30px;
+    background: #0a5b7a;
+    margin-top: 10px;
+  }
+
+  .toggle-button {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    background: none;
+  }
+
+  .toggle-button.selected {
+    color: black;
+    background: white;
+  }
+
+  ion-footer {
+    height: 88px;
+  }
+
+  button {
+    color: white; 
+  }
+
+  .toolbar-background {
+    background: #005677;
+  }
+
+  .price-header {
+    width: 100%;
+    height: 40px;
+    background: #dce2e0;
+    text-align: center;
+    line-height: 35px;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .price-header .desc {
+    font-size: 1.2rem;
+    color: #005677;
+  }
+}

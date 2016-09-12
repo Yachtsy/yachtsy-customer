@@ -4,7 +4,7 @@ import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
 import {ElasticTextarea} from '../../components/elastic-textarea';
-
+import {RatingComponentUpdateable} from '../../components/ratingsComponent';
 import {Keyboard, InAppPurchase} from 'ionic-native';
 
 import GlobalService = require('../../components/globalService');
@@ -12,7 +12,7 @@ import GlobalService = require('../../components/globalService');
 
 @Page({
     templateUrl: 'build/pages/requests/messages.html',
-    directives: [ChatBubble, ElasticTextarea]
+    directives: [ChatBubble, ElasticTextarea, RatingComponentUpdateable]
 })
 export class Messages {
 
@@ -30,6 +30,7 @@ export class Messages {
     pageElement: any;
     profile;
     tabBarDisplayStatus = '';
+    curTab = 0;
 
     @ViewChild(Content) content: Content;
 
@@ -113,7 +114,7 @@ export class Messages {
 
         this.ngZone.run(() => {
             console.log('init positions')
-            this.contentsBottom = 44;
+            this.contentsBottom = 88;
             this.footerBottom = 0;
         });
 
@@ -121,7 +122,7 @@ export class Messages {
 
             console.log('keyboard show')
             this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'] + 44;
+                this.contentsBottom = e['keyboardHeight'] + 88;
                 this.footerBottom = e['keyboardHeight'];
 
                 setTimeout(() => {
@@ -136,7 +137,7 @@ export class Messages {
             console.log('keyboard hide')
             this.ngZone.run(() => {
                 console.log('initialising postions')
-                this.contentsBottom = 44;
+                this.contentsBottom = 88;
                 this.footerBottom = 0;
             });
         });
@@ -160,6 +161,21 @@ export class Messages {
         this.pageElement.style.background = 'none';
     }
 
+    clickToggle(idx) {
+        this.curTab = idx;
+        if (idx === 0) {
+            this.contentsBottom = 88;
+            this.footerBottom = 0;
+        }
+        else if (idx === 1) {
+            this.contentsBottom = 0;
+            this.footerBottom = 0;
+        }
+
+        if (typeof Keyboard !== 'undefined')
+            Keyboard.close();
+    }
+
     sendMessage($event) {
 
         if (!this.message) {
@@ -168,6 +184,10 @@ export class Messages {
         console.log('about to send message: ' + this.message);
         this.FBService.sendMessage(this.requestId, this.supplierId, this.message);
         this.message = "";
+    }
+
+    attachMessage($event) {
+
     }
 
     CREDITS_REQUIRED = 1;
