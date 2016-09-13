@@ -529,22 +529,9 @@ export class FirebaseService {
 
     }
 
-
     getCreditBalance() {
-
         var user = firebase.auth().currentUser;
-        // check the credits 
-        let ref = firebase.database().ref().child('users').child(user.uid).child('credits').child('balance');
-
-        return new Observable(observer => {
-            ref.on('value',
-                (snapshot) => {
-                    if (snapshot.exists()) {
-                        ref.off();
-                        observer.next(snapshot.val())
-                    }
-                });
-        });
+        return firebase.database().ref().child('users').child(user.uid).child('credits').child('balance').once('value');
     }
 
     submitRequest(request) {

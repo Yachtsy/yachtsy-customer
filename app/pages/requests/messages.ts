@@ -31,6 +31,8 @@ export class Messages {
     profile;
     tabBarDisplayStatus = '';
     curTab = 0;
+    freeCreditsMode = false;
+    creditsRequiredForCategory = 100;
 
     @ViewChild(Content) content: Content;
 
@@ -50,6 +52,21 @@ export class Messages {
         this.profile = {
             image: GlobalService.avatarImage,
         };
+
+        firebase.database().ref().child('config')
+            .on('value', (snapshot) => {
+
+                if (snapshot.exists()) {
+                    let config = snapshot.val();
+                    console.log('config is', config)
+                    this.freeCreditsMode = config.freeCreditsMode;
+                    this.creditsRequiredForCategory = config.creditsRequiredForCategory;
+                } else {
+                    throw new Error('Config snapshot missing');
+                }
+                
+            });
+
     }
 
     @ViewChild('chat_input') input: any;
@@ -190,7 +207,7 @@ export class Messages {
 
     }
 
-    CREDITS_REQUIRED = 1;
+    
 
 
     confirm = this.alertCtrl.create({
@@ -227,12 +244,9 @@ export class Messages {
                                         .then(() => {
 
                                             console.log('receipt was validated');
-
                                             this.FBService.getCreditBalance()
-                                                .subscribe((balance) => {
-
+                                                .then((balance) => {
                                                     console.log('New credit balance is: ' + balance);
-
                                                 });
 
                                         }).catch((error) => {
@@ -262,6 +276,15 @@ export class Messages {
     }
 
     contact() {
+        this.alreadyHiredSupplier = true;
+        this.FBService.hire(this.requestId, this.supplierId)
+            .subscribe(() => {
+                console.log(this.supplierId + ' has been requested for hire');
+            });
+
+    }
+
+    prepareContact() {
 
         console.log('contact requested');
         let confirm = this.alertCtrl.create({
@@ -279,26 +302,24 @@ export class Messages {
                     handler: () => {
                         console.log('confirmed contact');
 
-                        this.FBService.getCreditBalance()
-                            .subscribe((balance) => {
+                        if (this.freeCreditsMode) {
+                            this.contact();
+                        } else {
+                            this.FBService.getCreditBalance()
+                                .then((balance) => {
 
-                                console.log('got credits balance: ' + balance);
+                                    console.log('got credits balance: ' + balance);
 
-                                if (balance < this.CREDITS_REQUIRED) {
-                                    console.log('insufficient credits');
+                                    if (balance < this.creditsRequiredForCategory) {
+                                        console.log('insufficient credits');
+                                        this.promptCredits();
+                                    } else {
+                                        this.contact();
+                                    }
+                                });
+                        }
 
-                                    this.promptCredits();
 
-
-                                } else {
-                                    this.alreadyHiredSupplier = true;
-
-                                    this.FBService.hire(this.requestId, this.supplierId)
-                                        .subscribe(() => {
-                                            console.log(this.supplierId + ' has been requested for hire');
-                                        });
-                                }
-                            });
 
                     }
                 }
