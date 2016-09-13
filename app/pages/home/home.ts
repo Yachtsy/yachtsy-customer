@@ -301,24 +301,28 @@ export class Home {
             isBoatInfo: true,
         }];
 
-        var myBoats = this.myBoats.data;
-        for (var i = 0; i < myBoats.length; i++) {
+        if (this.myBoats) {
+
+            var myBoats = this.myBoats.data;
+            for (var i = 0; i < myBoats.length; i++) {
+                boatListField[0].possible_values.push({
+                    can_describe: false,
+                    label: myBoats[i].data.boatName,
+                    value: (i + 1)
+                });
+            }
             boatListField[0].possible_values.push({
-                can_describe: false,
-                label: myBoats[i].data.boatName,
-                value: (i + 1)
+                can_describe: true,
+                label: 'New Boat',
+                value: (myBoats.length + 1)
             });
+
+            categoryData.fields = boatListField.concat(categoryData.fields);
+
+            GlobalService.boatStartFormIndex = 1;
+            GlobalService.boatInfoCount = this.boatInfos.length;
+
         }
-        boatListField[0].possible_values.push({
-            can_describe: true,
-            label: 'New Boat',
-            value: (myBoats.length + 1)
-        });
-
-        categoryData.fields = boatListField.concat(categoryData.fields);
-
-        GlobalService.boatStartFormIndex = 1;
-        GlobalService.boatInfoCount = this.boatInfos.length;
 
         // dynamically add in the date/time question ;)
         var dateType = item.data.dateType;
