@@ -487,6 +487,23 @@ export class FirebaseService {
         });
     }
 
+    getFreeCreditsMode(){
+
+        let ref = firebase.database().ref().child('config').child('freeCreditsMode');
+
+        return new Observable(observer => {
+            ref.on('value',
+                (snapshot) => {
+                    observer.next(snapshot.val())
+                },
+                (error) => {
+                    console.log("ERROR:", error)
+                    observer.error(error)
+                });
+        });
+
+    }
+
     getUserProfile() {
 
         var user = firebase.auth().currentUser;
