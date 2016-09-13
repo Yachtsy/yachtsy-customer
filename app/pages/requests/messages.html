@@ -16,8 +16,8 @@
         <rating score="5" max="5"></rating>
         <div class="review-count">96 reviews</div>
         <div class="togglebutton-wrapper">
-            <div [ngClass]="(curTab === 0) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(0);">Quote</div>
-            <div [ngClass]="(curTab === 1) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(1);">Profile</div>
+            <div tappable [ngClass]="(curTab === 0) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(0);">Quote</div>
+            <div tappable [ngClass]="(curTab === 1) ? 'toggle-button selected':'toggle-button'" (click)="clickToggle(1);">Profile</div>
         </div>
     </div>
 

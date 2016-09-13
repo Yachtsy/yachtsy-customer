@@ -471,6 +471,18 @@ export class Form {
         // that the user's account exists - trying to submit a request when you 
         // do not have an account will fail anyway.
 
+        var boatInfo = null;
+        if (this.boatIndex < 0) {
+            boatInfo = {
+                boatName:   this.boatName,
+                data:       []
+            };
+
+            for (var i = 0; i < GlobalService.boatInfoCount; i++) {
+                boatInfo.data.push(this.formAnswers[GlobalService.boatStartFormIndex + i]);
+            }
+        }
+
         if (this.FBService.isAuthenticated()) {
 
             console.log('requests is authenticated');
@@ -481,17 +493,7 @@ export class Form {
 
             loading.present();
 
-            if (this.boatIndex < 0) {
-                var boatInfo = {
-                    boatName:   this.boatName,
-                    data:       []
-                };
-
-                for (var i = 0; i < GlobalService.boatInfoCount; i++) {
-                    boatInfo.data.push(this.formAnswers[GlobalService.boatStartFormIndex + i]);
-                }
-                this.FBService.addMyBoat(boatInfo);
-            }
+            this.FBService.addMyBoat(boatInfo);
 
             this.FBService.submitRequest(request)
                 .subscribe((requestId) => {
@@ -516,7 +518,7 @@ export class Form {
         } else {
 
             console.log('request not authenticaed - presenting modal');
-            let modal = this.modalCtrl.create(ModalsContentPage, { req: request });
+            let modal = this.modalCtrl.create(ModalsContentPage, { req: request, boat: boatInfo });
             modal.present();
 
             modal.onDidDismiss((data)=>{

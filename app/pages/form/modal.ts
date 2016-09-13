@@ -20,6 +20,7 @@ import {
 export class ModalsContentPage {
 
     req
+    boatInfo
 
     form: ControlGroup
 
@@ -35,6 +36,7 @@ export class ModalsContentPage {
         private builder: FormBuilder
     ) {
         this.req = this.params.get('req')
+        this.boatInfo = this.params.get('boat')
 
         this.name = new Control("", Validators.required)
         this.email = new Control("", Validators.required)
@@ -97,6 +99,9 @@ export class ModalsContentPage {
                 if (this.req) {
                     console.log('sumbitting request');
 
+                    if (this.boatInfo)
+                        this.FBService.addMyBoat(this.boatInfo);
+
                     this.FBService.submitRequest(this.req)
                         .subscribe((requestId) => {
                             console.log('after submit request')
@@ -113,7 +118,6 @@ export class ModalsContentPage {
                 }
             })
     }
-
 
     dismiss() {
         this.viewCtrl.dismiss({
