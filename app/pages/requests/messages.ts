@@ -1,5 +1,5 @@
 import {Component, NgZone, ViewChild} from '@angular/core';
-import {AlertController, Page, Content, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Page, Content, NavController, NavParams, LoadingController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
@@ -40,7 +40,8 @@ export class Messages {
         public navParams: NavParams,
         public FBService: FirebaseService,
         private ngZone: NgZone,
-        private alertCtrl: AlertController) {
+        private alertCtrl: AlertController,
+        private loadingCtrl: LoadingController) {
 
         this.requestId = this.navParams.get('requestId');
         console.log('the request id is', this.requestId);
@@ -64,7 +65,7 @@ export class Messages {
                 } else {
                     throw new Error('Config snapshot missing');
                 }
-                
+
             });
 
     }
@@ -207,7 +208,7 @@ export class Messages {
 
     }
 
-    
+
 
 
     confirm = this.alertCtrl.create({
@@ -277,11 +278,44 @@ export class Messages {
 
     contact() {
         this.alreadyHiredSupplier = true;
-        this.FBService.hire(this.requestId, this.supplierId)
-            .subscribe(() => {
-                console.log(this.supplierId + ' has been requested for hire');
-            });
 
+        let loading = this.loadingCtrl.create({
+            content: 'Contacting Pro'
+        });
+
+        loading.present();
+
+        this.FBService.contact(this.requestId, this.supplierId)
+            .then((result) => {
+                loading.dismiss().then(() => {
+
+                    console.log('contact result: ', result);
+                    console.log(this.supplierId + ' has been requested for hire');
+
+                    if (result.operationSuccess === true && result.message === "success") {
+                        this.doAlert("Success", "You can now contact the Pro", 'OK')
+                    } else {
+                        this.doAlert("Error", result.message, 'OK')
+                    }
+                });
+            });
+    }
+
+    doAlert(title, message, buttonText) {
+
+        let alert = this.alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+                {
+                    text: buttonText,
+                    handler: () => {
+
+                    }
+                }
+            ]
+        });
+        alert.present();
     }
 
     prepareContact() {
