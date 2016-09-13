@@ -64,13 +64,10 @@ export class Home {
     }
 
     ngOnInit() {
+        this.isLoggedIn = this.FBService.isAuthenticated();
+
         this.getCategoryInfo();
-
-        if (firebase.auth().currentUser) {
-            console.log('getting requests');
-            this.getMyRequests();
-        }
-
+        this.getMyRequests();
     }
 
     onPageWillEnter() {
@@ -87,7 +84,7 @@ export class Home {
     }
 
     getMyRequests() {
-        if (!firebase.auth().currentUser)
+        if (!this.isLoggedIn)
             return;
 
         this.FBService.getMyRequests()
@@ -259,7 +256,7 @@ export class Home {
                 console.log(this.boatInfos);
             });
 
-        if (firebase.auth().currentUser) {
+        if (this.isLoggedIn) {
             this.FBService.getMyBoats()
                 .subscribe((data: Array<any>) => {
                     this.myBoats = {
@@ -267,8 +264,6 @@ export class Home {
                     };
                 });
         }
-
-
     }
 
     itemTapped(item) {
@@ -282,15 +277,6 @@ export class Home {
                 categoryData.fields = this.boatInfos.concat(categoryData.fields);
         }
 
-        // allows_multiple_values: false
-        // label: "In what location do you require this service?"
-        // name: "Service location"
-        // possible_values: Array[2]
-        // pro_category_preferences: false
-        // render_as_tally: false
-        // required: true
-        // type: "location"
-
         var boatListField = [{
             allows_multiple_values: false,
             label: "Which boat is this request for?",
@@ -300,10 +286,12 @@ export class Home {
             type: "enumeration",
             isBoatInfo: true,
         }];
+        var myBoatsLength = 0;
 
         if (this.myBoats) {
-
             var myBoats = this.myBoats.data;
+            myBoatsLength = myBoats.length;
+            
             for (var i = 0; i < myBoats.length; i++) {
                 boatListField[0].possible_values.push({
                     can_describe: false,
@@ -311,18 +299,18 @@ export class Home {
                     value: (i + 1)
                 });
             }
-            boatListField[0].possible_values.push({
-                can_describe: true,
-                label: 'New Boat',
-                value: (myBoats.length + 1)
-            });
-
-            categoryData.fields = boatListField.concat(categoryData.fields);
-
-            GlobalService.boatStartFormIndex = 1;
-            GlobalService.boatInfoCount = this.boatInfos.length;
-
         }
+
+        boatListField[0].possible_values.push({
+            can_describe: true,
+            label: 'New Boat',
+            value: (myBoatsLength + 1)
+        });
+
+        categoryData.fields = boatListField.concat(categoryData.fields);
+
+        GlobalService.boatStartFormIndex = 1;
+        GlobalService.boatInfoCount = this.boatInfos.length;
 
         // dynamically add in the date/time question ;)
         var dateType = item.data.dateType;

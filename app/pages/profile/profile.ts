@@ -31,18 +31,33 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        this.getProfile();
     }
 
     ngOnInit() {
         this.profile = {
-            image: "http://www.kodeinfo.com/admin/assets/img/avatars/default-avatar.jpg",
-            name: "Al Grata"
+            name:       '',
+            image:      GlobalService.avatarImage
         };
+    }
 
-        this.activeUser = firebase.auth().currentUser;
-        // if (this.activeUser) {
-        //     this.profile.name = this.activeUser.name;
-        // }
+    getProfile() {
+        if (!this.FBService.isAuthenticated()) {
+            this.profile = {
+                name:       '',
+                image:      GlobalService.avatarImage
+            };
+            return;
+        }
+
+        this.FBService.getUserProfile()
+        .subscribe((data)=>{
+            console.log('Profile: ' + data);
+            this.ngZone.run(() => {
+                this.profile = data;
+                this.profile.image = GlobalService.avatarImage;
+            });
+        });
     }
 
     itemTapped(idx) {
@@ -54,8 +69,6 @@ export class Profile {
 
         if (idx === 3) {
             this.navController.push(DebugPage);
-            
-
         }
 
     }
