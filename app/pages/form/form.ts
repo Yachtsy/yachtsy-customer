@@ -392,6 +392,7 @@ export class Form {
     }
 
     clicked(item) {
+        console.log('clicked');
 
         if (item.can_describe) {
             //this.formAnswers[this.formPageIndex] = {};
@@ -450,7 +451,7 @@ export class Form {
 
                 this.formPageIndex += (GlobalService.boatInfoCount + 1);
                 this.initFields();
-                this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 300, true);
+                this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 0, true);
             }
             else {
                 this.formPageIndex++;
@@ -551,7 +552,7 @@ export class Form {
             if (this.boatIndex >= 0 && this.formPageIndex === GlobalService.boatStartFormIndex + GlobalService.boatInfoCount) {
                 this.formPageIndex = GlobalService.boatStartFormIndex - 1;
                 this.initFields();
-                this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 300, true);
+                this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 0, true);
             }
             else {
                 this.formPageIndex--;

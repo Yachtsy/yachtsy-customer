@@ -219,7 +219,6 @@ export class FirebaseService {
         });
     }
 
-
     getMyResponses(requestId) {
 
         var authData = firebase.auth().currentUser

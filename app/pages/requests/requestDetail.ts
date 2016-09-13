@@ -22,13 +22,15 @@ export class RequestDetail {
         this.requestId = navParams.get('reqId');
         console.log('the request id is ' + this.requestId);
 
-        this.FBService.getRequest(this.requestId)
-            .subscribe((res: any) => {
+        if (typeof firebase !== 'undefined') {
+            this.FBService.getRequest(this.requestId)
+                .subscribe((res: any) => {
 
-                this.request = res.data;
-                console.log('the request is: ', this.request);
-                this.requestBody = JSON.parse(this.request.body);
-            });
+                    this.request = res.data;
+                    console.log('the request is: ', this.request);
+                    this.requestBody = JSON.parse(this.request.body);
+                });
+        }
     }
 
     ngOnDestroy() {

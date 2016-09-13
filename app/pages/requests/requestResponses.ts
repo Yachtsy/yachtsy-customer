@@ -51,35 +51,36 @@ export class RequestResponses {
 
         console.log('ngOnInit - requestDetail = ', this.request);
 
-        this.FBService.getMyResponses(this.request.id)
-            .subscribe((data: any) => {
-                console.log('my responses are', data);
-                this.responses = data;
+        if (typeof firebase !== 'undefined') {
+            this.FBService.getMyResponses(this.request.id)
+                .subscribe((data: any) => {
+                    console.log('my responses are', data);
+                    this.responses = data;
+                });
+
+            this.responses.map((response) => {
+                let reviews = response.data.supplierReviews;
+
+                let rating = 0;
+                if (reviews !== 0) {
+
+                    Object.keys(reviews).map((key) => {
+                        let thisRating = reviews[key].rating
+                        console.log('rating: ', rating);
+                        rating += thisRating;
+                    })
+                }
+
+
+                response.data.reviewRating = rating;
+                if (rating > 0) {
+                    response.data.reviewRating /= Object.keys(reviews).length;
+                }
+
+                this.totalReviews = Object.keys(reviews).length;
+
             });
-
-        this.responses.map((response) => {
-            let reviews = response.data.supplierReviews;
-
-            let rating = 0;
-            if (reviews !== 0) {
-
-                Object.keys(reviews).map((key) => {
-                    let thisRating = reviews[key].rating
-                    console.log('rating: ', rating);
-                    rating += thisRating;
-                })
-            }
-
-
-            response.data.reviewRating = rating;
-            if (rating > 0) {
-                response.data.reviewRating /= Object.keys(reviews).length;
-            }
-
-            this.totalReviews = Object.keys(reviews).length;
-
-        });
-
+        }
     }
 
     gotoMessages(item) {

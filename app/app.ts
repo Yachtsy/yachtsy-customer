@@ -32,10 +32,14 @@ export class MyApp {
 
       var nav: NavController = this.app.getActiveNav();
 
-      firebase.auth().onAuthStateChanged((authData) => {
-        console.log('auth state changed', authData);
+      if (typeof firebase !== 'undefined') {
+        firebase.auth().onAuthStateChanged((authData) => {
+          console.log('auth state changed', authData);
+          this.start();
+        });
+      }
+      else
         this.start();
-      });
 
       if (typeof FirebasePlugin !== 'undefined') {
         FirebasePlugin.grantPermission();
@@ -124,74 +128,79 @@ export class MyApp {
 
   start() {
     console.log('checking if user is logged in');
-    let user = firebase.auth().currentUser;
-    if (user) {
-      console.log('user is logged in');
-      // check if the user has a user area - if not - logout
-      var userRef = firebase.database().ref().child('users').child(user.uid);
-      userRef.once('value', (snapshot) => {
-        if (!snapshot.exists()) {
-          console.log('user profile does not exist - logging out ' + user.uid);
-          // this.ngZone.run(() => {
-          //   firebase.auth().signOut();
-          // });
-          // this.rootPage = Home;
-        } else {
-          console.log('going to the requets page');
-          // this.ngZone.run(() => {
-          //   this.rootPage = Requests;
-          // });
-        }
-      });
+    if (typeof firebase !== 'undefined') {
+      let user = firebase.auth().currentUser;
+      if (user) {
+        console.log('user is logged in');
+        // check if the user has a user area - if not - logout
+        var userRef = firebase.database().ref().child('users').child(user.uid);
+        userRef.once('value', (snapshot) => {
+          if (!snapshot.exists()) {
+            console.log('user profile does not exist - logging out ' + user.uid);
+            // this.ngZone.run(() => {
+            //   firebase.auth().signOut();
+            // });
+            // this.rootPage = Home;
+          } else {
+            console.log('going to the requets page');
+            // this.ngZone.run(() => {
+            //   this.rootPage = Requests;
+            // });
+          }
+        });
 
-    } else {
-      console.log('user not logged in. going to home page');
-      // this.rootPage = Home;
+      } else {
+        console.log('user not logged in. going to home page');
+        // this.rootPage = Home;
+      }
     }
 
+    console.log('root page');
     this.ngZone.run(() => {
       this.rootPage = Tabs;
     });
 
-    firebase.auth().onAuthStateChanged(
-      (user) => {
-        if (user) {
-          firebase.database().ref().child('users').child(user.uid).child('completionRequests')
-            .on('value', (snapshot) => {
+    if (typeof firebase !== 'undefined') {
+      firebase.auth().onAuthStateChanged(
+        (user) => {
+          if (user) {
+            firebase.database().ref().child('users').child(user.uid).child('completionRequests')
+              .on('value', (snapshot) => {
 
-              var nav: NavController = this.app.getActiveNav();
+                var nav: NavController = this.app.getActiveNav();
 
-              if (snapshot.exists()) {
-                console.log('COMPLETION REQUESTS:', snapshot.val());
+                if (snapshot.exists()) {
+                  console.log('COMPLETION REQUESTS:', snapshot.val());
 
-                var completionRequests = snapshot.val();
-                var completionRequestKeys = Object.keys(completionRequests);
+                  var completionRequests = snapshot.val();
+                  var completionRequestKeys = Object.keys(completionRequests);
 
-                completionRequestKeys.map((key) => {
-                  var completionRequest = completionRequests[key];
+                  completionRequestKeys.map((key) => {
+                    var completionRequest = completionRequests[key];
 
-                  var params = {
-                    requestId: key,
-                    supplierId: completionRequest.supplierId,
-                    firstName: completionRequest.supplierFirstName,
-                    lastName: completionRequest.supplierLastName
-                  };
+                    var params = {
+                      requestId: key,
+                      supplierId: completionRequest.supplierId,
+                      firstName: completionRequest.supplierFirstName,
+                      lastName: completionRequest.supplierLastName
+                    };
 
-                  let modal;
-                  if (completionRequest.confirmed === undefined) {
-                    console.log('presenting modal: ' + key);
-                    let modal = this.modalCtrl.create(CompletionModal, params);
-                    modal.present();
-                  } else if (completionRequest.confirmed === true && !completionRequest.reviewed) {
-                    let modal = this.modalCtrl.create(ReviewModal, params);
-                    modal.present();
-                  }
+                    let modal;
+                    if (completionRequest.confirmed === undefined) {
+                      console.log('presenting modal: ' + key);
+                      let modal = this.modalCtrl.create(CompletionModal, params);
+                      modal.present();
+                    } else if (completionRequest.confirmed === true && !completionRequest.reviewed) {
+                      let modal = this.modalCtrl.create(ReviewModal, params);
+                      modal.present();
+                    }
 
-                });
-              }
-            })
-        }
-      });
+                  });
+                }
+              })
+          }
+        });
+    }
   }
 }
 

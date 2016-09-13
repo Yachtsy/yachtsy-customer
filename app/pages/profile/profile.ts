@@ -31,7 +31,9 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        this.getProfile();
+        if (typeof firebase !== 'undefined') {
+            this.getProfile();
+        }
     }
 
     ngOnInit() {
@@ -62,9 +64,11 @@ export class Profile {
 
     itemTapped(idx) {
         if (idx === 2) {
-            this.FBService.logout().then((data: any) => {
-                GlobalService.mainTabRef.select(0);
-            });
+            if (typeof firebase !== 'undefined') {
+                this.FBService.logout().then((data: any) => {
+                    GlobalService.mainTabRef.select(0);
+                });
+            }
         }
 
         if (idx === 3) {

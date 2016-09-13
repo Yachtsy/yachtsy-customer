@@ -60,20 +60,21 @@ export class ModalsContentPage {
         //console.log('User Form info:')
         //console.log(this.form.value)
 
+        if (typeof firebase !== 'undefined') {
+            if (this.FBService.isAuthenticated()) {
 
-        if (this.FBService.isAuthenticated()) {
+                var authData = this.FBService.getAuthData();
+                this.createUser(authData)
 
-            var authData = this.FBService.getAuthData();
-            this.createUser(authData)
+            } else {
 
-        } else {
-
-            this.FBService.loginAnon()
-                .subscribe((authdata: any) => {
-                    console.log(' auth done will now try to create user - auth data:')
-                    //console.log(authdata)
-                    this.createUser(authdata);
-                });
+                this.FBService.loginAnon()
+                    .subscribe((authdata: any) => {
+                        console.log(' auth done will now try to create user - auth data:')
+                        //console.log(authdata)
+                        this.createUser(authdata);
+                    });
+            }
         }
     }
 

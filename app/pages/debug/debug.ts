@@ -31,14 +31,15 @@ export class DebugPage {
         private builder: FormBuilder
     ) {
        
-        this.FBService.getUserProfile()
-        .subscribe((usr)=>{
-            console.log(usr);
-            this.user = usr;
-        });
+        if (typeof firebase !== 'undefined') {
+            this.FBService.getUserProfile()
+            .subscribe((usr)=>{
+                console.log(usr);
+                this.user = usr;
+            });
 
-        this.userId = firebase.auth().currentUser.uid
-
+            this.userId = firebase.auth().currentUser.uid
+        }
     }
 
     dismiss() {

@@ -34,6 +34,9 @@ export class Messages {
     freeCreditsMode = false;
     creditsRequiredForCategory = 100;
 
+    reviewRating: number;
+    totalReviews: number;
+
     @ViewChild(Content) content: Content;
 
     constructor(public nav: NavController,
@@ -54,20 +57,21 @@ export class Messages {
             image: GlobalService.avatarImage,
         };
 
-        firebase.database().ref().child('config')
-            .on('value', (snapshot) => {
+        if (typeof firebase !== 'undefined') {
+            firebase.database().ref().child('config')
+                .on('value', (snapshot) => {
 
-                if (snapshot.exists()) {
-                    let config = snapshot.val();
-                    console.log('config is', config)
-                    this.freeCreditsMode = config.freeCreditsMode;
-                    this.creditsRequiredForCategory = config.creditsRequiredForCategory;
-                } else {
-                    throw new Error('Config snapshot missing');
-                }
+                    if (snapshot.exists()) {
+                        let config = snapshot.val();
+                        console.log('config is', config)
+                        this.freeCreditsMode = config.freeCreditsMode;
+                        this.creditsRequiredForCategory = config.creditsRequiredForCategory;
+                    } else {
+                        throw new Error('Config snapshot missing');
+                    }
 
-            });
-
+                });
+        }
     }
 
     @ViewChild('chat_input') input: any;
@@ -81,55 +85,76 @@ export class Messages {
         console.log('ngOnInit - messages reqid = ', this.request);
         console.log('--------');
 
-        if (this.FBService.getAuthData()) {
-            this.userId = this.FBService.getAuthData().uid;
-            console.log('user id is: ' + this.userId)
-        }
-        else
-            this.userId = '';
+        if (typeof firebase !== 'undefined') {
+            if (this.FBService.getAuthData()) {
+                this.userId = this.FBService.getAuthData().uid;
+                console.log('user id is: ' + this.userId)
+            }
+            else
+                this.userId = '';
 
-        if (this.requestId !== '' && typeof this.requestId !== 'undefined' &&
-            this.supplierId !== '' && typeof this.supplierId !== 'undefined') {
-            this.FBService.getMyMessages(this.requestId, this.supplierId)
-                .subscribe((msgData: any) => {
+            if (this.requestId !== '' && typeof this.requestId !== 'undefined' &&
+                this.supplierId !== '' && typeof this.supplierId !== 'undefined') {
+                this.FBService.getMyMessages(this.requestId, this.supplierId)
+                    .subscribe((msgData: any) => {
 
-                    console.log(' my messages for supplier ' + this.supplierId + 'are:');
-                    console.log(msgData);
+                        console.log(' my messages for supplier ' + this.supplierId + 'are:');
+                        console.log(msgData);
 
-                    this.ngZone.run(() => {
-                        this.messages = Object.keys(msgData)
-                            .map((key) => {
-                                msgData[key].data.img = this.profile.image;
-                                msgData[key].data.position = 'right';
-                                if (this.userId === msgData[key].data.uid) {
-                                    msgData[key].data.position = 'left';
-                                }
-                                return msgData[key].data;
-                            });
+                        this.ngZone.run(() => {
+                            this.messages = Object.keys(msgData)
+                                .map((key) => {
+                                    msgData[key].data.img = this.profile.image;
+                                    msgData[key].data.position = 'right';
+                                    if (this.userId === msgData[key].data.uid) {
+                                        msgData[key].data.position = 'left';
+                                    }
+                                    return msgData[key].data;
+                                });
+                        });
+
+                        setTimeout(() => {
+                            this.content.scrollToBottom(300);
+                        }, 0);
                     });
 
-                    setTimeout(() => {
-                        this.content.scrollToBottom(300);
-                    }, 0);
-                });
+                this.FBService.getRequest(this.requestId)
+                    .subscribe((res: any) => {
+                        console.log('the request is');
+                        this.request = res.data;
 
-            this.FBService.getRequest(this.requestId)
-                .subscribe((res: any) => {
-                    console.log('the request is');
-                    this.request = res.data;
+                        this.nickName = this.request.quotes[this.supplierId].supplierNickName
+                        this.price = this.request.quotes[this.supplierId].price;
 
-                    this.nickName = this.request.quotes[this.supplierId].supplierNickName
-                    this.price = this.request.quotes[this.supplierId].price;
-                    this.alreadyHiredSupplier = false;
+                        let reviews = this.request.quotes[this.supplierId].supplierReviews;
 
-                    if (this.request.hiring.suppliers && this.request.hiring.suppliers[this.supplierId]) {
+                        let rating = 0;
+                        if (reviews !== 0) {
 
-                        console.log('setting already hired to true');
-                        this.alreadyHiredSupplier = true;
-                    }
-                });
+                            Object.keys(reviews).map((key) => {
+                                let thisRating = reviews[key].rating
+                                console.log('rating: ', rating);
+                                rating += thisRating;
+                            })
+                        }
+
+                        this.reviewRating = rating;
+                        if (rating > 0) {
+                            this.reviewRating /= Object.keys(reviews).length;
+                        }
+
+                        this.totalReviews = Object.keys(reviews).length;
+
+                        this.alreadyHiredSupplier = false;
+                        if (this.request.hiring.suppliers && this.request.hiring.suppliers[this.supplierId]) {
+
+                            console.log('setting already hired to true');
+                            this.alreadyHiredSupplier = true;
+                        }
+                    });
+            }
         }
-
+        
         this.ngZone.run(() => {
             console.log('init positions')
             this.contentsBottom = 88;
@@ -172,7 +197,7 @@ export class Messages {
 
     ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
-        this.pageElement.style.background = 'white';
+        this.pageElement.style.background = '#005677';
     }
 
     ionViewWillLeave() {

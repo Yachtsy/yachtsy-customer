@@ -64,10 +64,13 @@ export class Home {
     }
 
     ngOnInit() {
-        this.isLoggedIn = this.FBService.isAuthenticated();
+        console.log('home ngOnInit');
+        if (typeof firebase !== 'undefined') {
+            this.isLoggedIn = this.FBService.isAuthenticated();
 
-        this.getCategoryInfo();
-        this.getMyRequests();
+            this.getCategoryInfo();
+            this.getMyRequests();
+        }
     }
 
     onPageWillEnter() {
@@ -75,7 +78,9 @@ export class Home {
     }
 
     ionViewWillEnter() {
-        this.isLoggedIn = this.FBService.isAuthenticated();
+        if (typeof firebase !== 'undefined') {
+            this.isLoggedIn = this.FBService.isAuthenticated();
+        }
     }
 
     onPopularSlideChanged() {
