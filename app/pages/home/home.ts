@@ -30,7 +30,7 @@ export class Home {
 
     dateTimeOptions = [];
     boatInfos = [];
-    myBoats:any;
+    myBoats: any;
 
     sliderOptions = {};
 
@@ -65,7 +65,12 @@ export class Home {
 
     ngOnInit() {
         this.getCategoryInfo();
-        this.getMyRequests();
+
+        if (firebase.auth().currentUser) {
+            console.log('getting requests');
+            this.getMyRequests();
+        }
+
     }
 
     onPageWillEnter() {
@@ -254,12 +259,16 @@ export class Home {
                 console.log(this.boatInfos);
             });
 
-        this.FBService.getMyBoats()
-            .subscribe((data: Array<any>) => {
-                this.myBoats = {
-                    data:   data
-                };
-            });
+        if (firebase.auth().currentUser) {
+            this.FBService.getMyBoats()
+                .subscribe((data: Array<any>) => {
+                    this.myBoats = {
+                        data: data
+                    };
+                });
+        }
+
+
     }
 
     itemTapped(item) {
@@ -347,9 +356,9 @@ export class Home {
         GlobalService.myBoats = this.myBoats;
 
         this.navController.push(Form, {
-            categoryId:     categoryId,
-            categoryName:   categoryName,
-            locationType:   locationType
+            categoryId: categoryId,
+            categoryName: categoryName,
+            locationType: locationType
         }).then(() => {
         });
     }

@@ -539,11 +539,10 @@ export class FirebaseService {
         return new Observable(observer => {
             ref.on('value',
                 (snapshot) => {
-                    observer.next(snapshot.val())
-                },
-                (error) => {
-                    console.log("ERROR:", error)
-                    observer.error(error)
+                    if (snapshot.exists()) {
+                        ref.off();
+                        observer.next(snapshot.val())
+                    }
                 });
         });
     }
