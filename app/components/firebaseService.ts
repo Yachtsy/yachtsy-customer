@@ -98,10 +98,10 @@ export class FirebaseService {
 
                             ref.off();
                             var notification = notificationSnap.val();
-                            //console.log('GOT NOTIFICATION: ', notification);
+                            console.log('GOT NOTIFICATION: ', notification);
                             if (!notification.error) {
                                 data['clientId'] = clientId;
-                                resolve(data);
+                                resolve(notification);
                             } else {
                                 console.log(notification.message);
                                 reject(new Error(notification.stack));
@@ -312,38 +312,16 @@ export class FirebaseService {
         });
     }
 
-    hire(requestId, supplierId) {
-
-        var authData = firebase.auth().currentUser
-        var userId = authData.uid;
-
-        var hiresRef = firebase.database().ref().child('queue').child('tasks');
-
-        let obj = {
+    contact(requestId, supplierId){
+        
+        let payload = {
             requestId: requestId,
             supplierId: supplierId
         };
-
-        let operation = {
-            userId: userId,
-            operationType: 'hire',
-            payload: obj,
-            clientOpId: this.getRandom()
-        }
-
-        return new Observable(observer => {
-            hiresRef.push(operation, (error) => {
-
-                if (error) {
-                    observer.error(error)
-                } else {
-                    observer.next();
-                }
-            });
-        });
+        
+        return this.doOperation('hire', payload);
     }
-
-
+ 
     getMyMessages(requestId, supplierId) {
 
         var authData = firebase.auth().currentUser
@@ -529,22 +507,9 @@ export class FirebaseService {
 
     }
 
-
     getCreditBalance() {
-
         var user = firebase.auth().currentUser;
-        // check the credits 
-        let ref = firebase.database().ref().child('users').child(user.uid).child('credits').child('balance');
-
-        return new Observable(observer => {
-            ref.on('value',
-                (snapshot) => {
-                    if (snapshot.exists()) {
-                        ref.off();
-                        observer.next(snapshot.val())
-                    }
-                });
-        });
+        return firebase.database().ref().child('users').child(user.uid).child('credits').child('balance').once('value');
     }
 
     submitRequest(request) {
