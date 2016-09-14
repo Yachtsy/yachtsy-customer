@@ -1,6 +1,6 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ModalController, Slides, NavController, ViewController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
+import {ModalController, Slides, NavController, ViewController, AlertController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Home} from '../home/home';
@@ -48,6 +48,8 @@ export class Form {
     sliderOptions = {};
     slides: any;
 
+    initLoading: any;
+
     @ViewChild('autocomplete') myElement: any;
     @ViewChild('autocomplete2') myElement2: any;
 
@@ -56,6 +58,7 @@ export class Form {
         public navParams: NavParams,
         public viewCtrl: ViewController,
         public actionSheetCtrl: ActionSheetController,
+        public alertCtrl: AlertController,
         public FBService: FirebaseService,
         private ngZone: NgZone,
         private platform: Platform,
@@ -70,33 +73,18 @@ export class Form {
             loop: false,
             onInit: function (slides) {
                 self.slides = slides;
-                // self.slides.lockSwipes();
             }
         };
     }
 
     ngOnInit() {
         console.log('ngOnInit - form');
-
+        
         this.maxStep = 1;
-        this.categoryId = this.navParams.get('categoryId');
-
-        console.log('the category id is ', this.categoryId);
-
-        this.categoryData = GlobalService.categoryData;
-        this.categoryName = this.navParams.get('categoryName');
-
-        console.log('category data', this.categoryData)
-
-        this.myBoats = GlobalService.myBoats;
-
         this.formPageIndex = 0;
         this.formAnswers = [];
         this.answerObj = {};
-        this.maxStep = this.categoryData.fields.length + 1;
         this.dateTime = null;
-
-        this.initFields();
 
         window.addEventListener('native.keyboardshow', (e) => {
 
@@ -276,19 +264,38 @@ export class Form {
         GlobalService.mainTabBarElement.style.display = 'none';
     }
 
-    ionViewWillEnter() {
+    ionViewDidEnter() {
         console.log('form - ionViewWillEnter');
 
+        this.categoryId = this.navParams.get('categoryId');
+        this.categoryName = this.navParams.get('categoryName');
+        this.locationType = this.navParams.get('locationType');
+
+        console.log('the category id is ', this.categoryId);
+
+        this.categoryData = GlobalService.categoryData;
+
+        console.log('category data', this.categoryData)
+
+        this.myBoats = GlobalService.myBoats;
+
+        this.maxStep = this.categoryData.fields.length + 1;
+
+        this.initFields();
+
+        // this.initLoading = this.loadingCtrl.create({
+        //     content: 'Waiting...'
+        // });
+        // this.initLoading.present();
+        
         if (this.curField.type === 'location') {
 
             this.locationValue = ""
-            this.locationType = this.navParams.get('locationType');
             this.locationStep = 1;
             this.locationSteps = 1;
             if (this.locationType === "multi") {
                 this.locationSteps = 2;
             }
-
 
             // let loading = this.loadingCtrl.create({
             //     content: "Loading map"
@@ -308,45 +315,51 @@ export class Form {
                 //componentRestrictions: { country: 'uk' }
             };
 
-            let input_location, input_location2;
+            setTimeout(()=>{
+                let input_location, input_location2;
 
-            input_location = this.myElement.nativeElement;
-            this.autocomplete1 = new google.maps.places.Autocomplete(input_location, options);
+                input_location = this.myElement.nativeElement;
+                this.autocomplete1 = new google.maps.places.Autocomplete(input_location, options);
 
-            input_location2 = this.myElement2.nativeElement;
-            this.autocomplete2 = new google.maps.places.Autocomplete(input_location2, options);
+                input_location2 = this.myElement2.nativeElement;
+                this.autocomplete2 = new google.maps.places.Autocomplete(input_location2, options);
 
 
-            google.maps.event.addListener(this.autocomplete1, 'place_changed', () => {
-                this.placeChanged(this.autocomplete1);
-            });          
+                google.maps.event.addListener(this.autocomplete1, 'place_changed', () => {
+                    this.placeChanged(this.autocomplete1);
+                });          
 
-            google.maps.event.addListener(this.autocomplete2, 'place_changed', () => {
-                this.placeChanged(this.autocomplete2);
-            });
+                google.maps.event.addListener(this.autocomplete2, 'place_changed', () => {
+                    this.placeChanged(this.autocomplete2);
+                });
 
-            this.isResultHidden = true;
+                this.isResultHidden = true;
 
-            this.locationTimer = setInterval(()=>{
-                var i = 0;
-                var popup_list = document.getElementsByClassName('pac-container');
+                this.locationTimer = setInterval(()=>{
+                    var i = 0;
+                    var popup_list = document.getElementsByClassName('pac-container');
 
-                if (!popup_list)
-                    this.isResultHidden = true;
-                else {
-                    for (i = 0; i < popup_list.length; i++) {
-                        var popup:any;
-                        popup = popup_list[i];
-                        if (popup && popup.style.display !== 'none') {
-                            this.isResultHidden = false;
-                            break;
-                        }
-                    }
-                    if (i >= popup_list.length)
+                    if (!popup_list)
                         this.isResultHidden = true;
-                }
-            }, 100);
+                    else {
+                        for (i = 0; i < popup_list.length; i++) {
+                            var popup:any;
+                            popup = popup_list[i];
+                            if (popup && popup.style.display !== 'none') {
+                                this.isResultHidden = false;
+                                break;
+                            }
+                        }
+                        if (i >= popup_list.length)
+                            this.isResultHidden = true;
+                    }
+                }, 100);
+
+                // this.initLoading.dismiss();
+            }, 1000);
         }
+        // else
+        //     this.initLoading.dismiss();
     }
 
     placeChanged(autoComplete) {
@@ -464,6 +477,11 @@ export class Form {
     submitRequest() {
         console.log('request submitted');
         //console.log(this.formAnswers);
+
+        if (!GlobalService.isOnline()) {
+            GlobalService.displayOfflineAlert(this.alertCtrl);
+            return;
+        }
 
         var request = { body: JSON.stringify(this.formAnswers) };
         request['categoryId'] = this.categoryId;

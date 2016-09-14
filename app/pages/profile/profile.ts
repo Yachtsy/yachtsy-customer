@@ -1,5 +1,5 @@
 import {Component, NgZone} from '@angular/core';
-import {NavController, LoadingController, NavParams} from 'ionic-angular';
+import {NavController, LoadingController, AlertController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests'
 import {
@@ -20,6 +20,7 @@ export class Profile {
 
     constructor(public FBService: FirebaseService,
         public navController: NavController,
+        public alertCtrl: AlertController,
         public navParams: NavParams,
         private ngZone: NgZone,
         private loadingCtrl: LoadingController) {
@@ -31,7 +32,7 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             this.getProfile();
         }
     }
@@ -64,11 +65,13 @@ export class Profile {
 
     itemTapped(idx) {
         if (idx === 2) {
-            if (typeof firebase !== 'undefined') {
+            if (GlobalService.isOnline()) {
                 this.FBService.logout().then((data: any) => {
                     GlobalService.mainTabRef.select(0);
                 });
             }
+            else
+                GlobalService.displayOfflineAlert(this.alertCtrl);
         }
 
         if (idx === 3) {

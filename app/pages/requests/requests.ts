@@ -1,5 +1,5 @@
 import {Component, NgZone} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, AlertController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {RequestResponses} from './requestResponses'
@@ -15,6 +15,7 @@ export class Requests {
 
     constructor(public nav: NavController,
         public navParams: NavParams,
+        public alertCtrl: AlertController,
         public FBService: FirebaseService,
         private ngZone: NgZone) {
 
@@ -51,6 +52,11 @@ export class Requests {
 
     requestClick(item) {
         console.log(item);
+        
+        if (!GlobalService.isOnline()) {
+            GlobalService.displayOfflineAlert(this.alertCtrl);
+            return;
+        }
         //if (item.data.quotes && Object.keys(item.data.quotes).length > 0) {
         //console.log('the item is ');
         //console.log(item);

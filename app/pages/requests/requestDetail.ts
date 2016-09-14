@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
+import GlobalService = require('../../components/globalService');
 
 @Component({
     templateUrl: 'build/pages/requests/requestDetail.html',
@@ -22,7 +23,7 @@ export class RequestDetail {
         this.requestId = navParams.get('reqId');
         console.log('the request id is ' + this.requestId);
 
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             this.FBService.getRequest(this.requestId)
                 .subscribe((res: any) => {
 

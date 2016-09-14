@@ -1,6 +1,6 @@
 import {Component, ViewChild, NgZone} from '@angular/core';
 import {Platform, ionicBootstrap, ModalController, NavController, App, AlertController} from 'ionic-angular';
-import {StatusBar, Keyboard, InAppPurchase} from 'ionic-native';
+import {StatusBar, Keyboard, Network, InAppPurchase} from 'ionic-native';
 import {Home} from './pages/home/home';
 import {FirebaseService} from './components/firebaseService';
 import {Requests} from './pages/requests/requests'
@@ -19,6 +19,7 @@ declare var FirebasePlugin;
 })
 export class MyApp {
   rootPage: any;
+  isInitFB = false;
   //@ViewChild(Nav) nav: Nav;
 
   constructor(platform: Platform, private app: App, public ngZone: NgZone, public modalCtrl: ModalController, private alertCtrl: AlertController, public fbService: FirebaseService) {
@@ -30,16 +31,38 @@ export class MyApp {
       Keyboard.disableScroll(true);
       StatusBar.styleDefault();
 
-      var nav: NavController = this.app.getActiveNav();
+      if (platform.is('ios'))
+        GlobalService.mainTabBarDefaultDisplayInfo = '-webkit-flex';
+      else
+        GlobalService.mainTabBarDefaultDisplayInfo = 'flex';
 
-      if (typeof firebase !== 'undefined') {
-        firebase.auth().onAuthStateChanged((authData) => {
-          console.log('auth state changed', authData);
-          this.start();
-        });
+      var offline = Observable.fromEvent(document, "offline");
+      var online = Observable.fromEvent(document, "online");
+      var networkState = Network.connection;
+
+      console.log('state: ' + networkState);
+      if (networkState === 'none') {
+        GlobalService.isOnlineStatus = false;
+        GlobalService.displayOfflineAlert(this.alertCtrl);
       }
       else
-        this.start();
+        GlobalService.isOnlineStatus = true;
+
+      offline.subscribe(() => {
+        GlobalService.isOnlineStatus = false;
+        GlobalService.displayOfflineAlert(this.alertCtrl);
+      });
+
+      online.subscribe(()=>{
+        GlobalService.isOnlineStatus = true;
+        if (!this.isInitFB)
+          this.initFB();
+      });
+
+      this.initFB();
+      this.start();
+
+      var nav: NavController = this.app.getActiveNav();
 
       if (typeof FirebasePlugin !== 'undefined') {
         FirebasePlugin.grantPermission();
@@ -84,51 +107,18 @@ export class MyApp {
         console.log('FIREBASE PLUGIN NOT DEFINED');
       }
 
-      var offline = Observable.fromEvent(document, "offline");
-      var online = Observable.fromEvent(document, "online");
-
-      offline.subscribe(() => {
-        let alert = this.alertCtrl.create({
-          title: 'No Internet Connection',
-          message: 'To use Thumbtack, please connect to Wi-Fi or enable cellular data.',
-          buttons: [
-            {
-              text: 'OK',
-              role: 'cancel',
-              handler: () => {
-              }
-            }
-          ]
-        });
-        alert.present();
-      });
-
-      online.subscribe(()=>{
-      });
-
     });
   }
 
-  pushTokenCallCount = 0;
-  getPushToken() {
-    let self = this;
-    FirebasePlugin.getInstanceId(function(token) {
-      // save this server-side and use it to push notifications to this device
-      console.log('THE PUSH TOKEN IS', token);
-      GlobalService.pushToken = token;
-    }, function(error) {
-      console.log((self.pushTokenCallCount + 1) + 'th trying error: ' + error);
-      setTimeout(() => {
-        self.pushTokenCallCount++;
-        if (self.pushTokenCallCount < 30)
-          self.getPushToken();
-      }, 2000);
-    });
-  }
+  initFB() {
+    if (GlobalService.isOnline()) {
+      this.isInitFB = true;
 
-  start() {
-    console.log('checking if user is logged in');
-    if (typeof firebase !== 'undefined') {
+      firebase.auth().onAuthStateChanged((authData) => {
+        console.log('auth state changed', authData);
+      });
+
+      console.log('checking if user is logged in');
       let user = firebase.auth().currentUser;
       if (user) {
         console.log('user is logged in');
@@ -153,14 +143,7 @@ export class MyApp {
         console.log('user not logged in. going to home page');
         // this.rootPage = Home;
       }
-    }
 
-    console.log('root page');
-    this.ngZone.run(() => {
-      this.rootPage = Tabs;
-    });
-
-    if (typeof firebase !== 'undefined') {
       firebase.auth().onAuthStateChanged(
         (user) => {
           if (user) {
@@ -201,6 +184,30 @@ export class MyApp {
           }
         });
     }
+  }
+
+  pushTokenCallCount = 0;
+  getPushToken() {
+    let self = this;
+    FirebasePlugin.getInstanceId(function(token) {
+      // save this server-side and use it to push notifications to this device
+      console.log('THE PUSH TOKEN IS', token);
+      GlobalService.pushToken = token;
+    }, function(error) {
+      console.log((self.pushTokenCallCount + 1) + 'th trying error: ' + error);
+      setTimeout(() => {
+        self.pushTokenCallCount++;
+        if (self.pushTokenCallCount < 30)
+          self.getPushToken();
+      }, 2000);
+    });
+  }
+
+  start() {
+    console.log('root page');
+    this.ngZone.run(() => {
+      this.rootPage = Tabs;
+    });
   }
 }
 

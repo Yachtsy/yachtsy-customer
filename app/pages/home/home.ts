@@ -38,6 +38,10 @@ export class Home {
     popularCategoryList = [];
 
     profile
+    isInitCategory = false;
+    isInitRequests = false;
+
+    isInit = false;
 
     constructor(public FBService: FirebaseService,
         public navController: NavController,
@@ -65,22 +69,33 @@ export class Home {
 
     ngOnInit() {
         console.log('home ngOnInit');
-        if (typeof firebase !== 'undefined') {
-            this.isLoggedIn = this.FBService.isAuthenticated();
-
-            this.getCategoryInfo();
-            this.getMyRequests();
+        if (GlobalService.isOnline()) {
+            this.initLoadingData();
+        }
+        else {
+            var handle = setInterval(() => {
+                if (GlobalService.isOnline()) {
+                    clearInterval(handle);
+                    this.initLoadingData();
+                }
+            }, 500);
         }
     }
 
     onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-    }
-
-    ionViewWillEnter() {
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             this.isLoggedIn = this.FBService.isAuthenticated();
+            this.getMyRequests();
         }
+
+        console.log('home - onPageWillEnter: ' + this.isLoggedIn);
+        if (this.isLoggedIn)
+            GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        else
+            GlobalService.mainTabBarElement.style.display = 'none';
+
+        if (!this.isLoggedIn)
+            this.myBoats = null;
     }
 
     onPopularSlideChanged() {
@@ -88,9 +103,18 @@ export class Home {
             this.curPopularIndex = this.slides.activeIndex;
     }
 
+    initLoadingData() {
+        this.isInit = true;
+        this.isLoggedIn = this.FBService.isAuthenticated();
+        this.getCategoryInfo();
+        this.getMyRequests();
+    }
+
     getMyRequests() {
-        if (!this.isLoggedIn)
+        if (!this.isLoggedIn || this.isInitRequests)
             return;
+
+        this.isInitRequests = true;
 
         this.FBService.getMyRequests()
             .subscribe((data: any) => {
@@ -176,6 +200,11 @@ export class Home {
     };
 
     getCategoryInfo() {
+        if (this.isInitCategory)
+            return;
+
+        this.isInitCategory = true;
+
         this.FBService.getCategories()
             .subscribe((data: Array<any>) => {
 
@@ -272,9 +301,12 @@ export class Home {
     }
 
     itemTapped(item) {
+        console.log('item tapped');
+
         var categoryId = item.id;
         var categoryName = item.data.name;
         let categoryData = JSON.parse(JSON.stringify(this.categorySpec[categoryId]));
+        var myBoats;
 
         var requiresBoatInfo = item.data.requiresBoatInfo;
         if (requiresBoatInfo === true) {
@@ -294,7 +326,7 @@ export class Home {
         var myBoatsLength = 0;
 
         if (this.myBoats) {
-            var myBoats = this.myBoats.data;
+            myBoats = this.myBoats.data;
             myBoatsLength = myBoats.length;
             
             for (var i = 0; i < myBoats.length; i++) {
@@ -352,7 +384,10 @@ export class Home {
         GlobalService.categoryData = categoryData;
         GlobalService.myBoats = this.myBoats;
 
+        console.log('nav -> form');
         this.navController.push(Form, {
+            categoryData: categoryData,
+            myBoats: myBoats,
             categoryId: categoryId,
             categoryName: categoryName,
             locationType: locationType

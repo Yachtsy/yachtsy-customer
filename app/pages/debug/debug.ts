@@ -31,7 +31,7 @@ export class DebugPage {
         private builder: FormBuilder
     ) {
        
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             this.FBService.getUserProfile()
             .subscribe((usr)=>{
                 console.log(usr);

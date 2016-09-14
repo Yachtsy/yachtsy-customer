@@ -1,6 +1,6 @@
 
 import {Component} from '@angular/core';
-import {App, Modal, Platform, NavController, NavParams, ViewController} from 'ionic-angular';
+import {App, Modal, Platform, NavController, NavParams, ViewController, AlertController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests';
 import GlobalService = require('../../components/globalService');
@@ -30,6 +30,7 @@ export class ModalsContentPage {
     constructor(
         public platform: Platform,
         public nav: NavController,
+        public alertCtrl: AlertController,
         public params: NavParams,
         public viewCtrl: ViewController,
         public FBService: FirebaseService,
@@ -60,7 +61,7 @@ export class ModalsContentPage {
         //console.log('User Form info:')
         //console.log(this.form.value)
 
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             if (this.FBService.isAuthenticated()) {
 
                 var authData = this.FBService.getAuthData();
@@ -76,6 +77,8 @@ export class ModalsContentPage {
                     });
             }
         }
+        else
+            GlobalService.displayOfflineAlert(this.alertCtrl);
     }
 
     createUser(authData) {

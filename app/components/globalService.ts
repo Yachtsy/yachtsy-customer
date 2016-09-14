@@ -21,3 +21,25 @@ export var categoryData = [];
 export var myBoats:any;
 export var boatStartFormIndex = 0;
 export var boatInfoCount = 0;
+
+export var isOnlineStatus = false;
+
+export var isOnline = function() {
+	return (typeof firebase !== 'undefined' && isOnlineStatus);
+}
+
+export var displayOfflineAlert = function(alertCtrl) {
+    let alert = alertCtrl.create({
+      title: 'No Internet Connection',
+      message: 'To use Thumbtack, please connect to Wi-Fi or enable cellular data.',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }

@@ -57,7 +57,7 @@ export class Messages {
             image: GlobalService.avatarImage,
         };
 
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             firebase.database().ref().child('config')
                 .on('value', (snapshot) => {
 
@@ -85,7 +85,7 @@ export class Messages {
         console.log('ngOnInit - messages reqid = ', this.request);
         console.log('--------');
 
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             if (this.FBService.getAuthData()) {
                 this.userId = this.FBService.getAuthData().uid;
                 console.log('user id is: ' + this.userId)
@@ -198,6 +198,10 @@ export class Messages {
     ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
         this.pageElement.style.background = '#005677';
+
+        let ele: any;
+        ele = document.querySelector('.message-content .quote-wrapper');
+        ele.style.minHeight = (window.innerHeight - 64 - 88 - 160) + 'px';
     }
 
     ionViewWillLeave() {
@@ -232,8 +236,6 @@ export class Messages {
     attachMessage($event) {
 
     }
-
-
 
 
     confirm = this.alertCtrl.create({

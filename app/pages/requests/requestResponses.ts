@@ -1,4 +1,4 @@
-import {Page, ModalController, LoadingController, NavController, ActionSheetController, NavParams} from 'ionic-angular';
+import {Page, ModalController, AlertController, LoadingController, NavController, ActionSheetController, NavParams} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {Messages} from './messages'
@@ -22,6 +22,7 @@ export class RequestResponses {
         public navParams: NavParams,
         public FBService: FirebaseService,
         public actionSheetCtrl: ActionSheetController,
+        public alertCtrl: AlertController,
         public loadingCtrl: LoadingController,
         public modalCtrl: ModalController) {
         this.request = this.navParams.get('req');
@@ -51,7 +52,7 @@ export class RequestResponses {
 
         console.log('ngOnInit - requestDetail = ', this.request);
 
-        if (typeof firebase !== 'undefined') {
+        if (GlobalService.isOnline()) {
             this.FBService.getMyResponses(this.request.id)
                 .subscribe((data: any) => {
                     console.log('my responses are', data);
@@ -71,14 +72,12 @@ export class RequestResponses {
                     })
                 }
 
-
                 response.data.reviewRating = rating;
                 if (rating > 0) {
                     response.data.reviewRating /= Object.keys(reviews).length;
                 }
 
                 this.totalReviews = Object.keys(reviews).length;
-
             });
         }
     }
@@ -87,6 +86,11 @@ export class RequestResponses {
         console.log('going to message for item: ');
         console.log(item);
         
+        if (!GlobalService.isOnline()) {
+            GlobalService.displayOfflineAlert(this.alertCtrl);
+            return;
+        }
+
         if (item.data.initialQuoteSeen != true)
             this.FBService.markRequestRead(this.request.id, item.id)
                 .then((data) => {
@@ -103,6 +107,11 @@ export class RequestResponses {
                 {
                     text: 'View Request Details',
                     handler: () => {
+                        if (!GlobalService.isOnline()) {
+                            GlobalService.displayOfflineAlert(this.alertCtrl);
+                            return;
+                        }
+
                         let modal = this.modalCtrl.create(RequestDetail, { reqId: this.request.id });
                         modal.present();
                     }
@@ -110,6 +119,10 @@ export class RequestResponses {
                     text: 'Cancel Request',
                     role: 'destructive',
                     handler: () => {
+                        if (!GlobalService.isOnline()) {
+                            GlobalService.displayOfflineAlert(this.alertCtrl);
+                            return;
+                        }
 
                         let loading = this.loadingCtrl.create({
                             content: 'Canceling request',

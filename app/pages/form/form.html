@@ -18,79 +18,84 @@
 
 <ion-content [ngStyle]="{bottom: contentsBottom + 'px'}">
 
-    <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
+    <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)" *ngIf="categoryData"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
 
-    <ion-slides [options]="sliderOptions">
-        <ion-slide *ngFor="let field of categoryData.fields; let field_id = index;" (touchstart)="touchSlide($event)">
+    <ion-slides [options]="sliderOptions" *ngIf="categoryData">
+        <ion-slide *ngFor="let field of categoryData.fields; let field_id = index;" (touchmove)="touchSlide($event)">
 
-    <ion-card *ngIf="field.type !== 'location'">
-        <ion-card-header>
-            <div class="label"><i>{{field.label}}</i></div>
-        </ion-card-header>
+            <ion-card *ngIf="field.type !== 'location'">
+                <ion-card-header>
+                    <div class="label"><i>{{field.label}}</i></div>
+                </ion-card-header>
 
-        <ion-list *ngIf="field.type === 'enumeration'">
+                <ion-list *ngIf="field && field.type === 'enumeration'">
 
-            <div tappable *ngFor="let item of field.possible_values" (click)="clicked(item)">
-                <ion-item *ngIf="!item.can_describe || (field.isDateForm != true && field.isTimeForm != true)">
-                    <ion-label *ngIf="!item.can_describe">{{item.label}}</ion-label>
+                    <div *ngFor="let item of field.possible_values">
 
-                    <ion-input clearInput *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true" placeholder="{{item.label}}" type="text" 
-                            (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label + field_id]">
-                    </ion-input>
+                        <ion-item tappable *ngIf="!item.can_describe" (click)="clicked(item)">
+                            <ion-label *ngIf="!item.can_describe">{{item.label}}</ion-label>
 
-                    <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
-                    && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
+                            <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
+                            && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
 
-                    <ion-icon class="radio" *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
-                    && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='radio-button-on' item-right></ion-icon>
+                            <ion-icon class="radio" *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
+                            && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='radio-button-on' item-right></ion-icon>
 
-                    <ion-icon class="radio" *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
-                    || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
-                </ion-item>
-                <div class="item item-datetime" *ngIf="item.can_describe && (field.isDateForm == true || field.isTimeForm == true)">
-                    <span class="input-label">{{item.label}}</span> 
-                    <input type="date" *ngIf="item.can_describe && field.isDateForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
-                    <input type="time" *ngIf="item.can_describe && field.isTimeForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
+                            <ion-icon class="radio" *ngIf="!field.allows_multiple_values && !item.can_describe && (!formAnswers[formPageIndex]['ans']  
+                            || (formAnswers[formPageIndex]['ans'].indexOf(item.label) <= -1))" name='radio-button-off' item-right></ion-icon>
+
+                        </ion-item>
+
+                        <div *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true">
+                            <input class="item-input" clearInput placeholder="{{item.label}}" type="text" 
+                                (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label + field_id]">
+                        </div>
+
+                        <div class="item item-datetime" *ngIf="item.can_describe && (field.isDateForm == true || field.isTimeForm == true)">
+                            <span class="input-label">{{item.label}}</span> 
+                            <input type="date" *ngIf="item.can_describe && field.isDateForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
+                            <input type="time" *ngIf="item.can_describe && field.isTimeForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
+                        </div>
+
+                    </div>
+
+                </ion-list>
+
+            </ion-card>
+
+            <ion-card *ngIf="field && field.type === 'location'">
+
+                <ion-card-header>
+                    <div class="label">
+                        <i [hidden]="(locationStep === 2) || (locationSteps === 2)">Please select the location</i>
+                        <i [hidden]="(locationStep === 2) || (locationSteps === 1)">Please select the starting location</i>
+                        <i [hidden]="(locationStep === 1)">Please select the end location</i>
+                    </div>
+                </ion-card-header>
+
+                <div [hidden]="locationStep === 2">
+                    <div class="input-wrapper">
+                        <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
+                        <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+                    </div>
+                    <div [hidden]="fromValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
                 </div>
 
-            </div>
-
-        </ion-list>
-
-    </ion-card>
-
-    <ion-card *ngIf="field.type === 'location'">
-
-        <ion-card-header>
-            <div class="label">
-                <i [hidden]="(locationStep === 2) || (locationSteps === 2)">Please select the location</i>
-                <i [hidden]="(locationStep === 2) || (locationSteps === 1)">Please select the starting location</i>
-                <i [hidden]="(locationStep === 1)">Please select the end location</i>
-            </div>
-        </ion-card-header>
-
-        <div [hidden]="locationStep === 2">
-            <div class="input-wrapper">
-                <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
-                <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
-            </div>
-            <div [hidden]="fromValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
-        </div>
-
-        <div [hidden]="locationStep === 1">
-            <ion-item>
-                <ion-label>Use start location</ion-label>
-                <ion-checkbox [(ngModel)]="userStartLocation"></ion-checkbox>
-            </ion-item>
-            <div [hidden]="userStartLocation">
-                <div class="input-wrapper">
-                    <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
-                    <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+                <div [hidden]="locationStep === 1">
+                    <ion-item>
+                        <ion-label>Use start location</ion-label>
+                        <ion-checkbox [(ngModel)]="userStartLocation"></ion-checkbox>
+                    </ion-item>
+                    <div [hidden]="userStartLocation">
+                        <div class="input-wrapper">
+                            <input #autocomplete2 class="loc_input" name="location2" type="text" placeholder="Enter end location" [(ngModel)]="toValue">
+                            <ion-icon *ngIf="toValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
+                        </div>
+                    </div>
+                    <div [hidden]="userStartLocation || toValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
                 </div>
-            </div>
-            <div [hidden]="userStartLocation || toValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
-        </div>
-    </ion-card>
+
+            </ion-card>
 
         </ion-slide>
     </ion-slides>
@@ -102,14 +107,13 @@
 
 <ion-footer [ngStyle]="{bottom: footerBottom + 'px'}">
 
-    <ion-toolbar no-border-bottom>
+    <ion-toolbar no-border-bottom *ngIf="curField">
 
             <button class="button" block *ngIf="!lastPage" [disabled]="(
                 (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="next()">Next
-                   <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
             </button>
 
             <button class="button" block *ngIf="lastPage" [disabled]="(
@@ -117,9 +121,7 @@
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="submitRequest()"> Send
-                  <!--<ion-icon name="send"></ion-icon>-->
             </button>
-      
 
     </ion-toolbar>
 

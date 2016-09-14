@@ -16,6 +16,7 @@
 
   .message-content {
     height: auto;
+    background: #005677;
   }
 
   .message-bar {
@@ -77,6 +78,11 @@
 
   .toggle-button.selected {
     color: black;
+    background: white;
+  }
+
+  .quote-wrapper {
+    width: 100%;
     background: white;
   }
 
