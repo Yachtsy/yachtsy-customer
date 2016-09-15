@@ -409,8 +409,10 @@ export class Form {
     onSubmit(theForm) {
         console.log('form submitted');
         Keyboard.close();
-        this.next();
 
+        setTimeout(() => {
+            this.next();
+        }, 500)
     }
 
     placeChanged(autoComplete) {
