@@ -401,7 +401,7 @@ export class Home {
         this.formModal.present();
         this.formModal.onDidDismiss((data) => {
             console.log('modal dismiss');
-            if (data.toRequest === true)
+            if (data && data.toRequest === true)
                 GlobalService.mainTabRef.select(1);                
         });
 

@@ -91,41 +91,39 @@ export class Form {
         this.answerObj = {};
         this.dateTime = null;
 
-        this.ngZone.run(() => {
-            console.log('init positions')
-            this.contentsBottom = 44;
-            this.footerBottom = 0;
-        });
+        console.log('init positions')
+        this.contentsBottom = 44;
+        this.footerBottom = 0;
 
         window.addEventListener('native.keyboardshow', (e) => {
-
             console.log('keyboard show')
+
             this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'] + 44;
-                this.footerBottom = e['keyboardHeight'];
+                this.contentsBottom = e['keyboardHeight'];
+                this.footerBottom = 0;
+                // this.footerBottom = e['keyboardHeight'];
                 this.showNextButton = false;
+
                 setTimeout(() => {
-                    this.content.scrollToBottom(300);
+                //     this.content.scrollToBottom(300);
+                    this.adjustScroll(false);
                 }, 100);
             });
-
         });
 
         window.addEventListener('native.keyboardhide', (e) => {
             console.log('keyboard hide')
-            console.log('initialising postions')
 
             this.ngZone.run(() => {
-                this.contentsBottom = 44;
+                this.contentsBottom = 0;
                 this.footerBottom = 0;
+
+                setTimeout(() => {
+                    this.ngZone.run(() => {
+                        this.showNextButton = true;
+                    });
+                }, 500)
             });
-
-            setTimeout(() => {
-                this.ngZone.run(() => {
-                    this.showNextButton = true;
-                });
-            }, 500)
-
         });
 
         this.categoryData = GlobalService.categoryData;
@@ -144,7 +142,19 @@ export class Form {
         }
 
         this.maxStep = this.categoryData.fields.length + 1;
+    }
 
+    adjustScroll(isTop) {
+        this.content.scrollToTop();
+
+        var scrolls = document.getElementsByClassName('swiper-slide');
+        for (var i = 0; i < scrolls.length; i++) {
+            var scroll_ele = scrolls[i];
+            if (isTop)
+                scroll_ele.scrollTop = 0;
+            else
+                scroll_ele.scrollTop = scroll_ele.scrollHeight;
+        }
     }
 
     initFields() {
@@ -306,10 +316,20 @@ export class Form {
         //GlobalService.mainTabBarElement.style.display = 'none';
     }
 
+    pageElement
+    ionViewWillEnter() {
+        this.pageElement = document.getElementsByClassName('form')[0];
+        this.pageElement.style.background = 'white';
+    }
+
+    ionViewWillLeave() {
+        this.pageElement.style.background = 'none';
+    }
+
     ionViewDidEnter() {
         console.log('form - ionViewWillEnter');
 
-        this.content.scrollToTop();
+        this.adjustScroll(true);
 
         this.categoryId = this.navParams.get('categoryId');
         this.categoryName = this.navParams.get('categoryName');
@@ -515,14 +535,15 @@ export class Form {
                 this.formPageIndex += (GlobalService.boatInfoCount + 1);
                 this.initFields();
                 this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 300, true);
-                this.content.scrollToTop();
+                this.adjustScroll(true);
             }
             else {
                 this.formPageIndex++;
                 this.initFields();
                 this.slides.slideNext(true, 300);
-                this.content.scrollToTop();
+                this.adjustScroll(true);
             }
+            Keyboard.close();
         }
     }
 
@@ -625,14 +646,15 @@ export class Form {
                 this.formPageIndex = GlobalService.boatStartFormIndex - 1;
                 this.initFields();
                 this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 300, true);
-                this.content.scrollToTop();
+                this.adjustScroll(true);
             }
             else {
                 this.formPageIndex--;
                 this.initFields();
                 this.slides.slidePrev(true, 300);
-                this.content.scrollToTop();
+                this.adjustScroll(true);
             }
+            Keyboard.close();
         }
         else {
             this.viewCtrl.dismiss();
