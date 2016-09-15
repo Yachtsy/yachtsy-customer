@@ -3,11 +3,11 @@
     <ion-navbar hideBackButton>
         <ion-buttons start>
             <button class="button button-icon button-clear" (click)="clickBack()">
-                <ion-icon name="arrow-dropleft-circle"></ion-icon>
+                <ion-icon name="arrow-back"></ion-icon>
             </button>
         </ion-buttons>
         <ion-buttons end>
-            <button (click)="clickClose()">
+            <button class="button button-icon button-clear" (click)="clickClose()">
                 <ion-icon name="close"></ion-icon>
             </button>
         </ion-buttons>
@@ -16,12 +16,14 @@
 </ion-header>
 
 
-<ion-content [ngStyle]="{bottom: contentsBottom + 'px'}">
 
-    <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)" *ngIf="categoryData"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
+<ion-content class="form-content" [ngStyle]="{bottom: contentsBottom + 'px'}">
+    <!--*ngIf="categoryData"-->
+    <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
 
-    <ion-slides [options]="sliderOptions" *ngIf="categoryData">
-        <ion-slide *ngFor="let field of categoryData.fields; let field_id = index;" (touchmove)="touchSlide($event)">
+    <!--*ngIf="categoryData"-->
+    <ion-slides [options]="sliderOptions" [ngStyle]="{bottom: footerBottom + 'px'}">
+        <ion-slide *ngFor="let field of categoryDataFields; let field_id = index;" (touchmove)="touchSlide($event)">
 
             <ion-card *ngIf="field.type !== 'location'">
                 <ion-card-header>
@@ -35,7 +37,7 @@
                         <ion-item tappable *ngIf="!item.can_describe" (click)="clicked(item)">
                             <ion-label *ngIf="!item.can_describe">{{item.label}}</ion-label>
 
-                            <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex]['ans']  
+                            <ion-icon *ngIf="field.allows_multiple_values && formAnswers[formPageIndex] && formAnswers[formPageIndex]['ans']  
                             && (formAnswers[formPageIndex]['ans'].indexOf(item.label) > -1)" name='checkmark' item-right></ion-icon>
 
                             <ion-icon class="radio" *ngIf="!field.allows_multiple_values && !item.can_describe && formAnswers[formPageIndex]['ans']  
@@ -47,12 +49,13 @@
                         </ion-item>
 
                         <div *ngIf="item.can_describe && field.isDateForm != true && field.isTimeForm != true">
-                            <input class="item-input" clearInput placeholder="{{item.label}}" type="text" 
-                                (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label + field_id]">
+                            <form style="width: 100%" (ngSubmit)="onSubmit()">
+                                <input class="item-input" clearInput  placeholder="{{item.label}}" type="text" (keyup)="onKeyUp(item)" name="answer" [(ngModel)]="answerObj[item.label + field_id]">
+                            </form>
                         </div>
 
                         <div class="item item-datetime" *ngIf="item.can_describe && (field.isDateForm == true || field.isTimeForm == true)">
-                            <span class="input-label">{{item.label}}</span> 
+                            <span class="input-label">{{item.label}}</span>
                             <input type="date" *ngIf="item.can_describe && field.isDateForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
                             <input type="time" *ngIf="item.can_describe && field.isTimeForm == true" (input)="onDateTimeChange($event)" [(ngModel)]="dateTime">
                         </div>
@@ -75,7 +78,11 @@
 
                 <div [hidden]="locationStep === 2">
                     <div class="input-wrapper">
-                        <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" name="location" type="text" placeholder="Enter location" [(ngModel)]="fromValue">
+                        <form (ngSubmit)="onSubmit()" style="width: 100%">
+                            <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" id="autocomplete_1" name="location" type="text"
+                                placeholder="Enter location" [(ngModel)]="fromValue">
+
+                        </form>
                         <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
                     </div>
                     <div [hidden]="fromValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
@@ -105,18 +112,19 @@
 
 </ion-content>
 
-<ion-footer [ngStyle]="{bottom: footerBottom + 'px'}">
 
-    <ion-toolbar no-border-bottom *ngIf="curField">
+<ion-footer *ngIf="curField && showNextButton" [ngStyle]="{bottom: footerBottom + 'px'}">
 
-            <button class="button" block *ngIf="!lastPage" [disabled]="(
+    <ion-toolbar no-border-bottom>
+
+        <button class="button" block *ngIf="!lastPage" [disabled]="(
                 (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="next()">Next
             </button>
 
-            <button class="button" block *ngIf="lastPage" [disabled]="(
+        <button class="button" block *ngIf="lastPage" [disabled]="(
                 (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )

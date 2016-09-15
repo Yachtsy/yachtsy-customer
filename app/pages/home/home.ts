@@ -300,7 +300,7 @@ export class Home {
         }
     }
 
-    itemTapped(item) {
+    itemTapped(item) {        
         console.log('item tapped');
 
         var categoryId = item.id;
@@ -328,7 +328,7 @@ export class Home {
         if (this.myBoats) {
             myBoats = this.myBoats.data;
             myBoatsLength = myBoats.length;
-            
+
             for (var i = 0; i < myBoats.length; i++) {
                 boatListField[0].possible_values.push({
                     can_describe: false,
@@ -385,15 +385,21 @@ export class Home {
         GlobalService.myBoats = this.myBoats;
 
         console.log('nav -> form');
-        this.navController.push(Form, {
+        let navParams = {
             categoryData: categoryData,
             myBoats: myBoats,
             categoryId: categoryId,
             categoryName: categoryName,
             locationType: locationType
-        }).then(() => {
-        });
+        };
+
+        this.formModal = this.modalCtrl.create(Form, navParams);
+        this.formModal.present();
+
+        //this.navController.push(Form, navParams);
     }
+
+    formModal;
 
     locationSingle() {
         return [{

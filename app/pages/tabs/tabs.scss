@@ -9,22 +9,22 @@
 	}
 
 	ion-tabbar a ion-icon {
-		color: #f0e968;
+		color: #c2b560;
 	}
 
 	.tab-button {
-		color: white;
+		color: #c2b560;
 	}
 
-	.tab-button ion-icon {
-	    color: #f0e968;
-	}
+	// .tab-button ion-icon {
+	//     color: #c2b560;
+	// }
 
-	.tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] {
-		color: #f0e968;
-	}
+	// .tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] {
+	// 	color: #c2b560;
+	// }
 
-	.tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] ion-icon {
-		color: #083547;
-	}
+	// .tab-button:hover:not(.disable-hover), .tab-button[aria-selected=true] ion-icon {
+	// 	color: #083547;
+	// }
 }

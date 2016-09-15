@@ -1,5 +1,9 @@
 .form {
     
+    .form-contnet {
+        height: auto;
+    }
+
     .header {
         background-color: white;
     }
@@ -34,6 +38,13 @@
         margin: 0px;
         margin-bottom: 1px;
         width: 100%;
+        box-shadow: 0;
+        background: white;
+        border-radius: 0px;  
+    }
+
+    ion-card-header {
+        padding: 40px;
     }
 
     .label {
@@ -47,11 +58,12 @@
     ion-card-header {
         background-color: #005677;
         color: white;
+        white-space: normal;
     }
 
-    ion-card {
-        background: #f8f8f8;
-    }
+    // ion-card {
+    //     background: #f8f8f8;
+    // }
 
     ion-card ion-card-header .item {
         padding-left: 0px;
@@ -116,7 +128,7 @@
 .pac-container {
     width: 100% !important;
     left: 0px !important;
-    margin-top: 30px;
+    // margin-top: 30px;
 }
 
 .pac-container:after{
@@ -135,15 +147,21 @@
 
 .loc_input {
     min-height: 4.4rem;
-    background-color: whitesmoke;
-    width: 90%;
+    text-align: left;
+
+    //background-color: whitesmoke;
+    width: 75%;
     height: 40px;
     line-height: 40px;
-    margin-left: 5%;
+    margin-left: 0%;
     margin-right: 5%;
-    border-radius: 5px;
-    padding: 0px 30px 0px 10px;
-    border: 1px solid #aaaaaa;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    //border-radius: 5px;
+    //padding: 0px 30px 0px 10px;
+    border: 0px 0px 0px 1px solid #aaaaaa;
 }
 
 .input-wrapper {
@@ -184,5 +202,5 @@
 
 .progress-bar {
     background: #337ab7;
-    height: 5px;
+    height: 3px;
 }

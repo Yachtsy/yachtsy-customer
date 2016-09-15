@@ -1,11 +1,12 @@
 
 import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ModalController, Slides, NavController, ViewController, AlertController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
+import {ModalController, Content, Slides, NavController, ViewController, AlertController, LoadingController, ActionSheetController, NavParams, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Home} from '../home/home';
 import {ModalsContentPage} from './modal'
-import {Keyboard, GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
+//import {Keyboard, GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
+import {Keyboard} from 'ionic-native';
 import GlobalService = require('../../components/globalService');
 
 @Component({
@@ -77,14 +78,25 @@ export class Form {
         };
     }
 
+    showNextButton = true;
+
+    @ViewChild(Content) content: Content;
+
+
     ngOnInit() {
         console.log('ngOnInit - form');
-        
+
         this.maxStep = 1;
         this.formPageIndex = 0;
         this.formAnswers = [];
         this.answerObj = {};
         this.dateTime = null;
+
+        this.ngZone.run(() => {
+            console.log('init positions')
+            this.contentsBottom = 44;
+            this.footerBottom = 0;
+        });
 
         window.addEventListener('native.keyboardshow', (e) => {
 
@@ -92,19 +104,48 @@ export class Form {
             this.ngZone.run(() => {
                 this.contentsBottom = e['keyboardHeight'] + 44;
                 this.footerBottom = e['keyboardHeight'];
+                this.showNextButton = false;
+                setTimeout(() => {
+                    this.content.scrollToBottom(300);
+                }, 100);
             });
 
         });
 
         window.addEventListener('native.keyboardhide', (e) => {
-
             console.log('keyboard hide')
+            console.log('initialising postions')
+
             this.ngZone.run(() => {
-                console.log('initialising postions')
                 this.contentsBottom = 44;
                 this.footerBottom = 0;
             });
+
+            setTimeout(() => {
+                this.ngZone.run(() => {
+                    this.showNextButton = true;
+                });
+            }, 500)
+
         });
+
+        this.categoryData = GlobalService.categoryData;
+        this.categoryDataFields = this.categoryData.fields;
+        console.log('category data', this.categoryData)
+        this.initFields();
+
+        if (this.curField.type === 'location') {
+
+            this.locationValue = ""
+            this.locationStep = 1;
+            this.locationSteps = 1;
+            if (this.locationType === "multi") {
+                this.locationSteps = 2;
+            }
+        }
+
+        this.maxStep = this.categoryData.fields.length + 1;
+
     }
 
     initFields() {
@@ -115,14 +156,14 @@ export class Form {
         this.curField = this.categoryData.fields[this.formPageIndex];
         if (!this.formAnswers[this.formPageIndex]) {
             this.formAnswers[this.formPageIndex] = {
-                'qu':       this.curField.label,
-                'ans':      []
+                'qu': this.curField.label,
+                'ans': []
             };
 
         }
         console.log('init form answers', this.formAnswers);
 
-        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;        
+        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
     }
 
     touchSlide(event) {
@@ -209,16 +250,16 @@ export class Form {
         if (this.dateTime != null) {
             this.formAnswers[this.formPageIndex]['ans'] = [];
             this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);
-        }        
+        }
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
     }
 
 
-    back(){
+    back() {
         this.nav.pop();
     }
 
-    
+
     lng
     lat
     placeName
@@ -260,8 +301,10 @@ export class Form {
     locationTimer
     isResultHidden
 
+    categoryDataFields
+
     onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = 'none';
+        //GlobalService.mainTabBarElement.style.display = 'none';
     }
 
     ionViewDidEnter() {
@@ -273,21 +316,20 @@ export class Form {
 
         console.log('the category id is ', this.categoryId);
 
-        this.categoryData = GlobalService.categoryData;
-
-        console.log('category data', this.categoryData)
 
         this.myBoats = GlobalService.myBoats;
 
-        this.maxStep = this.categoryData.fields.length + 1;
 
-        this.initFields();
+
+
+        console.log('about to init fields')
+
 
         // this.initLoading = this.loadingCtrl.create({
         //     content: 'Waiting...'
         // });
         // this.initLoading.present();
-        
+
         if (this.curField.type === 'location') {
 
             this.locationValue = ""
@@ -315,7 +357,7 @@ export class Form {
                 //componentRestrictions: { country: 'uk' }
             };
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 let input_location, input_location2;
 
                 input_location = this.myElement.nativeElement;
@@ -327,7 +369,7 @@ export class Form {
 
                 google.maps.event.addListener(this.autocomplete1, 'place_changed', () => {
                     this.placeChanged(this.autocomplete1);
-                });          
+                });
 
                 google.maps.event.addListener(this.autocomplete2, 'place_changed', () => {
                     this.placeChanged(this.autocomplete2);
@@ -335,7 +377,7 @@ export class Form {
 
                 this.isResultHidden = true;
 
-                this.locationTimer = setInterval(()=>{
+                this.locationTimer = setInterval(() => {
                     var i = 0;
                     var popup_list = document.getElementsByClassName('pac-container');
 
@@ -343,7 +385,7 @@ export class Form {
                         this.isResultHidden = true;
                     else {
                         for (i = 0; i < popup_list.length; i++) {
-                            var popup:any;
+                            var popup: any;
                             popup = popup_list[i];
                             if (popup && popup.style.display !== 'none') {
                                 this.isResultHidden = false;
@@ -355,11 +397,20 @@ export class Form {
                     }
                 }, 100);
 
+                document.getElementById('autocomplete_1').focus();
+
                 // this.initLoading.dismiss();
-            }, 1000);
+            }, 0);
         }
         // else
         //     this.initLoading.dismiss();
+    }
+
+    onSubmit(theForm) {
+        console.log('form submitted');
+        Keyboard.close();
+        this.next();
+
     }
 
     placeChanged(autoComplete) {
@@ -430,7 +481,7 @@ export class Form {
             this.formAnswers[this.formPageIndex]['ans'] = [];
             this.formAnswers[this.formPageIndex]['ans'].push(item.label);
             if (!this.lastPage) {
-                 this.next();
+                this.next();
             }
         }
 
@@ -464,7 +515,7 @@ export class Form {
 
                 this.formPageIndex += (GlobalService.boatInfoCount + 1);
                 this.initFields();
-                this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 0, true);
+                this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 300, true);
             }
             else {
                 this.formPageIndex++;
@@ -493,8 +544,8 @@ export class Form {
         var boatInfo = null;
         if (this.boatIndex < 0) {
             boatInfo = {
-                boatName:   this.boatName,
-                data:       []
+                boatName: this.boatName,
+                data: []
             };
 
             for (var i = 0; i < GlobalService.boatInfoCount; i++) {
@@ -528,7 +579,7 @@ export class Form {
                     console.log(error.message);
                     console.log(error);
                     loading.dismiss();
-                    if (error.message === "PERMISSION_DENIED: Permission denied"){
+                    if (error.message === "PERMISSION_DENIED: Permission denied") {
                         this.FBService.logout();
                         this.submitRequest();
                     }
@@ -540,7 +591,7 @@ export class Form {
             let modal = this.modalCtrl.create(ModalsContentPage, { req: request, boat: boatInfo });
             modal.present();
 
-            modal.onDidDismiss((data)=>{
+            modal.onDidDismiss((data) => {
                 if (data.cancel !== true) {
                     setTimeout(() => {
                         this.nav.pop();
@@ -570,7 +621,7 @@ export class Form {
             if (this.boatIndex >= 0 && this.formPageIndex === GlobalService.boatStartFormIndex + GlobalService.boatInfoCount) {
                 this.formPageIndex = GlobalService.boatStartFormIndex - 1;
                 this.initFields();
-                this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 0, true);
+                this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 300, true);
             }
             else {
                 this.formPageIndex--;
@@ -591,7 +642,7 @@ export class Form {
                     role: 'destructive',
                     handler: () => {
                         // this.nav.setRoot(Home, {}, {animate: false});
-                        this.nav.pop();
+                        this.viewCtrl.dismiss();
                     }
                 }, {
                     text: 'Continue Project',
