@@ -54,6 +54,8 @@ export class Form {
     @ViewChild('autocomplete') myElement: any;
     @ViewChild('autocomplete2') myElement2: any;
 
+    @ViewChild(Content) content: Content;
+
 
     constructor(public nav: NavController,
         public navParams: NavParams,
@@ -79,9 +81,6 @@ export class Form {
     }
 
     showNextButton = true;
-
-    @ViewChild(Content) content: Content;
-
 
     ngOnInit() {
         console.log('ngOnInit - form');
@@ -310,6 +309,8 @@ export class Form {
     ionViewDidEnter() {
         console.log('form - ionViewWillEnter');
 
+        this.content.scrollToTop();
+
         this.categoryId = this.navParams.get('categoryId');
         this.categoryName = this.navParams.get('categoryName');
         this.locationType = this.navParams.get('locationType');
@@ -319,11 +320,7 @@ export class Form {
 
         this.myBoats = GlobalService.myBoats;
 
-
-
-
         console.log('about to init fields')
-
 
         // this.initLoading = this.loadingCtrl.create({
         //     content: 'Waiting...'
@@ -518,11 +515,13 @@ export class Form {
                 this.formPageIndex += (GlobalService.boatInfoCount + 1);
                 this.initFields();
                 this.slides.slideTo(GlobalService.boatStartFormIndex + GlobalService.boatInfoCount, 300, true);
+                this.content.scrollToTop();
             }
             else {
                 this.formPageIndex++;
                 this.initFields();
                 this.slides.slideNext(true, 300);
+                this.content.scrollToTop();
             }
         }
     }
@@ -574,9 +573,10 @@ export class Form {
                     loading.dismiss();
 
                     setTimeout(() => {
-                        this.nav.pop();
-                        GlobalService.mainTabRef.select(1);
-                    }, 100);
+                        this.viewCtrl.dismiss({
+                            toRequest: true
+                        });
+                    }, 500);
                 }, (error) => {
                     console.log(error.message);
                     console.log(error);
@@ -596,9 +596,10 @@ export class Form {
             modal.onDidDismiss((data) => {
                 if (data.cancel !== true) {
                     setTimeout(() => {
-                        this.nav.pop();
-                        GlobalService.mainTabRef.select(1);
-                    }, 100);
+                        this.viewCtrl.dismiss({
+                            toRequest: true
+                        });
+                    }, 500);
                 }
             });
 
@@ -624,15 +625,17 @@ export class Form {
                 this.formPageIndex = GlobalService.boatStartFormIndex - 1;
                 this.initFields();
                 this.slides.slideTo(GlobalService.boatStartFormIndex - 1, 300, true);
+                this.content.scrollToTop();
             }
             else {
                 this.formPageIndex--;
                 this.initFields();
                 this.slides.slidePrev(true, 300);
+                this.content.scrollToTop();
             }
         }
         else {
-            this.nav.popToRoot();
+            this.viewCtrl.dismiss();
         }
     }
 

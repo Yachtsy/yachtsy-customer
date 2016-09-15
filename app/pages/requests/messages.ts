@@ -81,9 +81,14 @@ export class Messages {
         console.log('ngOnDestroy - messages');
     }
 
+    quoteMinHeight = 0
+    profileMinHeight = 0
     ngOnInit() {
         console.log('ngOnInit - messages reqid = ', this.request);
         console.log('--------');
+
+        this.quoteMinHeight = window.innerHeight - 64 - 88 - 160;
+        this.profileMinHeight = window.innerHeight - 64 - 160;
 
         if (GlobalService.isOnline()) {
             if (this.FBService.getAuthData()) {
@@ -198,10 +203,6 @@ export class Messages {
     ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
         this.pageElement.style.background = '#005677';
-
-        let ele: any;
-        ele = document.querySelector('.message-content .quote-wrapper');
-        ele.style.minHeight = (window.innerHeight - 64 - 88 - 160) + 'px';
     }
 
     ionViewWillLeave() {

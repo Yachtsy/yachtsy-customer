@@ -1,6 +1,6 @@
 
-import {Component} from '@angular/core';
-import {App, Modal, Platform, NavController, NavParams, ViewController, AlertController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Content, App, Modal, Platform, NavController, NavParams, ViewController, AlertController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests';
 import GlobalService = require('../../components/globalService');
@@ -18,6 +18,8 @@ import {
     directives: [FORM_DIRECTIVES]
 })
 export class ModalsContentPage {
+
+    @ViewChild(Content) content: Content;
 
     req
     boatInfo
@@ -46,6 +48,10 @@ export class ModalsContentPage {
             name: this.name,
             email: this.email
         })
+    }
+
+    ionViewWillEnter() {
+        this.content.scrollToTop();
     }
 
     setName(name) {

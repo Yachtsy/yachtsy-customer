@@ -25,6 +25,10 @@
     height: 44px;
   }
 
+  ion-list {
+    margin-bottom: 0px;
+  }
+
   ion-label {
     margin: 0px 8px 13px 0;
   }
@@ -78,6 +82,11 @@
 
   .toggle-button.selected {
     color: black;
+    background: white;
+  }
+
+  .profile-tab-wrapper {
+    width: 100%;
     background: white;
   }
 

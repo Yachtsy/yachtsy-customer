@@ -27,7 +27,6 @@ export class Requests {
 
     ngOnInit() {
         console.log('ngOnInit - request');
-        this.items = GlobalService.myRequests;
 
         this.profile = {
             image: GlobalService.avatarImage,
@@ -35,6 +34,8 @@ export class Requests {
     }
 
     ionViewWillEnter() {
+        this.items = GlobalService.myRequests;
+        
         var loading = this.navParams.get('loading');
         if (loading) {
             loading.dismiss();

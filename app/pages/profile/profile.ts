@@ -67,6 +67,7 @@ export class Profile {
         if (idx === 2) {
             if (GlobalService.isOnline()) {
                 this.FBService.logout().then((data: any) => {
+                    GlobalService.clearData();
                     GlobalService.mainTabRef.select(0);
                 });
             }

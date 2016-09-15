@@ -85,6 +85,9 @@ export class Home {
     onPageWillEnter() {
         if (GlobalService.isOnline()) {
             this.isLoggedIn = this.FBService.isAuthenticated();
+            if (!this.isLoggedIn)
+                this.isInitRequests = false;
+
             this.getMyRequests();
         }
 
@@ -115,6 +118,7 @@ export class Home {
             return;
 
         this.isInitRequests = true;
+        console.log('init request');
 
         this.FBService.getMyRequests()
             .subscribe((data: any) => {
@@ -395,6 +399,11 @@ export class Home {
 
         this.formModal = this.modalCtrl.create(Form, navParams);
         this.formModal.present();
+        this.formModal.onDidDismiss((data) => {
+            console.log('modal dismiss');
+            if (data.toRequest === true)
+                GlobalService.mainTabRef.select(1);                
+        });
 
         //this.navController.push(Form, navParams);
     }

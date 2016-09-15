@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div *ngIf="curTab === 1">
+    <div *ngIf="curTab === 1" class="profile-tab-wrapper" [ngStyle]="{'min-height': profileMinHeight + 'px'}">
         <ion-list>
             <ion-item>Ty's Steam Cleaning</ion-item>
             <ion-item>10 years of experience</ion-item>
@@ -31,7 +31,7 @@
         </ion-list>
     </div>
 
-    <div *ngIf="curTab === 0" class="quote-wrapper">
+    <div *ngIf="curTab === 0" class="quote-wrapper" [ngStyle]="{'min-height': quoteMinHeight + 'px'}">
         <div class="price-header">
             $ {{price}} <span class="desc">total price</span>
         </div>

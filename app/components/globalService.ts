@@ -28,6 +28,11 @@ export var isOnline = function() {
 	return (typeof firebase !== 'undefined' && isOnlineStatus);
 }
 
+export var clearData = function() {
+  this.myRequests = [];
+  this.myBoats = {};
+}
+
 export var displayOfflineAlert = function(alertCtrl) {
     let alert = alertCtrl.create({
       title: 'No Internet Connection',
