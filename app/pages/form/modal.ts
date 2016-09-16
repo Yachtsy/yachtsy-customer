@@ -67,32 +67,32 @@ export class ModalsContentPage {
         //console.log('User Form info:')
         //console.log(this.form.value)
 
-        if (GlobalService.isOnline()) {
-            if (this.FBService.isAuthenticated()) {
+        // if (GlobalService.isOnline()) {
+        if (this.FBService.isAuthenticated()) {
 
-                var authData = this.FBService.getAuthData();
-                this.createUser(authData)
+            var authData = this.FBService.getAuthData();
+            this.createUser(authData)
 
-            } else {
+        } else {
 
-                this.FBService.loginAnon()
-                    .subscribe((authdata: any) => {
-                        console.log(' auth done will now try to create user - auth data:')
-                        //console.log(authdata)
-                        this.createUser(authdata);
-                    });
-            }
+            this.FBService.loginAnon()
+                .subscribe((authdata: any) => {
+                    console.log(' auth done will now try to create user - auth data:')
+                    //console.log(authdata)
+                    this.createUser(authdata);
+                });
         }
-        else
-            GlobalService.displayOfflineAlert(this.alertCtrl);
+        // }
+        // else
+        // GlobalService.displayOfflineAlert(this.alertCtrl);
     }
 
     createUser(authData) {
-        
+
         var user = {
-            email:      this.form.value.email,
-            name:       this.form.value.name,
-            pushToken:  GlobalService.pushToken
+            email: this.form.value.email,
+            name: this.form.value.name,
+            pushToken: GlobalService.pushToken
         }
 
         console.log('the auth data is as follows:');
@@ -102,7 +102,7 @@ export class ModalsContentPage {
             .subscribe(() => {
 
                 console.log('user created');
-                
+
                 //console.log('the user AUTH DATA is ');
                 //console.log(authData);
 
@@ -116,10 +116,11 @@ export class ModalsContentPage {
                         .subscribe((requestId) => {
                             console.log('after submit request')
                             console.log(requestId)
-                            this.viewCtrl.dismiss({
-                                cancel: false
-                            });
-                        })
+                        });
+
+                    this.viewCtrl.dismiss({
+                        cancel: false
+                    });
                 }
                 else {
                     this.viewCtrl.dismiss({

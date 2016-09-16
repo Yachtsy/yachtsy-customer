@@ -30,16 +30,14 @@ export class DebugPage {
         public FBService: FirebaseService,
         private builder: FormBuilder
     ) {
-       
-        if (GlobalService.isOnline()) {
-            this.FBService.getUserProfile()
-            .subscribe((usr)=>{
+
+        this.FBService.getUserProfile()
+            .subscribe((usr) => {
                 console.log(usr);
                 this.user = usr;
             });
 
-            this.userId = firebase.auth().currentUser.uid
-        }
+        this.userId = firebase.auth().currentUser.uid
     }
 
     dismiss() {

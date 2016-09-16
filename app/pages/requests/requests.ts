@@ -34,8 +34,11 @@ export class Requests {
     }
 
     ionViewWillEnter() {
-        this.items = GlobalService.myRequests;
-        
+
+        this.ngZone.run(() => {
+            this.items = GlobalService.myRequests;
+        });
+
         var loading = this.navParams.get('loading');
         if (loading) {
             loading.dismiss();
@@ -43,7 +46,9 @@ export class Requests {
     }
 
     onPageWillEnter() {
-        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        this.ngZone.run(() => {
+            GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        });
     }
 
     newRequestClick() {
@@ -53,11 +58,11 @@ export class Requests {
 
     requestClick(item) {
         console.log(item);
-        
-        if (!GlobalService.isOnline()) {
-            GlobalService.displayOfflineAlert(this.alertCtrl);
-            return;
-        }
+
+        // if (!GlobalService.isOnline()) {
+        //     GlobalService.displayOfflineAlert(this.alertCtrl);
+        //     return;
+        // }
         //if (item.data.quotes && Object.keys(item.data.quotes).length > 0) {
         //console.log('the item is ');
         //console.log(item);

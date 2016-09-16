@@ -551,10 +551,10 @@ export class Form {
         console.log('request submitted');
         //console.log(this.formAnswers);
 
-        if (!GlobalService.isOnline()) {
-            GlobalService.displayOfflineAlert(this.alertCtrl);
-            return;
-        }
+        // if (!GlobalService.isOnline()) {
+        //     GlobalService.displayOfflineAlert(this.alertCtrl);
+        //     return;
+        // }
 
         var request = { body: JSON.stringify(this.formAnswers) };
         request['categoryId'] = this.categoryId;
@@ -592,12 +592,6 @@ export class Form {
                     console.log('after submit request');
                     console.log(requestId);
                     loading.dismiss();
-
-                    setTimeout(() => {
-                        this.viewCtrl.dismiss({
-                            toRequest: true
-                        });
-                    }, 500);
                 }, (error) => {
                     console.log(error.message);
                     console.log(error);
@@ -607,6 +601,12 @@ export class Form {
                         this.submitRequest();
                     }
                 });
+
+                 setTimeout(() => {
+                        this.viewCtrl.dismiss({
+                            toRequest: true
+                        });
+                    }, 200);
 
         } else {
 

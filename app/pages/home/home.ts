@@ -69,36 +69,28 @@ export class Home {
 
     ngOnInit() {
         console.log('home ngOnInit');
-        if (GlobalService.isOnline()) {
-            this.initLoadingData();
-        }
-        else {
-            var handle = setInterval(() => {
-                if (GlobalService.isOnline()) {
-                    clearInterval(handle);
-                    this.initLoadingData();
-                }
-            }, 500);
-        }
+        // if (GlobalService.isOnline()) {
+        this.initLoadingData();
+        // }
+        // else {
+        // var handle = setInterval(() => {
+        //     // if (GlobalService.isOnline()) {
+        //     clearInterval(handle);
+        //     this.initLoadingData();
+        //     // }
+        // }, 500);
+        // }
     }
 
     onPageWillEnter() {
-        if (GlobalService.isOnline()) {
-            this.isLoggedIn = this.FBService.isAuthenticated();
-            if (!this.isLoggedIn)
-                this.isInitRequests = false;
-
-            this.getMyRequests();
-        }
-
+        
         console.log('home - onPageWillEnter: ' + this.isLoggedIn);
-        if (this.isLoggedIn)
+        if (this.FBService.isAuthenticated())
             GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        else
-            GlobalService.mainTabBarElement.style.display = 'none';
-
-        if (!this.isLoggedIn)
+        else {
             this.myBoats = null;
+            GlobalService.mainTabBarElement.style.display = 'none';
+        }
     }
 
     onPopularSlideChanged() {
@@ -107,101 +99,13 @@ export class Home {
     }
 
     initLoadingData() {
-        this.isInit = true;
+        
         this.isLoggedIn = this.FBService.isAuthenticated();
         this.getCategoryInfo();
-        this.getMyRequests();
+        
     }
 
-    getMyRequests() {
-        if (!this.isLoggedIn || this.isInitRequests)
-            return;
-
-        this.isInitRequests = true;
-        console.log('init request');
-
-        this.FBService.getMyRequests()
-            .subscribe((data: any) => {
-                var unreadTotalCount = 0;
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].data.quotes) {
-                        data[i].data.quotes = this.FBService.objectToArr(data[i].data.quotes);
-                        data[i].data.quotesLength = data[i].data.quotes.length;
-
-                        var unreadCount = 0;
-                        var curTime = new Date().getTime();
-                        for (var j = 0; j < data[i].data.quotes.length; j++) {
-                            if (data[i].data.quotes[j].data.initialQuoteSeen !== true)
-                                unreadCount++;
-                            if (data[i].data.quotes[j].data.timestamp) {
-                                var dur = curTime - data[i].data.quotes[j].data.timestamp;
-                                data[i].data.quotes[j].data.pasttime = this.getPastTimeString(dur) + ' ago';
-                                if (dur <= 24 * 3600 * 1000)
-                                    data[i].data.quotes[j].data.isNew = true;
-                                else
-                                    data[i].data.quotes[j].data.isNew = false;
-                            }
-                            else {
-                                data[i].data.quotes[j].data.isNew = false;
-                            }
-                        }
-                        data[i].data.unreadCount = unreadCount;
-                        unreadTotalCount += unreadCount;
-                    }
-                    else
-                        data[i].data.quotesLength = 0;
-                }
-
-                for (var i = 0; i < data.length; i++) {
-                    for (var j = i + 1; j < data.length; j++) {
-                        if (data[i].data.date < data[j].data.date) {
-                            var tmp = {};
-                            Object.assign(tmp, data[i]);
-                            data[i] = data[j];
-                            data[j] = tmp;
-                        }
-                    }
-                }
-
-                if (unreadTotalCount === 0)
-                    GlobalService.tabBadgeInfo.count = '';
-                else
-                    GlobalService.tabBadgeInfo.count = unreadTotalCount + '';
-
-                if (typeof FirebasePlugin !== 'undefined')
-                    FirebasePlugin.setBadgeNumber(unreadTotalCount);
-
-                GlobalService.myRequests.data = data;
-                console.log(data);
-            });
-
-    }
-
-    getPastTimeString(duration) {
-        var dur = (duration - duration % 1000) / 1000;
-        var ss, mm, hh, dd, oo, yy;
-
-        ss = dur % 60; dur = (dur - ss) / 60;
-        mm = dur % 60; dur = (dur - mm) / 60;
-        hh = dur % 24; dur = (dur - hh) / 24;
-        dd = dur % 30; dur = (dur - dd) / 30;
-        oo = dur % 12; yy = (dur - oo) / 12;
-
-        if (yy > 0)
-            return yy + 'y';
-        else if (oo > 0)
-            return oo + 'm';
-        else if (dd > 0)
-            return dd + 'd';
-        else if (hh > 0)
-            return hh + 'h';
-        else if (mm > 0)
-            return mm + 'm';
-        else if (ss > 0)
-            return ss + 's';
-        else
-            return 'now';
-    };
+    
 
     getCategoryInfo() {
         if (this.isInitCategory)
@@ -304,7 +208,7 @@ export class Home {
         }
     }
 
-    itemTapped(item) {        
+    itemTapped(item) {
         console.log('item tapped');
 
         var categoryId = item.id;
@@ -402,7 +306,7 @@ export class Home {
         this.formModal.onDidDismiss((data) => {
             console.log('modal dismiss');
             if (data && data.toRequest === true)
-                GlobalService.mainTabRef.select(1);                
+                GlobalService.mainTabRef.select(1);
         });
 
         //this.navController.push(Form, navParams);

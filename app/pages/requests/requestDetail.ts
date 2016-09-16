@@ -23,7 +23,7 @@ export class RequestDetail {
         this.requestId = navParams.get('reqId');
         console.log('the request id is ' + this.requestId);
 
-        if (GlobalService.isOnline()) {
+        // if (GlobalService.isOnline()) {
             this.FBService.getRequest(this.requestId)
                 .subscribe((res: any) => {
 
@@ -31,7 +31,7 @@ export class RequestDetail {
                     console.log('the request is: ', this.request);
                     this.requestBody = JSON.parse(this.request.body);
                 });
-        }
+        // }
     }
 
     ngOnDestroy() {

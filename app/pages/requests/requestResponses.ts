@@ -52,7 +52,7 @@ export class RequestResponses {
 
         console.log('ngOnInit - requestDetail = ', this.request);
 
-        if (GlobalService.isOnline()) {
+        // if (GlobalService.isOnline()) {
             this.FBService.getMyResponses(this.request.id)
                 .subscribe((data: any) => {
                     console.log('my responses are', data);
@@ -79,17 +79,17 @@ export class RequestResponses {
 
                 this.totalReviews = Object.keys(reviews).length;
             });
-        }
+        // }
     }
 
     gotoMessages(item) {
         console.log('going to message for item: ');
         console.log(item);
         
-        if (!GlobalService.isOnline()) {
-            GlobalService.displayOfflineAlert(this.alertCtrl);
-            return;
-        }
+        // if (!GlobalService.isOnline()) {
+        //     GlobalService.displayOfflineAlert(this.alertCtrl);
+        //     return;
+        // }
 
         if (item.data.initialQuoteSeen != true)
             this.FBService.markRequestRead(this.request.id, item.id)
@@ -107,10 +107,10 @@ export class RequestResponses {
                 {
                     text: 'View Request Details',
                     handler: () => {
-                        if (!GlobalService.isOnline()) {
-                            GlobalService.displayOfflineAlert(this.alertCtrl);
-                            return;
-                        }
+                        // if (!GlobalService.isOnline()) {
+                        //     GlobalService.displayOfflineAlert(this.alertCtrl);
+                        //     return;
+                        // }
 
                         let modal = this.modalCtrl.create(RequestDetail, { reqId: this.request.id });
                         modal.present();
@@ -119,10 +119,10 @@ export class RequestResponses {
                     text: 'Cancel Request',
                     role: 'destructive',
                     handler: () => {
-                        if (!GlobalService.isOnline()) {
-                            GlobalService.displayOfflineAlert(this.alertCtrl);
-                            return;
-                        }
+                        // if (!GlobalService.isOnline()) {
+                        //     GlobalService.displayOfflineAlert(this.alertCtrl);
+                        //     return;
+                        // }
 
                         let loading = this.loadingCtrl.create({
                             content: 'Canceling request',

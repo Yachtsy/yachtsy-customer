@@ -186,8 +186,6 @@ export class FirebaseService {
 
             userRequestsRef.orderByChild("cancelled").equalTo(false).on('value',
                 (snapshot) => {
-
-                    console.log('requests: ', snapshot.val())
                     var arr = this.snapToArr(snapshot);
                     observer.next(arr);
                 },

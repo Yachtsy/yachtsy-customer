@@ -32,47 +32,44 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        if (GlobalService.isOnline()) {
-            this.getProfile();
-        }
+        this.getProfile();
+
     }
 
     ngOnInit() {
         this.profile = {
-            name:       '',
-            image:      GlobalService.avatarImage
+            name: '',
+            image: GlobalService.avatarImage
         };
     }
 
     getProfile() {
         if (!this.FBService.isAuthenticated()) {
             this.profile = {
-                name:       '',
-                image:      GlobalService.avatarImage
+                name: '',
+                image: GlobalService.avatarImage
             };
             return;
         }
 
         this.FBService.getUserProfile()
-        .subscribe((data)=>{
-            console.log('Profile: ' + data);
-            this.ngZone.run(() => {
-                this.profile = data;
-                this.profile.image = GlobalService.avatarImage;
+            .subscribe((data) => {
+                console.log('Profile: ' + data);
+                this.ngZone.run(() => {
+                    this.profile = data;
+                    this.profile.image = GlobalService.avatarImage;
+                });
             });
-        });
     }
 
     itemTapped(idx) {
         if (idx === 2) {
-            if (GlobalService.isOnline()) {
-                this.FBService.logout().then((data: any) => {
-                    GlobalService.clearData();
-                    GlobalService.mainTabRef.select(0);
-                });
-            }
-            else
-                GlobalService.displayOfflineAlert(this.alertCtrl);
+            this.FBService.logout().then((data: any) => {
+                GlobalService.clearData();
+                GlobalService.mainTabBarElement.style.display = 'none';
+                GlobalService.mainTabRef.select(0);
+            });
+
         }
 
         if (idx === 3) {
