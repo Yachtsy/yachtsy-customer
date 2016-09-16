@@ -86,6 +86,8 @@ export class MyApp {
         this.pushTokenCallCount = 0;
         this.getPushToken();
 
+        if (typeof FirebasePlugin.onNotificationOpen !== 'undefined')
+          console.log('onNotificationOpen is available on Firebase Plugin.');
         FirebasePlugin.onNotificationOpen((notification) => {
           console.log(notification);
           var requestId = '';
@@ -194,7 +196,8 @@ export class MyApp {
           console.log('auth state changd', user);
 
           this.ngZone.run(() => {
-            GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+            if (GlobalService.mainTabBarElement)
+              GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
           });
           this.getMyRequests();
 

@@ -81,6 +81,7 @@ export class Messages {
 
     quoteMinHeight = 0
     profileMinHeight = 0
+    blueHeight = 300;
     ngOnInit() {
         console.log('ngOnInit - messages reqid = ', this.request);
         console.log('--------');
@@ -116,7 +117,8 @@ export class Messages {
                     });
 
                     setTimeout(() => {
-                        this.content.scrollToBottom(300);
+                        if (this.content)
+                            this.content.scrollToBottom(300);
                     }, 0);
                 });
 
@@ -169,9 +171,11 @@ export class Messages {
             this.ngZone.run(() => {
                 this.contentsBottom = e['keyboardHeight'] + 88;
                 this.footerBottom = e['keyboardHeight'];
+                this.blueHeight = 100;
 
                 setTimeout(() => {
-                    this.content.scrollToBottom(300);
+                    if (this.content)
+                        this.content.scrollToBottom(300);
                 }, 100);
             });
 
@@ -184,6 +188,7 @@ export class Messages {
                 console.log('initialising postions')
                 this.contentsBottom = 88;
                 this.footerBottom = 0;
+                this.blueHeight = 300;
             });
         });
     }
@@ -197,13 +202,18 @@ export class Messages {
         GlobalService.mainTabBarElement.style.display = this.tabBarDisplayStatus;
     }
 
+    blueElement
     ionViewWillEnter() {
         this.pageElement = document.getElementsByClassName('messages')[0];
-        this.pageElement.style.background = '#005677';
+        this.pageElement.style.background = 'white';
+
+        this.blueElement = document.getElementsByClassName('blue-background')[0];
+        this.blueElement.style.display = 'block';
     }
 
     ionViewWillLeave() {
         this.pageElement.style.background = 'none';
+        this.blueElement.style.display = 'none';
     }
 
     clickToggle(idx) {

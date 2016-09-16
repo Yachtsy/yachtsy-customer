@@ -8,7 +8,9 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="message-content messages" [ngStyle]="{bottom: contentsBottom + 'px'}">
+<div class="blue-background" [ngStyle]="{'height': blueHeight + 'px'}"></div>
+
+<ion-content class="message-content messages" [ngStyle]="{bottom: contentsBottom + 'px'}" has-bouncing="false">
 
     <div class="profile-wrapper">
         <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
@@ -66,17 +68,15 @@
 
 <!--[ngStyle]="{bottom: footerBottom + 'px'}"-->
 <ion-footer no-border-top [ngStyle]="{bottom: footerBottom + 'px'}" *ngIf="curTab === 0">
-    <ion-input #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox" placeholder="Write a message..."></ion-input>
     <ion-toolbar class="message-bar">
-        <ion-buttons start>
-            <button royal *ngIf="request" (click)="attachMessage($event)">
+        <ion-input class="message-input" #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox" placeholder="Write a message..."></ion-input>
+        <div class="button-wrapper">
+            <button class="left-button" royal *ngIf="request" (click)="attachMessage($event)">
                 Attach
             </button>
-        </ion-buttons>
-        <ion-buttons end>
-            <button royal *ngIf="request" (click)="sendMessage($event)">
+            <button class="right-button" royal *ngIf="request" (click)="sendMessage($event)">
                 Send
             </button>
-        </ion-buttons>
+        </div>
     </ion-toolbar>
 </ion-footer>

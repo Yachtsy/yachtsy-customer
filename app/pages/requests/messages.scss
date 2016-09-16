@@ -1,8 +1,22 @@
 
 .messages {
 
+  .message-content {
+    height: auto;
+    background: none;
+  }
+
   scroll-content {
     margin-bottom: 0px !important;
+  }
+
+  .blue-background {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 300px;
+    background: #005677;
   }
 
   .chatbox {
@@ -14,15 +28,41 @@
     border-top: 1px solid #005677;
   }
 
-  .message-content {
-    height: auto;
-    background: #005677;
+  ion-footer {
+    height: 88px;
   }
 
   .message-bar {
     position: absolute;
     bottom: 0px;
+    height: 88px;
+    padding: 0px;
+  }
+
+  .message-input {
+    width: 100%;
     height: 44px;
+    background: white;
+  }
+
+  .button-wrapper {
+    position: relative;
+    width: 100%;
+    height: 44px;
+  }
+
+  .button-wrapper .left-button {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+  }
+
+  .button-wrapper .right-button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 0px;
   }
 
   ion-list {
@@ -93,10 +133,6 @@
   .quote-wrapper {
     width: 100%;
     background: white;
-  }
-
-  ion-footer {
-    height: 88px;
   }
 
   button {
