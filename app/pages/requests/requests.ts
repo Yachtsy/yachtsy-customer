@@ -31,12 +31,15 @@ export class Requests {
         this.profile = {
             image: GlobalService.avatarImage,
         };
+
     }
 
     ionViewWillEnter() {
 
+        console.log('ionViewWillEnter - request');
         this.ngZone.run(() => {
             this.items = GlobalService.myRequests;
+            console.log('REQUESTS len:', this.items.length)
         });
 
         var loading = this.navParams.get('loading');

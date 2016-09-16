@@ -86,8 +86,6 @@ export class MyApp {
         this.pushTokenCallCount = 0;
         this.getPushToken();
 
-        if (typeof FirebasePlugin.onNotificationOpen !== 'undefined')
-          console.log('onNotificationOpen is available on Firebase Plugin.');
         FirebasePlugin.onNotificationOpen((notification) => {
           console.log(notification);
           var requestId = '';
@@ -128,6 +126,10 @@ export class MyApp {
   }
 
   getMyRequests() {
+
+
+    console.log('getting requests...');
+
     this.FBService.getMyRequests()
       .subscribe((data: any) => {
         var unreadTotalCount = 0;
@@ -171,14 +173,16 @@ export class MyApp {
           }
         }
 
-        if (unreadTotalCount === 0)
+        if (unreadTotalCount === 0) {
           GlobalService.tabBadgeInfo.count = '';
-        else
+        } else {
           GlobalService.tabBadgeInfo.count = unreadTotalCount + '';
+        }
 
-        if (typeof FirebasePlugin !== 'undefined')
+        if (typeof FirebasePlugin !== 'undefined') {
           FirebasePlugin.setBadgeNumber(unreadTotalCount);
-
+        }
+        console.log('setting global requests length');
         GlobalService.myRequests.data = data;
       });
 
@@ -193,12 +197,12 @@ export class MyApp {
       (user) => {
         if (user) {
 
-          console.log('auth state changd', user);
+          console.log('auth state changd --- ', user);
 
-          this.ngZone.run(() => {
-            if (GlobalService.mainTabBarElement)
-              GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-          });
+
+
+          console.log('getting requests');
+
           this.getMyRequests();
 
           firebase.database().ref().child('users').child(user.uid).child('completionRequests')
@@ -234,7 +238,18 @@ export class MyApp {
 
                 });
               }
-            })
+            });
+
+          this.ngZone.run(() => {
+
+            try {
+              GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+            } catch (error) {
+              console.error(error);
+            }
+
+          });
+
         } else {
 
           this.ngZone.run(() => {
