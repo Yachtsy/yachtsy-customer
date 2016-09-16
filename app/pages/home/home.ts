@@ -165,7 +165,7 @@ export class Home {
                             }
                         }
                     }
-                    console.log('category group', this.categoryGroup);
+                    //console.log('category group', this.categoryGroup);
                 });
 
             });
@@ -184,7 +184,7 @@ export class Home {
                     else if (data[i].id === 'time')
                         this.dateTimeOptions[1] = [data[i].data];
                 }
-                console.log(this.dateTimeOptions);
+                //console.log(this.dateTimeOptions);
             });
 
         this.FBService.getBoatInfo()
@@ -195,7 +195,7 @@ export class Home {
                         this.boatInfos.push(data[i].data);
                     }
                 }
-                console.log(this.boatInfos);
+                //console.log(this.boatInfos);
             });
 
         if (this.isLoggedIn) {
