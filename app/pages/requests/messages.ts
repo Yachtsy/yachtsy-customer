@@ -124,7 +124,7 @@ export class Messages {
 
             this.FBService.getRequest(this.requestId)
                 .subscribe((res: any) => {
-                    console.log('the request is');
+                    console.log('the request is', res.data);
                     this.request = res.data;
 
                     this.nickName = this.request.quotes[this.supplierId].supplierNickName
@@ -320,7 +320,7 @@ export class Messages {
 
         loading.present();
 
-        this.FBService.contact(this.requestId, this.supplierId)
+        this.FBService.contact(this.requestId, this.supplierId, this.request.categoryId)
             .then((result) => {
                 loading.dismiss().then(() => {
 

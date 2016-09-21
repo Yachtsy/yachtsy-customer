@@ -309,11 +309,12 @@ export class FirebaseService {
         });
     }
 
-    contact(requestId, supplierId){
+    contact(requestId, supplierId, categoryId){
         
         let payload = {
             requestId: requestId,
-            supplierId: supplierId
+            supplierId: supplierId,
+            categoryId: categoryId
         };
         
         return this.doOperation('hire', payload);
