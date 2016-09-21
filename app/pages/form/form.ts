@@ -272,7 +272,7 @@ export class Form {
     lng
     lat
     placeName
-    
+
     //private map: GoogleMap;
 
 
@@ -564,7 +564,7 @@ export class Form {
         var request = { body: JSON.stringify(this.formAnswers) };
         request['categoryId'] = this.categoryId;
 
-        //request['place'] = this.place;
+        request['locationName'] = this.place.formatted_address;
         request['googlePlaceInfo'] = {
             placeName: this.place.name,
             address: this.place.formatted_address,
@@ -594,10 +594,11 @@ export class Form {
 
             console.log('requests is authenticated');
 
-            this.viewCtrl.dismiss({
-                toRequest: true
-            });
-
+            setTimeout(() => {
+                this.viewCtrl.dismiss({
+                    toRequest: true
+                });
+            }, 500)
 
             let loading = this.loadingCtrl.create({
                 content: 'Sending Request...'
