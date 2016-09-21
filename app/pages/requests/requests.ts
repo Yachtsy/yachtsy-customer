@@ -37,6 +37,8 @@ export class Requests {
     ionViewWillEnter() {
 
         console.log('ionViewWillEnter - request');
+        GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+
         this.ngZone.run(() => {
             this.items = GlobalService.myRequests;
             console.log('REQUESTS len:', this.items.length)
@@ -48,11 +50,12 @@ export class Requests {
         }
     }
 
-    onPageWillEnter() {
-        this.ngZone.run(() => {
-            GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        });
-    }
+    //ionViewDidEnter() {
+        //this.ngZone.run(() => {
+       //     console.log('SHOWING TAB BAR',  GlobalService.mainTabBarDefaultDisplayInfo);
+            // GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        //});
+    //}
 
     newRequestClick() {
         // this.nav.push(Home, { goToRequestsPageIfLoggedIn: false })
