@@ -105,7 +105,7 @@ export class Form {
                 this.showNextButton = false;
 
                 setTimeout(() => {
-                //     this.content.scrollToBottom(300);
+                    //     this.content.scrollToBottom(300);
                     this.adjustScroll(false);
                 }, 100);
             });
@@ -272,6 +272,7 @@ export class Form {
     lng
     lat
     placeName
+    
     //private map: GoogleMap;
 
 
@@ -432,6 +433,9 @@ export class Form {
         }, 500)
     }
 
+
+    place
+
     placeChanged(autoComplete) {
 
         console.log('place changed callback');
@@ -445,6 +449,7 @@ export class Form {
             this.lng = geometry.location.lng();
             this.lat = geometry.location.lat();
             this.placeName = place.name;
+            this.place = place;
 
             var locationAnswer = {
                 lat: this.lat,
@@ -558,7 +563,16 @@ export class Form {
 
         var request = { body: JSON.stringify(this.formAnswers) };
         request['categoryId'] = this.categoryId;
-        request['locationName'] = this.placeName;
+
+        //request['place'] = this.place;
+        request['googlePlaceInfo'] = {
+            placeName: this.place.name,
+            address: this.place.formatted_address,
+            id: this.place.place_id,
+            vicinity: this.place.vicinity,
+            address_components: this.place.address_components
+        };
+
 
         // here we should check that the users is authenticated AND
         // that the user's account exists - trying to submit a request when you 
@@ -579,6 +593,11 @@ export class Form {
         if (this.FBService.isAuthenticated()) {
 
             console.log('requests is authenticated');
+
+            this.viewCtrl.dismiss({
+                toRequest: true
+            });
+
 
             let loading = this.loadingCtrl.create({
                 content: 'Sending Request...'
@@ -602,12 +621,6 @@ export class Form {
                         this.submitRequest();
                     }
                 });
-
-                 setTimeout(() => {
-                        this.viewCtrl.dismiss({
-                            toRequest: true
-                        });
-                    }, 200);
 
         } else {
 
