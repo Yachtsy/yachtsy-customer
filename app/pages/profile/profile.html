@@ -10,7 +10,8 @@
 
     <div class="profile-wrapper">
         <div class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
-        <div class="profile-name">{{profile.name}}</div>
+        <div class="profile-name">{{profile.firstName}} {{profile.lastName}}</div>
+        <div class="profile-name">{{profile.email}}</div>
     </div>
 
     <ion-list text-wrap>

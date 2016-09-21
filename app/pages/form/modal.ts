@@ -4,18 +4,11 @@ import {Content, App, Modal, Platform, NavController, NavParams, ViewController,
 import {FirebaseService} from '../../components/firebaseService'
 import {Requests} from '../requests/requests';
 import GlobalService = require('../../components/globalService');
+import { REACTIVE_FORM_DIRECTIVES, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {
-    FormBuilder,
-    Validators,
-    Control,
-    ControlGroup,
-    FORM_DIRECTIVES
-} from '@angular/common';
 
 @Component({
-    templateUrl: 'build/pages/form/modal.html',
-    directives: [FORM_DIRECTIVES]
+    templateUrl: 'build/pages/form/modal.html'
 })
 export class ModalsContentPage {
 
@@ -24,10 +17,12 @@ export class ModalsContentPage {
     req
     boatInfo
 
-    form: ControlGroup
+    public form: FormGroup
 
-    name: Control
-    email: Control
+    firstName
+    lastName
+    password
+    email
 
     constructor(
         public platform: Platform,
@@ -41,22 +36,21 @@ export class ModalsContentPage {
         this.req = this.params.get('req')
         this.boatInfo = this.params.get('boat')
 
-        this.name = new Control("", Validators.required)
-        this.email = new Control("", Validators.required)
+        this.firstName = ["", Validators.required];
+        this.lastName = ["", Validators.required];
+        this.password = ["", Validators.required];
+        this.email = ["", Validators.compose([Validators.required])];
 
-        this.form = builder.group({
-            name: this.name,
+        this.form = this.builder.group({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            password: this.password,
             email: this.email
         })
     }
 
     ionViewWillEnter() {
         this.content.scrollToTop();
-    }
-
-    setName(name) {
-        console.log(name)
-        this.name = name;
     }
 
     submitRequest() {
@@ -68,6 +62,8 @@ export class ModalsContentPage {
         //console.log(this.form.value)
 
         // if (GlobalService.isOnline()) {
+
+        // we need this - alex.
         if (this.FBService.isAuthenticated()) {
 
             var authData = this.FBService.getAuthData();
@@ -75,11 +71,16 @@ export class ModalsContentPage {
 
         } else {
 
-            this.FBService.loginAnon()
-                .subscribe((authdata: any) => {
+            this.FBService.createAccount(this.form.value.email, this.form.value.password)
+                .then((authdata: any) => {
                     console.log(' auth done will now try to create user - auth data:')
                     //console.log(authdata)
                     this.createUser(authdata);
+                }).catch((error: any) => {
+
+                    this.alert('Error creating account', error.message);
+
+                    console.log(' create account error', error);
                 });
         }
         // }
@@ -87,16 +88,30 @@ export class ModalsContentPage {
         // GlobalService.displayOfflineAlert(this.alertCtrl);
     }
 
+
+    alert(title, subtitle) {
+        let alert = this.alertCtrl.create({
+            title: title,
+            subTitle: subtitle,
+            buttons: ['OK']
+        });
+        alert.present();
+    }
+
+
     createUser(authData) {
 
         var user = {
             email: this.form.value.email,
-            name: this.form.value.name,
+            lastName: this.form.value.lastName,
+            firstName: this.form.value.firstName,
             pushToken: GlobalService.pushToken
-        }
+        };
 
         console.log('the auth data is as follows:');
         console.log(authData);
+
+
 
         this.FBService.createUser(authData.uid, user)
             .subscribe(() => {
@@ -127,6 +142,14 @@ export class ModalsContentPage {
                         cancel: false
                     });
                 }
+            }, () => {
+
+                let alert = this.alertCtrl.create({
+                    title: 'Error!',
+                    subTitle: 'Erorr creating user account. Please contact support@yachtsy.com',
+                    buttons: ['OK']
+                });
+                alert.present();
             })
     }
 

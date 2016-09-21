@@ -84,6 +84,7 @@ export class Home {
 
     onPageWillEnter() {
         
+        this.isLoggedIn = this.FBService.isAuthenticated();
         console.log('home - onPageWillEnter: ' + this.isLoggedIn);
         if (this.FBService.isAuthenticated())
             GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
@@ -100,7 +101,7 @@ export class Home {
 
     initLoadingData() {
         
-        this.isLoggedIn = this.FBService.isAuthenticated();
+        
         this.getCategoryInfo();
         
     }

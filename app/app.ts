@@ -188,6 +188,9 @@ export class MyApp {
 
   }
 
+
+  initCompletionRequests = false;
+
   initFB() {
 
     this.isInitFB = true;
@@ -198,51 +201,55 @@ export class MyApp {
         if (user) {
 
           console.log('auth state changd --- ', user);
-
-
-
           console.log('getting requests');
 
           this.getMyRequests();
 
-          firebase.database().ref().child('users').child(user.uid).child('completionRequests')
-            .on('value', (snapshot) => {
+          if (!this.initCompletionRequests) {
 
-              var nav: NavController = this.app.getActiveNav();
+            this.initCompletionRequests = true;
 
-              if (snapshot.exists()) {
-                console.log('COMPLETION REQUESTS:', snapshot.val());
+            firebase.database().ref().child('users').child(user.uid).child('completionRequests')
+              .on('value', (snapshot) => {
 
-                var completionRequests = snapshot.val();
-                var completionRequestKeys = Object.keys(completionRequests);
+                var nav: NavController = this.app.getActiveNav();
 
-                completionRequestKeys.map((key) => {
-                  var completionRequest = completionRequests[key];
+                if (snapshot.exists()) {
+                  console.log('COMPLETION REQUESTS:', snapshot.val());
 
-                  var params = {
-                    requestId: key,
-                    supplierId: completionRequest.supplierId,
-                    firstName: completionRequest.supplierFirstName,
-                    lastName: completionRequest.supplierLastName
-                  };
+                  var completionRequests = snapshot.val();
+                  var completionRequestKeys = Object.keys(completionRequests);
 
-                  let modal;
-                  if (completionRequest.confirmed === undefined) {
-                    console.log('presenting modal: ' + key);
-                    let modal = this.modalCtrl.create(CompletionModal, params);
-                    modal.present();
-                  } else if (completionRequest.confirmed === true && !completionRequest.reviewed) {
-                    let modal = this.modalCtrl.create(ReviewModal, params);
-                    modal.present();
-                  }
+                  completionRequestKeys.map((key) => {
+                    var completionRequest = completionRequests[key];
 
-                });
-              }
-            });
+                    var params = {
+                      requestId: key,
+                      supplierId: completionRequest.supplierId,
+                      firstName: completionRequest.supplierFirstName,
+                      lastName: completionRequest.supplierLastName
+                    };
+
+                    let modal;
+                    if (completionRequest.confirmed === undefined) {
+                      console.log('presenting modal: ' + key);
+                      let modal = this.modalCtrl.create(CompletionModal, params);
+                      modal.present();
+                    } else if (completionRequest.confirmed === true && !completionRequest.reviewed) {
+                      let modal = this.modalCtrl.create(ReviewModal, params);
+                      modal.present();
+                    }
+
+                  });
+                }
+              });
+          }
+
 
           this.ngZone.run(() => {
 
             try {
+              console.log('SHOWING TAB BAR');
               GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
             } catch (error) {
               console.error(error);
@@ -252,7 +259,10 @@ export class MyApp {
 
         } else {
 
+          this.initCompletionRequests = false;
+
           this.ngZone.run(() => {
+            console.log('HIDING TAB BAR');
             GlobalService.mainTabBarElement.style.display = 'none';
           });
 

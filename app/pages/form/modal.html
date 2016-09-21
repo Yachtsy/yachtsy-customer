@@ -11,15 +11,28 @@
 
 <ion-content>
     <form [formGroup]="form">
-        <ion-item [class.error]="!name.valid && name.touched">
-            <ion-label floating>Your full name:</ion-label>
-            <ion-input type="text" value="" [formControl]="name"></ion-input>
-        </ion-item>
-        <ion-item [class.error]="!email.valid && email.touched">
-            <ion-label floating>Email</ion-label>
-            <ion-input type="email" value="" [formControl]="email"></ion-input>
-        </ion-item>
-        <br/><br/>
+
+        <ion-list inset>
+            <ion-item [class.error]="!firstName.valid && firstName.touched">
+                <ion-label>First name</ion-label>
+                <ion-input type="text" value="" formControlName="firstName"></ion-input>
+            </ion-item>
+            <ion-item [class.error]="!lastName.valid && lastName.touched">
+                <ion-label>Last name</ion-label>
+                <ion-input type="text" value="" formControlName="lastName"></ion-input>
+            </ion-item>
+            <ion-item [class.error]="!email.valid && email.touched">
+                <ion-label>Email</ion-label>
+                <ion-input type="email" value="" formControlName="email"></ion-input>
+            </ion-item>
+            <ion-item [class.error]="!password.valid && password.touched">
+                <ion-label>Password</ion-label>
+                <ion-input type="password" value="" formControlName="password"></ion-input>
+            </ion-item>
+        </ion-list>
+
+
+
         <button (click)="submitRequest()" class="btn btn-primary" [disabled]="!form.valid" block>Submit</button>
     </form>
 </ion-content>

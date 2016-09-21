@@ -115,15 +115,15 @@ export class FirebaseService {
             });
     }
 
-    createUser(userId, userdata) {
+    createUser(userId, userData) {
 
         let clientOpId = this.getRandom();
 
         let operation = {
+            userId: userId,
             operationType: 'createUser',
-            payload: userdata,
-            clientOpId: clientOpId,
-            userId: userId
+            payload: userData,
+            clientOpId: clientOpId
         };
 
         var ref = firebase.database().ref().child('queue').child('tasks');
@@ -147,7 +147,7 @@ export class FirebaseService {
                     });
                 }
             });
-        })
+        });
     }
 
 
@@ -309,17 +309,17 @@ export class FirebaseService {
         });
     }
 
-    contact(requestId, supplierId, categoryId){
-        
+    contact(requestId, supplierId, categoryId) {
+
         let payload = {
             requestId: requestId,
             supplierId: supplierId,
             categoryId: categoryId
         };
-        
+
         return this.doOperation('hire', payload);
     }
- 
+
     getMyMessages(requestId, supplierId) {
 
         var authData = firebase.auth().currentUser
@@ -368,6 +368,10 @@ export class FirebaseService {
                 }
             })
         })
+    }
+
+    createAccount(email, password) {
+        return firebase.auth().createUserWithEmailAndPassword(email, password);
     }
 
     login(_username, password) {
@@ -486,7 +490,7 @@ export class FirebaseService {
         });
     }
 
-    getFreeCreditsMode(){
+    getFreeCreditsMode() {
 
         let ref = firebase.database().ref().child('config').child('freeCreditsMode');
 
@@ -529,7 +533,7 @@ export class FirebaseService {
 
     submitRequest(request) {
 
-        if (typeof request.categoryId === "string"){
+        if (typeof request.categoryId === "string") {
             request.categoryId = Number(request.categoryId);
         }
 
