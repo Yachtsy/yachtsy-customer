@@ -529,8 +529,12 @@ export class FirebaseService {
 
     submitRequest(request) {
 
-        //console.log('request to submit is: ');
-        //console.log(request);
+        if (typeof request.categoryId === "string"){
+            request.categoryId = Number(request.categoryId);
+        }
+
+        console.log('request to submit is: ');
+        console.log(request);
 
         var uid = this.getAuthData().uid;
         if (!uid) {
