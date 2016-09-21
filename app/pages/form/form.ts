@@ -558,6 +558,7 @@ export class Form {
 
         var request = { body: JSON.stringify(this.formAnswers) };
         request['categoryId'] = this.categoryId;
+        request['locationName'] = this.placeName;
 
         // here we should check that the users is authenticated AND
         // that the user's account exists - trying to submit a request when you 
