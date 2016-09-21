@@ -20,7 +20,7 @@ import { Icon } from 'ionic-angular/components/icon/icon';
 		}
 		li {
 			display: inline-block;
-			color: #ffa500;
+			color: #c2b560;
 			
 		}
 		li + li {

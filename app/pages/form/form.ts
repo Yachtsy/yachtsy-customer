@@ -569,7 +569,7 @@ export class Form {
             placeName: this.place.name,
             address: this.place.formatted_address,
             id: this.place.place_id,
-            vicinity: this.place.vicinity,
+            vicinity: this.place.vicinity ? this.place.vicinity : '',
             address_components: this.place.address_components
         };
 
@@ -601,7 +601,7 @@ export class Form {
             }, 500)
 
             let loading = this.loadingCtrl.create({
-                content: 'Sending Request...'
+                content: 'Sending Request'
             });
 
             loading.present();
