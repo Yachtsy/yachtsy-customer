@@ -116,10 +116,10 @@ export class Messages {
                             });
                     });
 
-                    setTimeout(() => {
-                        if (this.content)
-                            this.content.scrollToBottom(300);
-                    }, 0);
+                    // setTimeout(() => {
+                    //     if (this.content)
+                    //         this.content.scrollToBottom(300);
+                    // }, 0);
                 });
 
             this.FBService.getRequest(this.requestId)
@@ -127,7 +127,7 @@ export class Messages {
                     console.log('the request is', res.data);
                     this.request = res.data;
 
-                    this.nickName = this.request.quotes[this.supplierId].supplierNickName
+                    this.nickName = this.request.quotes[this.supplierId].supplierName
                     this.price = this.request.quotes[this.supplierId].price;
 
                     let reviews = this.request.quotes[this.supplierId].supplierReviews;
