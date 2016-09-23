@@ -570,7 +570,8 @@ export class Form {
             address: this.place.formatted_address,
             id: this.place.place_id,
             vicinity: this.place.vicinity ? this.place.vicinity : '',
-            address_components: this.place.address_components
+            address_components: this.place.address_components,
+            location: this.place.location
         };
 
 

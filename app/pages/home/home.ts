@@ -70,21 +70,25 @@ export class Home {
     ngOnInit() {
         console.log('HOME ngOnInit');
         this.getCategoryInfo();
+        if (!firebase.auth().currentUser){
+            console.log('NO USER SO clearing boats');
+            this.myBoats = null;
+        }
     }
 
     onPageWillEnter() {
         this.isLoggedIn = this.FBService.isAuthenticated();
         console.log('HOME - onPageWillEnter: ' + this.isLoggedIn);
 
-        if (this.isLoggedIn) {
-            console.log('HOME - onPageWillEnter - logged in so setting TAB BAR DISPLAY');
-            GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        }
-        else {
-            console.log('HOME - onPageWillEnter - NOT logged in so setting TAB BAR DISPLAY to NONE');
-            this.myBoats = null;
-            GlobalService.mainTabBarElement.style.display = 'none';
-        }
+        //if (this.isLoggedIn) {
+        //    console.log('HOME - onPageWillEnter - logged in so setting TAB BAR DISPLAY');
+        //    GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+       // }
+        //else {
+        //    console.log('HOME - onPageWillEnter - NOT logged in so setting TAB BAR DISPLAY to NONE');
+            
+        //    GlobalService.mainTabBarElement.style.display = 'none';
+        //}
     }
 
     onPopularSlideChanged() {
