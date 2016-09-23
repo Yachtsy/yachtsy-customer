@@ -30,16 +30,31 @@ export class Tabs {
   }
 
   ngOnInit() {
+
+    console.log('TABS - ngOnInit');
+
     this.tabBadgeInfo = GlobalService.tabBadgeInfo;
 
     GlobalService.mainTabRef = this.tabRef;
     GlobalService.mainTabBarElement = document.querySelector('#mainTabs ion-tabbar');
+
+    console.log('GlobalService.mainTabBarElement - NOW SET');
   }
 
   onPageWillEnter() {
+
+    console.log('TABS - onPageWillEnter');
+
     GlobalService.mainTabBarDefaultDisplayInfo = GlobalService.mainTabBarElement.style.display;
-    if (GlobalService.mainTabBarDefaultDisplayInfo === '')
+
+    console.log('TABS - onPageWillEnter GlobalService.mainTabBarDefaultDisplayInfo: ', GlobalService.mainTabBarElement.style.display);
+
+    if (GlobalService.mainTabBarDefaultDisplayInfo === '') {
+      console.log(' GlobalService.mainTabBarDefaultDisplayInfo WAS EMPTY ***');
       GlobalService.mainTabBarDefaultDisplayInfo = window.getComputedStyle(GlobalService.mainTabBarElement).display;
+      console.log(' GlobalService.mainTabBarDefaultDisplayInfo --- set to COMPUTED STYLE: => ', GlobalService.mainTabBarDefaultDisplayInfo);
+    }
+
   }
 
 }

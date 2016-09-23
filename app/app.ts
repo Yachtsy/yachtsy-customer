@@ -32,11 +32,13 @@ export class MyApp {
       Keyboard.disableScroll(true);
       StatusBar.styleDefault();
 
-
-      if (platform.is('ios'))
+      if (platform.is('ios')) {
         GlobalService.mainTabBarDefaultDisplayInfo = '-webkit-flex';
-      else
+      }
+      else {
         GlobalService.mainTabBarDefaultDisplayInfo = 'flex';
+      }
+      console.log('set GlobalService.mainTabBarDefaultDisplayInfo: ', GlobalService.mainTabBarDefaultDisplayInfo)
 
       var offline = Observable.fromEvent(document, "offline");
       var online = Observable.fromEvent(document, "online");
@@ -50,8 +52,9 @@ export class MyApp {
       }
       else {
         console.log('online and ready')
-        this.initFB();
-        this.start();
+        this.app.getActiveNav().setRoot(Tabs).then(() => {
+          this.initFB();
+        });
       }
 
       offline.subscribe(() => {
@@ -195,17 +198,21 @@ export class MyApp {
 
     this.isInitFB = true;
 
+    console.log('initFB - setting up firebase auth state changed handler');
+
     firebase.auth().onAuthStateChanged(
 
       (user) => {
         if (user) {
 
-          console.log('auth state changd --- ', user);
+          console.log('auth state changd --- USER EXISTS', user);
           console.log('getting requests');
 
           this.getMyRequests();
 
           if (!this.initCompletionRequests) {
+
+            console.log('completion requests not initialising');
 
             this.initCompletionRequests = true;
 
@@ -249,9 +256,11 @@ export class MyApp {
           this.ngZone.run(() => {
 
             try {
-              console.log('SHOWING TAB BAR');
+              console.log('BEFORE: Auth state changed in APP - SHOWING TAB BAR');
               GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+              console.log('AFTER: Auth state changed in APP - style.display', GlobalService.mainTabBarElement.style.display);
             } catch (error) {
+              console.log('ERROR trying to set GlobalService.mainTabBarElement.style.display')
               console.error(error);
             }
 
@@ -259,11 +268,19 @@ export class MyApp {
 
         } else {
 
+          console.log('APP auth state changed handler - NO USER');
           this.initCompletionRequests = false;
 
           this.ngZone.run(() => {
-            console.log('HIDING TAB BAR');
-            GlobalService.mainTabBarElement.style.display = 'none';
+
+            try {
+              console.log('HIDING TAB BAR');
+              GlobalService.mainTabBarElement.style.display = 'none';
+            } catch (error) {
+              console.log('ERROR trying to hide the mainTabBarElement');
+              console.log(error);
+            }
+
           });
 
         }
@@ -287,13 +304,13 @@ export class MyApp {
     });
   }
 
-  start() {
-    console.log('starting app');
-    console.log('root page');
-    this.ngZone.run(() => {
-      this.rootPage = Tabs;
-    });
-  }
+  // start() {
+  //   console.log('starting app');
+  //   console.log('root page');
+  //   this.ngZone.run(() => {
+  //     this.rootPage = Tabs;
+  //   });
+  // }
 
   getPastTimeString(duration) {
     var dur = (duration - duration % 1000) / 1000;

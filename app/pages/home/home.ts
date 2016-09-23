@@ -68,45 +68,31 @@ export class Home {
     }
 
     ngOnInit() {
-        console.log('home ngOnInit');
-        // if (GlobalService.isOnline()) {
-        this.initLoadingData();
-        // }
-        // else {
-        // var handle = setInterval(() => {
-        //     // if (GlobalService.isOnline()) {
-        //     clearInterval(handle);
-        //     this.initLoadingData();
-        //     // }
-        // }, 500);
-        // }
+        console.log('HOME ngOnInit');
+        this.getCategoryInfo();
     }
 
     onPageWillEnter() {
-        
         this.isLoggedIn = this.FBService.isAuthenticated();
-        console.log('home - onPageWillEnter: ' + this.isLoggedIn);
-        if (this.FBService.isAuthenticated())
+        console.log('HOME - onPageWillEnter: ' + this.isLoggedIn);
+
+        if (this.isLoggedIn) {
+            console.log('HOME - onPageWillEnter - logged in so setting TAB BAR DISPLAY');
             GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
+        }
         else {
+            console.log('HOME - onPageWillEnter - NOT logged in so setting TAB BAR DISPLAY to NONE');
             this.myBoats = null;
             GlobalService.mainTabBarElement.style.display = 'none';
         }
     }
 
     onPopularSlideChanged() {
-        if (this.slides)
+        if (this.slides) {
             this.curPopularIndex = this.slides.activeIndex;
+        }
     }
 
-    initLoadingData() {
-        
-        
-        this.getCategoryInfo();
-        
-    }
-
-    
 
     getCategoryInfo() {
         if (this.isInitCategory)
