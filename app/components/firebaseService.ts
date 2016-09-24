@@ -560,18 +560,24 @@ export class FirebaseService {
             var ref = firebase.database().ref().child('queue/tasks');
 
             return new Observable(observer => {
-                var newRequestRef = ref.push(
-                    operation
-                    , (errorOrNull) => {
 
-                        if (errorOrNull) {
-                            console.log('error new request', errorOrNull)
-                            observer.error(errorOrNull)
-                        } else {
-                            observer.next(newRequestRef.key);
-                        }
+                try {
+                    var newRequestRef = ref.push(
+                        operation
+                        , (errorOrNull) => {
 
-                    });
+                            if (errorOrNull) {
+                                console.log('error new request', errorOrNull)
+                                observer.error(errorOrNull)
+                            } else {
+                                observer.next(newRequestRef.key);
+                            }
+
+                        });
+                } catch (error) {
+                    observer.error(error)
+                }
+
             });
         }
     }

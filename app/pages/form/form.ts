@@ -264,6 +264,8 @@ export class Form {
     }
 
 
+
+
     back() {
         this.nav.pop();
     }
@@ -552,6 +554,21 @@ export class Form {
         }
     }
 
+    alert(title, subtitle, handler) {
+        let alert = this.alertCtrl.create({
+            title: title,
+            subTitle: subtitle,
+            buttons: [{
+                text: 'OK',
+                handler: () => {
+                    if (handler)
+                        handler();
+                }
+            }]
+        });
+        alert.present();
+    }
+
     submitRequest() {
         console.log('request submitted');
         //console.log(this.formAnswers);
@@ -571,7 +588,10 @@ export class Form {
             id: this.place.place_id,
             vicinity: this.place.vicinity ? this.place.vicinity : '',
             address_components: this.place.address_components,
-            location: this.place.location
+            location: {
+                latitude: this.place.geometry.location.lat(),
+                logitude: this.place.geometry.location.lng()
+            } 
         };
 
 
@@ -595,12 +615,6 @@ export class Form {
 
             console.log('requests is authenticated');
 
-            setTimeout(() => {
-                this.viewCtrl.dismiss({
-                    toRequest: true
-                });
-            }, 500)
-
             let loading = this.loadingCtrl.create({
                 content: 'Sending Request'
             });
@@ -611,17 +625,28 @@ export class Form {
 
             this.FBService.submitRequest(request)
                 .subscribe((requestId) => {
+
                     console.log('after submit request');
                     console.log(requestId);
-                    loading.dismiss();
+
+                    setTimeout(() => {
+                        loading.dismiss().then(() => {
+                            this.alert("Request submitted!", "", () => {
+                                this.viewCtrl.dismiss({
+                                    toRequest: true
+                                });
+                            });
+                        });
+                    }, 1000);
+
                 }, (error) => {
-                    console.log(error.message);
+                    console.log('error submitting request')
                     console.log(error);
-                    loading.dismiss();
-                    if (error.message === "PERMISSION_DENIED: Permission denied") {
-                        this.FBService.logout();
-                        this.submitRequest();
-                    }
+                    setTimeout(() => {
+                        loading.dismiss().then(() => {
+                            this.alert("Error submitting request:", error.message, null);
+                        });
+                    }, 1000);
                 });
 
         } else {
