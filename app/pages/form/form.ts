@@ -590,7 +590,7 @@ export class Form {
             address_components: this.place.address_components,
             location: {
                 latitude: this.place.geometry.location.lat(),
-                logitude: this.place.geometry.location.lng()
+                longitude: this.place.geometry.location.lng()
             } 
         };
 
