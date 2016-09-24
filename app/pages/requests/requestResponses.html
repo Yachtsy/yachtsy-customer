@@ -19,7 +19,7 @@
             <ion-avatar item-left>
                 <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
             </ion-avatar>
-            <div class="supplier-name">{{item.data.supplierNickName}}</div>
+            <div class="supplier-name">{{item.data.supplierName}}</div>
             <rating score="{{item.data.reviewRating}}" max="5"></rating><span class="review-count">{{totalReviews}} reviews</span>
             <div item-right class="right-item">
                 <div class="price-value">${{item.data.price}}</div>
