@@ -62,9 +62,13 @@ export class Messages {
 
                 if (snapshot.exists()) {
                     let config = snapshot.val();
-                    console.log('config is', config)
+
                     this.freeCreditsMode = config.freeCreditsMode;
+                    console.log('freeCreditsMode', config.freeCreditsMode)
+
                     this.creditsRequiredForCategory = config.creditsRequiredForCategory;
+                    console.log('creditsRequiredForCategory', config.creditsRequiredForCategory)
+
                 } else {
                     throw new Error('Config snapshot missing');
                 }
@@ -387,8 +391,8 @@ export class Messages {
             });
     }
 
-    viewReviews(){
-        let modal = this.modalCtrl.create(ViewReviewsPage, {reviews: this.reviews});
+    viewReviews() {
+        let modal = this.modalCtrl.create(ViewReviewsPage, { reviews: this.reviews });
         modal.present();
     }
 
@@ -428,6 +432,7 @@ export class Messages {
                         console.log('confirmed contact');
 
                         if (this.freeCreditsMode) {
+                            console.log('freeCreditsMode', this.freeCreditsMode);
                             this.contact();
                         } else {
                             this.FBService.getCreditBalance()
