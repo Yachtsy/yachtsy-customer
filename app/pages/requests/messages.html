@@ -24,18 +24,20 @@
     </div>
 
     <div *ngIf="curTab === 1" class="profile-tab-wrapper" [ngStyle]="{'min-height': profileMinHeight + 'px'}">
-        <!--<ion-list>
-            <ion-item *ngFor="let item of profile">
-                {{item}}
+        <ion-list *ngIf="alreadyHiredSupplier">
+            <!--<ion-list-header>
+                PROFILE
+            </ion-list-header>-->
+            <ion-item class="request-item" *ngFor="let item of profile">
+                <div class="request-question">{{item.label}}</div>
+                <div class="request-answer">{{item.data}}</div>
             </ion-item>
-        </ion-list>-->
-
-        <ion-item class="request-item" *ngFor="let item of profile">
-
-            <div class="request-question">{{item.label}}</div>
-            <div class="request-answer">{{item.data}}</div>
-
-        </ion-item>
+        </ion-list>
+        <ion-list *ngIf="!alreadyHiredSupplier">
+            <ion-list-header>
+                Make contact to see full details.   
+            </ion-list-header>
+        </ion-list>
 
     </div>
 

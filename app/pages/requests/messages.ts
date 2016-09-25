@@ -353,7 +353,6 @@ export class Messages {
     }
 
     contact() {
-        this.alreadyHiredSupplier = true;
 
         let loading = this.loadingCtrl.create({
             content: 'Contacting Pro'
@@ -370,6 +369,7 @@ export class Messages {
 
                     if (result.operationSuccess === true && result.message === "success") {
                         this.doAlert("Success", "You can now contact the Pro", 'OK')
+                        this.alreadyHiredSupplier = true;
                     } else {
                         this.doAlert("Error", result.message, 'OK')
                     }
