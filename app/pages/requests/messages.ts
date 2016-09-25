@@ -1,11 +1,12 @@
 import {Component, NgZone, ViewChild} from '@angular/core';
-import {AlertController, Page, Content, NavController, NavParams, LoadingController} from 'ionic-angular';
+import {AlertController, Page, Content, NavController, NavParams, LoadingController, ModalController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
 import {ElasticTextarea} from '../../components/elastic-textarea';
 import {RatingComponentUpdateable} from '../../components/ratingsComponent';
 import {Keyboard, InAppPurchase} from 'ionic-native';
+import {ViewReviewsPage} from '../view-reviews/view-reviews';
 import GlobalService = require('../../components/globalService');
 
 
@@ -19,6 +20,7 @@ export class Messages {
     messages: any;
     supplierId: any;
     message: any;
+    reviews: any;
     userId: any;
     requestId: any;
     nickName: any;
@@ -44,6 +46,7 @@ export class Messages {
         public navParams: NavParams,
         public FBService: FirebaseService,
         private ngZone: NgZone,
+        private modalCtrl: ModalController,
         private alertCtrl: AlertController,
         private loadingCtrl: LoadingController) {
 
@@ -137,6 +140,7 @@ export class Messages {
                     this.price = this.request.quotes[this.supplierId].price;
 
                     let reviews = this.request.quotes[this.supplierId].supplierReviews;
+                    this.reviews = reviews;
 
                     let supplierProfile = this.request.quotes[this.supplierId].supplierProfile;
 
@@ -381,6 +385,11 @@ export class Messages {
                     }
                 });
             });
+    }
+
+    viewReviews(){
+        let modal = this.modalCtrl.create(ViewReviewsPage, {reviews: this.reviews});
+        modal.present();
     }
 
     doAlert(title, message, buttonText) {
