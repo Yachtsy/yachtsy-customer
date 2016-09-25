@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Modal, NavParams, NavController, ViewController} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService';
 import {RatingComponentUpdateable} from '../../components/ratingsComponent';
+import GlobalService = require('../../components/globalService');
 
 @Component({
   templateUrl: 'build/pages/review/review.html',
@@ -34,6 +35,7 @@ export class ReviewModal {
       requestId: this.requestId,
       supplierId: this.supplierId,
       review: {
+        reviewer: GlobalService.userProfile.firstName + ' ' + GlobalService.userProfile.lastName.substr(0,1).toUpperCase() + '.',
         rating: this.rating,
         comments: "he is great"
       }

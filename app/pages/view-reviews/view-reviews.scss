@@ -1,0 +1,104 @@
+.view-reviews {
+    
+     ion-card {
+        width: 100%;
+        margin: 0px;
+    }
+
+    .no-quotes {
+        padding: 0px 10px;
+    }
+
+    .input-wrapper ion-icon {
+        position: relative;
+        right: 0;   
+        padding: 0;
+        font-size: 15px;
+    }
+
+    .review-wrapper {
+        padding: 15px;
+        border-bottom: 1px solid #c8c7cc;
+    }
+
+    ion-item {
+        padding: 0px;
+    }
+
+    ion-avatar {
+        margin: 0px 15px 0px 0px;
+    }
+
+    .avatar-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .reviewer-name {
+        font-size: 1.4rem;
+        margin-bottom: 3px;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .review-count {
+        font-size: 1.2rem;
+    }
+
+    ion-list .item {
+        padding: 10px 0px 5px 16px;
+        color: grey;
+        font-size: 1.2rem;
+    }
+
+    .right-item {
+        margin: 0px;
+    }
+
+    .item .item-inner {
+        padding-right: 0px;
+        border-bottom: 0px;
+    }
+
+    .review-content {
+        padding-left: 65px;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .price-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    rating ul {
+        display: inline-block;
+    }
+
+    .button {
+        width: 94%;
+        margin: 0px 3%;
+        height: 45px;
+    }
+
+    // .toolbar-background {
+    //     background: #005677;
+    // }
+
+    ion-footer::before {
+        background: none;    
+    }
+
+    ion-navbar button {
+        color: white;
+    }
+
+    .toolbar-title {
+        color: white;
+    }
+
+}

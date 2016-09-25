@@ -39,9 +39,6 @@
             </ion-list-header>
         </ion-list>
 
-        <br>
-        <br>
-        <button class="button block-button" block (click)="viewReviews()">View Reviews</button>
 
     </div>
 
@@ -72,4 +69,8 @@
             </button>
         </div>
     </ion-toolbar>
+</ion-footer>
+
+<ion-footer style="height: 44px" no-border-top *ngIf="curTab === 1">
+    <button block (click)="viewReviews()">View Reviews</button>
 </ion-footer>

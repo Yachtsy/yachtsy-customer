@@ -1,23 +1,29 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>96 REVIEWS</ion-title>
+        <ion-title><span class="review-count ">{{totalReviews}} REVIEWS</span></ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding class="view-reviews">
 
-  <div class="Aligner">
-    <div class="Aligner-item">
+    <ion-list>
+        <div class="review-wrapper" tappable *ngFor="let item of reviews">
 
-      <img />
+            <ion-item>
+                <ion-avatar item-left>
+                    <div class="avatar-image " [ngStyle]="{ 'background-image': 'url(' + profile.image + ')'} "></div>
+                </ion-avatar>
+                <div class="reviewer-name">{{item.reviewer}}</div>
+                <rating score="{{item.rating}} " max="5"></rating>
 
-    </div>
-  </div>
-
+            </ion-item>
+            <div class="review-content ">{{item.comments}}</div>
+        </div>
+    </ion-list>
 </ion-content>
 
 <ion-footer class="view-reviews">
-  <ion-toolbar no-border-top>
-    <button light full (click)="close()">Close</button>
-  </ion-toolbar>
+    <ion-toolbar no-border-top>
+        <button light full (click)="close() ">Close</button>
+    </ion-toolbar>
 </ion-footer>

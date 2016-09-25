@@ -131,6 +131,18 @@ export class MyApp {
     });
   }
 
+  getUserProfile() {
+    this.FBService.getUserProfile()
+      .subscribe((data) => {
+        console.log('Profile: ' + data);
+        this.ngZone.run(() => {
+          GlobalService.userProfile = data;
+        });
+      });
+
+  }
+
+
   getMyRequests() {
 
 
@@ -211,7 +223,10 @@ export class MyApp {
           console.log('auth state changd --- USER EXISTS', user);
           console.log('getting requests');
 
+          this.getUserProfile();
+
           this.getMyRequests();
+
 
           if (!this.initCompletionRequests) {
 
@@ -357,6 +372,6 @@ let config = {
 };
 
 ionicBootstrap(MyApp, [
-    FirebaseService,
-    provide(PLATFORM_PIPES, { useValue: [SafeURL], multi: true })
-  ], config); 
+  FirebaseService,
+  provide(PLATFORM_PIPES, { useValue: [SafeURL], multi: true })
+], config); 

@@ -52,14 +52,9 @@ export class Profile {
             return;
         }
 
-        this.FBService.getUserProfile()
-            .subscribe((data) => {
-                console.log('Profile: ' + data);
-                this.ngZone.run(() => {
-                    this.profile = data;
-                    this.profile.image = GlobalService.avatarImage;
-                });
-            });
+        this.profile = GlobalService.userProfile;
+        this.profile.image = GlobalService.avatarImage;
+
     }
 
     itemTapped(idx) {
