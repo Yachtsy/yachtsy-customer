@@ -29,6 +29,7 @@ export class ReviewModal {
   }
 
   submitReview() {
+
     var reviewObj = {
       requestId: this.requestId,
       supplierId: this.supplierId,
@@ -37,10 +38,11 @@ export class ReviewModal {
         comments: "he is great"
       }
     }
+
     this.fbserv.submitReview(reviewObj)
       .then(() => {
         this.close();
-      })
+      });
   }
 
 

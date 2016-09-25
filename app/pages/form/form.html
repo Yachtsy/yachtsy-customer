@@ -78,11 +78,10 @@
 
                 <div [hidden]="locationStep === 2">
                     <div class="input-wrapper">
-                        <form (ngSubmit)="onSubmit()" style="width: 100%">
+                        <!--<form (ngSubmit)="onSubmit()" style="width: 100%">-->
                             <input #autocomplete class="loc_input ng-untouched ng-pristine ng-valid" id="autocomplete_1" name="location" type="text"
                                 placeholder="Enter location" [(ngModel)]="fromValue">
-
-                        </form>
+                        <!--</form>-->
                         <ion-icon *ngIf="fromValue.length > 0" name='close' (click)="cancelLocation()"></ion-icon>
                     </div>
                     <div [hidden]="fromValue.length == 0 || isResultHidden" class="result-title-text">RESULTS</div>
