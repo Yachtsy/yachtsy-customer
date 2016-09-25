@@ -336,8 +336,14 @@ export class Messages {
 
                                             console.log('receipt was validated');
                                             this.FBService.getCreditBalance()
-                                                .then((balance) => {
+                                                .then((balanceSnap) => {
+                                                    let balance = balanceSnap.val();
                                                     console.log('New credit balance is: ' + balance);
+
+                                                    if (balance > this.creditsRequiredForCategory){
+                                                        this.contact();
+                                                    }
+
                                                 });
 
                                         }).catch((error) => {
@@ -439,13 +445,17 @@ export class Messages {
                                 .then((balanceSnap) => {
 
                                     let balance = balanceSnap.val();
-                                    
+
                                     console.log('got credits balance: ' + balance);
                                     console.log('credits required for category:', this.creditsRequiredForCategory);
 
                                     if (balance < this.creditsRequiredForCategory) {
                                         console.log('insufficient credits');
-                                        this.promptCredits();
+
+                                        setTimeout(() => {
+                                            this.promptCredits();
+                                        }, 200);
+
                                     } else {
                                         this.contact();
                                     }
