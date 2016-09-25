@@ -64,10 +64,10 @@
     <ion-toolbar class="message-bar">
         <ion-input class="message-input" #chat_input *ngIf="request" [(ngModel)]="message" class="chatbox" placeholder="Write a message..."></ion-input>
         <div class="button-wrapper">
-            <button class="left-button" royal *ngIf="request" (click)="attachMessage($event)">
+            <button class="left-button block-button" royal *ngIf="request" (click)="attachMessage($event)">
                 Attach
             </button>
-            <button class="right-button" royal *ngIf="request" (click)="sendMessage($event)">
+            <button class="right-button block-button" royal *ngIf="request" (click)="sendMessage($event)">
                 Send
             </button>
         </div>

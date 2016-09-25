@@ -1,7 +1,7 @@
 <ion-header class="header">
 
     <ion-navbar hideBackButton>
-        <ion-buttons start>
+        <ion-buttons start class="start">
             <button class="button button-icon button-clear" (click)="clickBack()">
                 <ion-icon name="arrow-back"></ion-icon>
             </button>
@@ -116,14 +116,14 @@
 
     <ion-toolbar *ngIf="curField && showNextButton" no-border-bottom>
 
-        <button class="button" block *ngIf="!lastPage" [disabled]="(
+        <button class="button block-button" block *ngIf="!lastPage" [disabled]="(
                 (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )
                   )" (click)="next()">Next
             </button>
 
-        <button class="button" block *ngIf="lastPage" [disabled]="(
+        <button class="button block-button" block *ngIf="lastPage" [disabled]="(
                 (curField.allows_multiple_values && (formAnswersLength === 0)) ||  
                 (curField.type === 'location' && formAnswersLength === 0) ||
                 (!curField.allows_multiple_values && formAnswersLength === 0 )

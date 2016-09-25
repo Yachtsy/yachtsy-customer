@@ -88,6 +88,10 @@
         background: #005677;
     }
 
+    ion-footer::before {
+        background: none;    
+    }
+
     ion-navbar button {
         color: white;
     }
