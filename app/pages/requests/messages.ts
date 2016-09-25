@@ -340,7 +340,7 @@ export class Messages {
                                                     let balance = balanceSnap.val();
                                                     console.log('New credit balance is: ' + balance);
 
-                                                    if (balance > this.creditsRequiredForCategory){
+                                                    if (balance >= this.creditsRequiredForCategory){
                                                         this.contact();
                                                     }
 
