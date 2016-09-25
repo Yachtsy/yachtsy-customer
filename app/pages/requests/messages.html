@@ -13,8 +13,8 @@
 <ion-content class="message-content messages" [ngStyle]="{bottom: contentsBottom + 'px'}" has-bouncing="false">
 
     <div class="profile-wrapper">
-        <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
-        <div class="supplier-name">{{nickName}}</div>
+        <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + imageObject.image + ')'}"></div>
+        <div class="supplier-name">{{businessName}}</div>
         <rating score="{{reviewRating}}" max="5"></rating>
         <div class="review-count">{{totalReviews}} reviews</div>
         <div class="togglebutton-wrapper">
@@ -24,13 +24,19 @@
     </div>
 
     <div *ngIf="curTab === 1" class="profile-tab-wrapper" [ngStyle]="{'min-height': profileMinHeight + 'px'}">
-        <ion-list>
-            <ion-item>Ty's Steam Cleaning</ion-item>
-            <ion-item>10 years of experience</ion-item>
-            <ion-item>New York, NY</ion-item>
-            <ion-item>(718) 514-0137</ion-item>
-            <ion-item>tystreamcleaning.com</ion-item>
-        </ion-list>
+        <!--<ion-list>
+            <ion-item *ngFor="let item of profile">
+                {{item}}
+            </ion-item>
+        </ion-list>-->
+
+        <ion-item class="request-item" *ngFor="let item of profile">
+
+            <div class="request-question">{{item.label}}</div>
+            <div class="request-answer">{{item.data}}</div>
+
+        </ion-item>
+
     </div>
 
     <div *ngIf="curTab === 0" class="quote-wrapper" [ngStyle]="{'min-height': quoteMinHeight + 'px'}">

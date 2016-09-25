@@ -23,15 +23,17 @@ export class Messages {
     userId: any;
     requestId: any;
     nickName: any;
+    profile: any;
     price: any;
     alreadyHiredSupplier;
     contentsBottom = 0;
     footerBottom = 0;
     pageElement: any;
-    profile;
+    imageObject;
     tabBarDisplayStatus = '';
     curTab = 0;
     freeCreditsMode = false;
+    businessName = "";
     creditsRequiredForCategory = 100;
 
     reviewRating: number;
@@ -53,7 +55,7 @@ export class Messages {
 
         this.message = "";
 
-        this.profile = {
+        this.imageObject = {
             image: GlobalService.avatarImage,
         };
 
@@ -107,7 +109,7 @@ export class Messages {
                     this.ngZone.run(() => {
                         this.messages = Object.keys(msgData)
                             .map((key) => {
-                                msgData[key].data.img = this.profile.image;
+                                msgData[key].data.img = this.imageObject.image;
                                 msgData[key].data.position = 'right';
                                 if (this.userId === msgData[key].data.uid) {
                                     msgData[key].data.position = 'left';
@@ -131,6 +133,36 @@ export class Messages {
                     this.price = this.request.quotes[this.supplierId].price;
 
                     let reviews = this.request.quotes[this.supplierId].supplierReviews;
+
+                    let supplierProfile = this.request.quotes[this.supplierId].supplierProfile;
+
+                    this.profile = [];
+
+                    Object.keys(supplierProfile).map((key) => {
+
+                        if (key.startsWith('business_description')) {
+                            let info = supplierProfile[key];
+
+                            if (info) {
+
+                                var field = Object.keys(info)[0];
+
+                                if (field === 'business_name') {
+                                    this.businessName = info[field]
+                                } else {
+                                    var data = {
+                                        label: this.mapProfileTitles(field),
+                                        data: info[field]
+                                    };
+                                    this.profile.push(data);
+                                }
+                            }
+                        }
+
+                    });
+
+                    console.log('PROFILE:', this.profile);
+
 
                     let rating = 0;
                     if (reviews !== 0) {
@@ -192,6 +224,15 @@ export class Messages {
             });
         });
     }
+
+    mapProfileTitles(title) {
+
+        if (title === "business_stand_out") return "How does your business stand out?"
+        if (title === "business_enjoy") return "What do you enjoy about the work that you do?"
+        if (title === "business_name") return "How does your business stand out?"
+
+    }
+
 
     onPageWillEnter() {
         this.tabBarDisplayStatus = GlobalService.mainTabBarElement.style.display;

@@ -157,4 +157,43 @@
     font-size: 1.2rem;
     color: #005677;
   }
+
+  .request-title {
+		    position: relative;
+		    top: 5px;
+   			width: 100%;
+			text-align: left;
+			color: #005677;
+			font-size: 1.4rem;
+			font-style: italic;
+		}
+
+		.request-item {
+			padding: 0px 10px;
+			border-bottom: 1px solid #eaeae5;
+		}
+
+		.request-item .item-inner {
+		    padding: 0px;
+		    border: none;
+		}
+
+		.request-item .item-inner ion-label {
+			margin: 8px 0px;
+		}
+
+		.request-question {
+			color: grey;
+			font-size: 1.4rem;
+			margin-bottom: 2px;
+			word-wrap: break-word;
+    		white-space: normal;
+   		}
+
+		.request-answer {
+			color: black;
+			font-size: 1.6rem;
+			word-wrap: break-word;
+		    white-space: normal;			
+		}
 }
