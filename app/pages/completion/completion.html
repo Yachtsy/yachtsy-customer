@@ -1,20 +1,33 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            Completion
-        </ion-title>
-    </ion-navbar>
+
 </ion-header>
 
 <ion-content padding>
 
-    <h4 *ngIf="request">{{request.categoryName}}</h4>
+    <div class="profile-wrapper">
 
-    <p>{{firstName}} {{lastName}} marked this request as complete on {{dateMarkedComplete}}?</p>
+        <div class="profile-image" [style.background-image]="profileImage"></div>
 
-    <p>Please confirm if this is correct</p>
+        <div class="profile-main-wrapper">
+            <!--<div class="profile-name">{{firstName}} {{lastName}}</div>-->
+            <div class="profile-desc">{{request.categoryName}} - {{request.locationName}}</div>
 
-    <button block (click)="yes()">Yes</button>
-    <button block (click)="no()">No</button>
+            <div class="profile-details-wrapper">
+                <div class="details-set price">${{request.quotes[supplierId].price}}</div>
+                <div class="details-set">total price</div>
+
+                <p> {{firstName}} {{lastName}} marked this request as complete on {{dateMarkedComplete}}?</p>
+
+                <p>Please confirm if this is correct:</p>
+
+                <button block (click)="yes()">Yes</button>
+                <button block (click)="no()">No</button>
+
+            </div>
+        </div>
+    </div>
+
+
+
 
 </ion-content>
