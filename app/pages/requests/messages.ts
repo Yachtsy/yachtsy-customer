@@ -436,9 +436,12 @@ export class Messages {
                             this.contact();
                         } else {
                             this.FBService.getCreditBalance()
-                                .then((balance) => {
+                                .then((balanceSnap) => {
 
+                                    let balance = balanceSnap.val();
+                                    
                                     console.log('got credits balance: ' + balance);
+                                    console.log('credits required for category:', this.creditsRequiredForCategory);
 
                                     if (balance < this.creditsRequiredForCategory) {
                                         console.log('insufficient credits');
