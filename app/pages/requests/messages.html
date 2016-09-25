@@ -38,25 +38,6 @@
             $ {{price}} <span class="desc">total price</span>
         </div>
 
-        <!--<div>
-            <ion-card *ngFor="let item of messages; let i = index">
-                <ion-card-header *ngIf="item.data.uid === userId">
-                    Me:
-                </ion-card-header>
-
-                <ion-card-header *ngIf="item.data.uid !== userId">
-                    Pro:
-                </ion-card-header>
-
-                <ion-card-content>
-                    <p>
-                        {{item.data.body}}
-                    </p>
-                </ion-card-content>
-
-            </ion-card>
-        </div>-->
-
         <ion-list no-lines>
             <ion-item *ngFor="let msg of messages">
                 <chat-bubble [message]="msg"></chat-bubble>
