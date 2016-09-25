@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
     template:
     `
   <div class="chatBubble">
-    <img class="profile-pic {{msg.position}}" src="{{msg.img}}">
+    <div class="profile-pic {{msg.position}}" [style.background-image]="'url(' + msg.img.url + ')' | safe_url"></div>
     <div class="chat-bubble {{msg.position}}">
       <div class="message">{{msg.body}}</div>
       <div class="message-detail">

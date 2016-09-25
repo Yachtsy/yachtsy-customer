@@ -1,4 +1,4 @@
-import {Component, ViewChild, NgZone} from '@angular/core';
+import {Component, ViewChild, NgZone, provide, PLATFORM_PIPES} from '@angular/core';
 import {Platform, ionicBootstrap, ModalController, NavController, App, AlertController, Alert} from 'ionic-angular';
 import {StatusBar, Keyboard, Network, InAppPurchase} from 'ionic-native';
 import {Home} from './pages/home/home';
@@ -8,6 +8,7 @@ import {CompletionModal} from './pages/completion/completion'
 import {ReviewModal} from './pages/review/review'
 import {Tabs} from './pages/tabs/tabs'
 import {Messages} from './pages/requests/messages'
+import {SafeURL} from './components/pipe';
 import {OfflinePage} from './pages/offline/offline'
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
@@ -15,8 +16,10 @@ import GlobalService = require('./components/globalService');
 
 declare var FirebasePlugin;
 
+
 @Component({
-  template: '<ion-nav [root]="rootPage" swipeBackEnabled="false"></ion-nav>'
+  template: '<ion-nav [root]="rootPage" swipeBackEnabled="false"></ion-nav>',
+  pipes: [SafeURL]
 })
 export class MyApp {
   rootPage: any;
@@ -353,4 +356,7 @@ let config = {
   // backButtonText: '',
 };
 
-ionicBootstrap(MyApp, [FirebaseService], config); 
+ionicBootstrap(MyApp, [
+    FirebaseService,
+    provide(PLATFORM_PIPES, { useValue: [SafeURL], multi: true })
+  ], config); 

@@ -6,7 +6,6 @@ import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
 import {ElasticTextarea} from '../../components/elastic-textarea';
 import {RatingComponentUpdateable} from '../../components/ratingsComponent';
 import {Keyboard, InAppPurchase} from 'ionic-native';
-
 import GlobalService = require('../../components/globalService');
 
 
@@ -29,12 +28,12 @@ export class Messages {
     contentsBottom = 0;
     footerBottom = 0;
     pageElement: any;
-    imageObject;
     tabBarDisplayStatus = '';
     curTab = 0;
     freeCreditsMode = false;
     businessName = "";
     creditsRequiredForCategory = 100;
+    profileImage = {};
 
     reviewRating: number;
     totalReviews: number;
@@ -54,10 +53,6 @@ export class Messages {
         console.log('supplierId passed: ', this.supplierId);
 
         this.message = "";
-
-        this.imageObject = {
-            image: GlobalService.avatarImage,
-        };
 
         firebase.database().ref().child('config')
             .on('value', (snapshot) => {
@@ -91,6 +86,10 @@ export class Messages {
         this.quoteMinHeight = window.innerHeight - 64 - 88 - 160;
         this.profileMinHeight = window.innerHeight - 64 - 160;
 
+        this.profileImage = {
+            url: "img/default_avatar.png"
+        };
+
         if (this.FBService.getAuthData()) {
             this.userId = this.FBService.getAuthData().uid;
             console.log('user id is: ' + this.userId)
@@ -109,10 +108,15 @@ export class Messages {
                     this.ngZone.run(() => {
                         this.messages = Object.keys(msgData)
                             .map((key) => {
-                                msgData[key].data.img = this.imageObject.image;
-                                msgData[key].data.position = 'right';
                                 if (this.userId === msgData[key].data.uid) {
                                     msgData[key].data.position = 'left';
+                                    msgData[key].data.img = {
+                                        url: 'img/default-photo.png'
+                                    };
+                                }
+                                else {
+                                    msgData[key].data.img = this.profileImage;
+                                    msgData[key].data.position = 'right';
                                 }
                                 return msgData[key].data;
                             });
@@ -161,8 +165,10 @@ export class Messages {
 
                     });
 
+                    this.profileImage = {
+                        url: supplierProfile.photo
+                    };
                     console.log('PROFILE:', this.profile);
-
 
                     let rating = 0;
                     if (reviews !== 0) {
