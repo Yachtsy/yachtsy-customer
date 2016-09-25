@@ -28,6 +28,10 @@
     border-top: 1px solid #005677;
   }
 
+  ion-header::after {
+      background: none;    
+  }
+
   ion-footer {
     height: 88px;
   }

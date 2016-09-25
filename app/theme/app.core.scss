@@ -19,6 +19,77 @@
 @import "../pages/notifications/notifications";
 @import "../pages/offline/offline";
 
+
+ion-page {
+  font-family: Avenir;
+}
+
+input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  font-family: Adelle;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  font-family: Adelle;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  font-family: Adelle;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  font-family: Adelle;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+
+/* set color for placeholder text of textarea element */
+textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  font-family: Adelle;
+  font-style: italic;
+}
+textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  font-family: Adelle;
+  font-style: italic;
+}
+textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+  font-family: Adelle;
+  font-style: italic;
+}
+textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  font-family: Adelle;
+  font-style: italic;
+}
+
+ion-navbar {
+  .button-inner {
+    font-size: 1.4rem;
+  }
+
+  .toolbar-title {
+    text-align: center;
+    font-size: 1.4rem;
+  }
+}
+
+ion-buttons.start {
+  order: 3;
+}
+
+.block-button {
+  height: 44px !important;
+}
+
+button {
+    box-shadow: none !important;
+}
+
+ion-toolbar {
+  min-height: 44px !important;
+}
+
 .Aligner {
     display: flex;
     align-items: center;

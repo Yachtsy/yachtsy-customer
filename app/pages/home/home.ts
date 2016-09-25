@@ -69,11 +69,13 @@ export class Home {
 
     ngOnInit() {
         console.log('HOME ngOnInit');
-        this.getCategoryInfo();
-        if (!firebase.auth().currentUser){
+        this.isLoggedIn = this.FBService.isAuthenticated();
+        if (!this.isLoggedIn){
             console.log('NO USER SO clearing boats');
             this.myBoats = null;
         }
+        
+        this.getCategoryInfo();
     }
 
     onPageWillEnter() {
