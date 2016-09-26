@@ -156,14 +156,13 @@
 .loc_input {
     min-height: 4.4rem;
     text-align: left;
-
-    width: 75%;
+    width: 100%;
     height: 40px;
     line-height: 40px;
     margin-left: 0%;
-    margin-right: 5%;
+    margin-right: 0px;
     padding: 0px 10px;
-    border: 0px 0px 0px 1px solid #aaaaaa;
+    border: none;
 }
 
 .input-wrapper {
@@ -172,7 +171,7 @@
 
 .input-wrapper ion-icon {
     position: absolute;
-    right: 5%;
+    right: 0px;
     font-size: 3rem;
     margin: 0px;
     padding: 7px 10px;

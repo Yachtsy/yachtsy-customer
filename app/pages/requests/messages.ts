@@ -1,5 +1,5 @@
 import {Component, NgZone, ViewChild} from '@angular/core';
-import {AlertController, Page, Content, NavController, NavParams, LoadingController, ModalController} from 'ionic-angular';
+import {AlertController, Page, Content, NavController, NavParams, LoadingController, ModalController, Platform} from 'ionic-angular';
 import {FirebaseService} from '../../components/firebaseService'
 import {Home} from '../home/home';
 import {ChatBubble} from '../../components/chat-bubble/chat-bubble';
@@ -44,6 +44,7 @@ export class Messages {
 
     constructor(public nav: NavController,
         public navParams: NavParams,
+        public platform: Platform,
         public FBService: FirebaseService,
         private ngZone: NgZone,
         private modalCtrl: ModalController,
@@ -94,7 +95,7 @@ export class Messages {
         this.profileMinHeight = window.innerHeight - 64 - 160;
 
         this.profileImage = {
-            url: "img/default_avatar.png"
+            url: "img/default-photo.png"
         };
 
         if (this.FBService.getAuthData()) {
@@ -173,9 +174,10 @@ export class Messages {
 
                     });
 
-                    this.profileImage = {
-                        url: supplierProfile.photo
-                    };
+                    if (supplierProfile && supplierProfile.photo)
+                        this.profileImage = {
+                            url: supplierProfile.photo
+                        };
                     console.log('PROFILE:', this.profile);
 
                     let rating = 0;
@@ -211,32 +213,34 @@ export class Messages {
             this.footerBottom = 0;
         });
 
-        window.addEventListener('native.keyboardshow', (e) => {
+        if (this.platform.is('ios')) {
+            window.addEventListener('native.keyboardshow', (e) => {
 
-            console.log('keyboard show')
-            this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'] + 88;
-                this.footerBottom = e['keyboardHeight'];
-                this.blueHeight = 100;
+                console.log('keyboard show')
+                this.ngZone.run(() => {
+                    this.contentsBottom = e['keyboardHeight'] + 88;
+                    this.footerBottom = e['keyboardHeight'];
+                    this.blueHeight = 100;
 
-                setTimeout(() => {
-                    if (this.content)
-                        this.content.scrollToBottom(300);
-                }, 100);
+                    setTimeout(() => {
+                        if (this.content)
+                            this.content.scrollToBottom(300);
+                    }, 100);
+                });
+
             });
 
-        });
+            window.addEventListener('native.keyboardhide', (e) => {
 
-        window.addEventListener('native.keyboardhide', (e) => {
-
-            console.log('keyboard hide')
-            this.ngZone.run(() => {
-                console.log('initialising postions')
-                this.contentsBottom = 88;
-                this.footerBottom = 0;
-                this.blueHeight = 300;
+                console.log('keyboard hide')
+                this.ngZone.run(() => {
+                    console.log('initialising postions')
+                    this.contentsBottom = 88;
+                    this.footerBottom = 0;
+                    this.blueHeight = 300;
+                });
             });
-        });
+        }
     }
 
     mapProfileTitles(title) {
@@ -282,7 +286,7 @@ export class Messages {
             this.footerBottom = 0;
         }
 
-        if (typeof Keyboard !== 'undefined')
+        if (Keyboard)
             Keyboard.close();
     }
 

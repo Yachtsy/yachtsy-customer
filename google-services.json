@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "865054182519",
+    "firebase_url": "https://yachtsy-test.firebaseio.com",
+    "project_id": "yachtsy-test",
+    "storage_bucket": "yachtsy-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865054182519:android:b3c33a49996e6509",
+        "android_client_info": {
+          "package_name": "com.yachtsy.yachtsypro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865054182519-egrf5gpa9q5f9q9agd5lvmefpscp81vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yachtsy.yachtsypro",
+            "certificate_hash": "87B0B6C7965CED4B3296DDE7E2634CC889AAB4A8"
+          }
+        },
+        {
+          "client_id": "865054182519-2mpk4mp62qqp41igojtdquqjidvj2kbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp1ox2i4Y6H1RFmJJW0kSuRByPZwVGgr8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865054182519-2mpk4mp62qqp41igojtdquqjidvj2kbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "865054182519-8uh14b6144j2mfld1v1j33ouioqaeba2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yachtsy.yachtsypro"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865054182519:android:c7098c0c427c3c22",
+        "android_client_info": {
+          "package_name": "com.yachtsy.yachtsy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865054182519-bg7rua362hubdkugu36710roil973ah0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yachtsy.yachtsy",
+            "certificate_hash": "87B0B6C7965CED4B3296DDE7E2634CC889AAB4A8"
+          }
+        },
+        {
+          "client_id": "865054182519-2mpk4mp62qqp41igojtdquqjidvj2kbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp1ox2i4Y6H1RFmJJW0kSuRByPZwVGgr8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865054182519-2mpk4mp62qqp41igojtdquqjidvj2kbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "865054182519-8uh14b6144j2mfld1v1j33ouioqaeba2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yachtsy.yachtsypro"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -96,36 +96,38 @@ export class Form {
         this.contentsBottom = 44;
         this.footerBottom = 0;
 
-        window.addEventListener('native.keyboardshow', (e) => {
-            console.log('keyboard show')
+        if (this.platform.is('ios')) {
+            window.addEventListener('native.keyboardshow', (e) => {
+                console.log('keyboard show')
 
-            this.ngZone.run(() => {
-                this.contentsBottom = e['keyboardHeight'];
-                this.footerBottom = 0;
-                // this.footerBottom = e['keyboardHeight'];
-                this.showNextButton = false;
+                this.ngZone.run(() => {
+                    this.contentsBottom = e['keyboardHeight'];
+                    this.footerBottom = 0;
+                    // this.footerBottom = e['keyboardHeight'];
+                    this.showNextButton = false;
 
-                setTimeout(() => {
-                    //     this.content.scrollToBottom(300);
-                    this.adjustScroll(false);
-                }, 100);
+                    setTimeout(() => {
+                        //     this.content.scrollToBottom(300);
+                        this.adjustScroll(false);
+                    }, 100);
+                });
             });
-        });
 
-        window.addEventListener('native.keyboardhide', (e) => {
-            console.log('keyboard hide')
+            window.addEventListener('native.keyboardhide', (e) => {
+                console.log('keyboard hide')
 
-            this.ngZone.run(() => {
-                this.contentsBottom = 0;
-                this.footerBottom = 0;
+                this.ngZone.run(() => {
+                    this.contentsBottom = 0;
+                    this.footerBottom = 0;
 
-                setTimeout(() => {
-                    this.ngZone.run(() => {
-                        this.showNextButton = true;
-                    });
-                }, 500)
+                    setTimeout(() => {
+                        this.ngZone.run(() => {
+                            this.showNextButton = true;
+                        });
+                    }, 500)
+                });
             });
-        });
+        }
 
         this.categoryData = GlobalService.categoryData;
         this.categoryDataFields = this.categoryData.fields;
@@ -391,7 +393,8 @@ export class Form {
 
     onSubmit(theForm) {
         console.log('form submitted');
-        Keyboard.close();
+        if (Keyboard)
+            Keyboard.close();
 
         setTimeout(() => {
             this.next();
@@ -500,7 +503,9 @@ export class Form {
                 this.slides.slideNext(true, 300);
                 this.adjustScroll(true);
             }
-            Keyboard.close();
+
+            if (Keyboard)
+                Keyboard.close();
         }
     }
 
@@ -619,8 +624,20 @@ export class Form {
             modal.onDidDismiss((data) => {
                 if (data.cancel !== true) {
                     setTimeout(() => {
-                        this.viewCtrl.dismiss({
-                            toRequest: true
+                        let nextModal = this.modalCtrl.create(NextContentPage);
+
+                        nextModal.present();
+                        nextModal.onDidDismiss((data) => {
+
+                            let gotModal = this.modalCtrl.create(GotContentPage);
+
+                            gotModal.present();
+                            gotModal.onDidDismiss((data) => {
+                                this.viewCtrl.dismiss({
+                                    toRequest: true
+                                });
+                            });
+
                         });
                     }, 500);
                 }
@@ -656,7 +673,9 @@ export class Form {
                 this.slides.slidePrev(true, 300);
                 this.adjustScroll(true);
             }
-            Keyboard.close();
+
+            if (Keyboard)
+                Keyboard.close();
         }
         else {
             this.viewCtrl.dismiss();

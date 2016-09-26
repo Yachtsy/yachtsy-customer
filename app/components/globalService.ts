@@ -14,7 +14,7 @@ export var myRequests = {
   data: []
 };
 
-export var avatarImage = 'img/default-avatar.png';
+export var avatarImage = 'img/default-photo.png';
 export var serviceImage = 'img/default-service.png';
 
 export var categoryData = [];
