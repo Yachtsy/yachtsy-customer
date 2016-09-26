@@ -1,0 +1,188 @@
+
+.request-detail {
+
+	background-color: white;
+
+	ion-navbar {
+		background: none;
+	}
+
+	ion-navbar .toolbar-background {
+		background: none;
+	    border: none;
+	}
+
+	ion-content {
+		
+		padding: 0px;
+
+		scroll-content {
+			padding: 0px;
+		}
+
+		.header-wrapper {
+			position: absolute;
+			top: 40px;
+			left: 0px;
+			width: 100%;
+			height: 40px;
+		    z-index: 99999999;
+		}
+
+		.prev-button {
+			position: absolute;
+			top: 0px;
+			left: 10px;
+		    background: white;
+		    border-radius: 30px;
+		    width: 30px;
+		    height: 30px;
+		    border: 2px solid #005677;
+		    font-size: 1.4rem;
+		    text-align: center;
+		    color: #005677;
+		    z-index: 99999999;
+	    }
+
+	    .prev-button ion-icon {
+	    	padding: 0px;
+	    }
+
+	    .pass-button {
+			position: absolute;
+			top: 0px;
+			right: 10px;
+			height: 30px;
+		    background: white;
+		    border-radius: 6px;
+		    padding: 0px 10px;
+		    color: #005677;
+		    border: 2px solid #005677;
+		    z-index: 99999999;
+   	    }
+
+		.map-wrapper {
+			position: relative;
+			width: 100% !important;
+			height: 200px;
+			margin: 0px !important;
+			background: #aaa;
+		}
+
+		.profile-wrapper {
+			position: relative;
+			width: 100%;
+			min-height: 200px;
+			text-align: center;
+			padding: 0px 10px;
+			background: #eaeae5;
+			z-index: 99999999;
+		}
+
+		.profile-image {
+			position: relative;
+			top: -30px;
+		    width: 80px;
+		    height: 80px;
+			background-image: url("../../img/default-photo.png");
+		    background-repeat: no-repeat;
+		    background-size: contain;
+		    background-position: center center;
+		    border-radius: 80px;
+		    margin-bottom: 5px;
+		}
+
+		.profile-main-wrapper {
+			position: relative;
+			top: -30px;
+		}
+
+		.profile-name {
+			font-size: 1.8rem;
+			color: black;
+			margin-bottom: 5px;
+			font-weight: bold;
+			font-style: italic;
+		}
+
+		.profile-desc {
+			font-size: 1.2rem;
+			color: grey;
+			margin-bottom: 20px;
+		}
+
+		.profile-details-wrapper {
+			width: 100%;
+		}
+
+		.details-set {
+			display: inline-block;
+			width: auto;
+			height: 50px;
+		    margin: 0px 10px;
+		}
+
+		.details-value {
+			font-size: 1.6rem;
+			color: black;
+			margin-bottom: 5px;
+		}
+
+		.details-desc {
+			font-size: 1.2rem;
+			color: grey;
+		}
+
+		.request-title {
+		    position: relative;
+		    top: 15px;
+   			width: 100%;
+			text-align: left;
+			color: #005677;
+			font-size: 1.6rem;
+			font-style: italic;
+		}
+
+		.request-item {
+			padding: 0px 10px;
+			border-bottom: 1px solid #eaeae5;
+		}
+
+		.request-item .item-inner {
+		    padding: 0px;
+		    border: none;
+		}
+
+		.request-item .item-inner ion-label {
+			margin: 8px 0px;
+		}
+
+		.request-question {
+			color: grey;
+			font-size: 1.4rem;
+			margin-bottom: 2px;
+			word-wrap: break-word;
+    		white-space: normal;
+   		}
+
+		.request-answer {
+			color: black;
+			font-size: 1.6rem;
+			word-wrap: break-word;
+		    white-space: normal;			
+		}
+	}
+
+	ion-toolbar {
+		padding: 0px 10px;
+	}
+
+	ion-toolbar .button {
+		margin: 0px;
+	}
+
+	.toolbar-background {
+		border: none;
+    	background: none;
+	}
+}

@@ -1,31 +1,49 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-       Request: {{requestId}}
-    </ion-title>
-    <ion-buttons start class="start">
-      <button (click)="dismiss()">
-        <span primary showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
+<ion-content padding>
+<!--
+  <ion-item *ngIf="request.quote"> You quoted on this request </ion-item>
+-->
+  <div #map class="map-wrapper"></div>
+  
+  <div class="header-wrapper">
+    <button tappable class="prev-button" (click)="back()"><ion-icon name="arrow-back"></ion-icon></button>
+  </div>
+  
+  <div class="profile-wrapper">
 
-    <ion-card *ngFor="let item of requestBody">
-        <ion-card-header text-wrap>
-           <ion-item text-wrap><b>{{item.qu}}</b></ion-item>
+    <div class="profile-image" [style.background-image]="'url(img/default-photo.png)' | safe_url"></div>
+    <div class="profile-main-wrapper">
+      <div class="profile-name">{{request.from}}</div>
+      <div class="profile-desc">{{request.categoryName}} - {{request.locationName}}</div>
 
-        </ion-card-header>
+      <div class="profile-details-wrapper">
+        <!--
+        <div class="details-set">
+          <div class="details-value">3/5</div>
+          <div class="details-desc">Quotes Sent</div>
+        </div>
+        -->
+        <div class="details-set">
+          <div class="details-value">{{request.pastExpiry}}</div>
+          <div class="details-desc">Until Request Expires</div>
+        </div>
 
-        <ion-card-content>
-            <ion-item *ngFor="let answer of item.ans">
-                {{answer}}
-            </ion-item>
-        </ion-card-content>
+        <div class="details-set">
+          <div class="details-value">{{request.creditsRequired}}</div>
+          <div class="details-desc">Credits</div>
+        </div>
+      </div>
 
-    </ion-card>
+      <div class="request-title">Request Details</div>
+    </div>
+
+  </div>
+
+  <ion-item class="request-item" *ngFor="let item of requestBody">
+
+    <div class="request-question">{{item.qu}}</div>
+    <div class="request-answer" *ngFor="let ans of item.ans">{{ans}}</div>
+
+  </ion-item>
 
 </ion-content>

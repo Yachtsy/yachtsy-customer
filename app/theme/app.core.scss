@@ -16,6 +16,7 @@
 @import "../pages/tabs/tabs";
 @import "../pages/requests/requests";
 @import "../pages/requests/requestResponses";
+@import "../pages/requests/requestDetail";
 @import "../pages/notifications/notifications";
 @import "../pages/offline/offline";
 @import "../pages/view-reviews/view-reviews";
@@ -111,4 +112,20 @@ ion-navbar {
 ion-navbar .no-buttons {
 	padding-left: 0px;
 	padding-right: 0px;
+}
+
+.gm-style {
+
+  a {
+    display: none !important;
+  }
+
+  .gmnoprint {
+    display: none !important;
+  }
+
+  .gmnoscreen {
+    display: none !important;
+  }
+
 }
