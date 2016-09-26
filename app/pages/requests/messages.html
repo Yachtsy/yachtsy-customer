@@ -43,6 +43,12 @@
     </div>
 
     <div *ngIf="curTab === 0" class="quote-wrapper" [ngStyle]="{'min-height': quoteMinHeight + 'px'}">
+        
+         <ion-list *ngIf="!alreadyHiredSupplier">
+            <ion-list-header>
+                Make contact enable messaging with {{nickName}}.   
+            </ion-list-header>
+        </ion-list>
         <div class="price-header">
             $ {{price}} <span class="desc">total price</span>
         </div>
