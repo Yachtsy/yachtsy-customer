@@ -18,7 +18,7 @@ export class CompletionModal {
   constructor(private viewCtrl: ViewController,
     public navParams: NavParams,
     public nav: NavController,
-     private sanitizer: DomSanitizationService,
+    private sanitizer: DomSanitizationService,
     public fbserv: FirebaseService) {
     console.log('nav params for completion modal', this.navParams);
     this.requestId = this.navParams.get('requestId');
@@ -53,24 +53,19 @@ export class CompletionModal {
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    return this.viewCtrl.dismiss()
   }
 
   yes() {
-    this.fbserv.userConfirmComplete(this.requestId, this.supplierId, true)
-      .then(() => {
-        this.close();
-      });
+    this.close().then(() => {
+      this.fbserv.userConfirmComplete(this.requestId, this.supplierId, true);
+    });
   }
 
   no() {
-    this.close();
-
-    this.fbserv.userConfirmComplete(this.requestId, this.supplierId, false)
-      .then(() => {
-        this.close();
-      });
+    this.close().then(() => {
+      this.fbserv.userConfirmComplete(this.requestId, this.supplierId, false);
+    });
   }
-
 
 }
