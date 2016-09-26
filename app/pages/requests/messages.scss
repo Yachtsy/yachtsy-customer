@@ -10,6 +10,10 @@
     margin-bottom: 0px !important;
   }
 
+  ion-footer::before {
+      background: none;    
+  }
+
   .blue-background {
     position: absolute;
     left: 0px;

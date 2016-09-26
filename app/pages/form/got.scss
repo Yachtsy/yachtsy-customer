@@ -1,0 +1,118 @@
+
+.got-content-page {
+
+    ion-content {
+        background: none;
+    }
+
+    .content-back {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0.5;
+    }
+
+    .content-wrapper {
+        position: absolute;
+        left: 5%;
+        top: 5%;
+        bottom: 5%;
+        right: 5%;
+        background: white;
+    }
+
+    .header-wrapper {
+        display: table;
+        position: relative;
+        width: 100%;
+        height: 200px;
+        padding: 0px 10%;
+        background-color: #0d698a;
+        text-align: center;
+
+        .header-text {
+            position: relative;
+            z-index: 9999;
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 2.2rem;
+            font-family: Adelle;
+            font-style: italic;
+            color: white;
+
+            .icon-wrapper {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            ion-icon {
+                display: inline-block;
+                font-size: 3.4rem;
+                font-weight: bold;
+            }
+
+            ion-icon.large {
+                font-size: 4.6rem;
+                position: relative;
+                top: 5px;
+            }
+        }
+
+        .header-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            background-image: url('../../img/welcome-logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+    }
+    
+    .desc-wrapper {
+        padding: 40px 0px;
+        color: #005677;
+        font-size: 1.6rem;
+        text-align: center;
+
+        .details-title {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .details-set {
+            display: inline-block;
+            width: auto;
+            height: 50px;
+            margin: 0px 8px;
+        }
+
+        .details-icon {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            width: 40px;
+            height: 40px;
+            border: 5px solid #005677;
+            border-radius: 40px;
+            line-height: 30px;
+        }
+
+        .details-desc {
+            font-size: 1.4rem;
+            color: black;
+        }        
+    }
+
+    button {
+        position: absolute;
+        bottom: 5px;
+        left: 5%;
+        width: 90%;
+        font-size: 1.6rem;
+    }
+}

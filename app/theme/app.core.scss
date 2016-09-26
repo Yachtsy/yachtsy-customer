@@ -10,6 +10,8 @@
 @import "../components/chat-bubble/chat-bubble";
 @import "../pages/home/home";
 @import "../pages/form/form";
+@import "../pages/form/next";
+@import "../pages/form/got";
 @import "../pages/review/review";
 @import "../pages/requests/messages";
 @import "../pages/profile/profile";
@@ -86,6 +88,7 @@ ion-buttons.start {
 
 button {
     box-shadow: none !important;
+    text-transform: none;
 }
 
 ion-toolbar {

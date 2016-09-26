@@ -136,7 +136,7 @@
 .pac-container {
     width: 100% !important;
     left: 0px !important;
-    // margin-top: 30px;
+    margin-top: 20px;
 }
 
 .pac-container:after{
@@ -157,18 +157,12 @@
     min-height: 4.4rem;
     text-align: left;
 
-    //background-color: whitesmoke;
     width: 75%;
     height: 40px;
     line-height: 40px;
     margin-left: 0%;
     margin-right: 5%;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 0px;
-    border-left-width: 0px;
-    //border-radius: 5px;
-    //padding: 0px 30px 0px 10px;
+    padding: 0px 10px;
     border: 0px 0px 0px 1px solid #aaaaaa;
 }
 
@@ -185,7 +179,6 @@
 }
 
 .result-title-text {
-    margin-top: 10px;
     height: 20px;
     line-height: 20px;
     background: #aaaaaa;

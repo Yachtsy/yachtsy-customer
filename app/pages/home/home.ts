@@ -199,6 +199,7 @@ export class Home {
                 this.isInitBoats = true;
                 this.FBService.getMyBoats()
                     .subscribe((data: Array<any>) => {
+                        console.log('my boats: ' + data);
                         this.myBoats = {
                             data: data
                         };

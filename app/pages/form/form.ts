@@ -5,7 +5,8 @@ import {FirebaseService} from '../../components/firebaseService';
 import {PROGRESSBAR_DIRECTIVES} from '../../components/progressbar';
 import {Home} from '../home/home';
 import {ModalsContentPage} from './modal'
-//import {Keyboard, GoogleMap, GoogleMapsEvent, GoogleMapsLatLng, GoogleMapsMarkerOptions} from 'ionic-native';
+import {NextContentPage} from './next'
+import {GotContentPage} from './got'
 import {Keyboard} from 'ionic-native';
 import GlobalService = require('../../components/globalService');
 
@@ -264,8 +265,6 @@ export class Form {
     }
 
 
-
-
     back() {
         this.nav.pop();
     }
@@ -274,38 +273,6 @@ export class Form {
     lng
     lat
     placeName
-
-    //private map: GoogleMap;
-
-
-    // createMap() {
-    //     this.platform.ready().then(() => {
-    //         try {
-    //             this.map = new GoogleMap('map_canvas' /*, {'backgroundColor': 'red'}*/);
-
-    //             return GoogleMap.isAvailable().then(() => {
-
-    //                 return this.map.one(GoogleMapsEvent.MAP_READY).then((data: any) => {
-
-
-
-    //                     this.map.getMyLocation().then((location) => {
-    //                         console.log("latitude:" + location.latLng.lat, "longitude:" + location.latLng.lng);
-    //                         let myPosition = new GoogleMapsLatLng(location.latLng.lat, location.latLng.lng);
-    //                         //console.log("My position is", myPosition);
-    //                         this.map.animateCamera({ target: myPosition, zoom: 10, duration: 1000 });
-    //                         this.map.setClickable(false);
-    //                         //loading.dismiss();
-    //                     });
-    //                     //alert("GoogleMap.onMapReady(): " + JSON.stringify(data));
-
-    //                 });
-    //             });
-    //         } catch (error) {
-    //             //loading.dismiss();
-    //         }
-    //     });
-    // }
 
     autocomplete1
     autocomplete2
@@ -364,10 +331,6 @@ export class Form {
             // });
 
             // loading.present(loading)
-
-            // setTimeout(() => {
-            //     this.createMap();
-            // }, this.GOOGLE_MAP_TIMEOUT);
 
             //let input_location = document.getElementById('autocomplete').getElementsByTagName('input')[0];
             //console.log(this.myElement);
@@ -464,19 +427,6 @@ export class Form {
                 this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
             });
 
-            // try {
-
-            //     console.log(this.formAnswersLength);
-            //     console.log('set the map answer', this.formAnswers);
-            //     let myPosition = new GoogleMapsLatLng(this.lat, this.lng);
-            //     console.log("My position is", myPosition);
-            //     //this.map.animateCamera({ target: myPosition, zoom: 12, });
-            //     this.map.setCenter(myPosition);
-            //     this.map.addMarker({ position: myPosition });
-            //     this.map.setClickable(true);
-            // } catch (error) {
-
-            // }
         }
 
     }
@@ -594,7 +544,6 @@ export class Form {
             } 
         };
 
-
         // here we should check that the users is authenticated AND
         // that the user's account exists - trying to submit a request when you 
         // do not have an account will fail anyway.
@@ -631,12 +580,24 @@ export class Form {
 
                     setTimeout(() => {
                         loading.dismiss().then(() => {
-                            this.alert("Request submitted!", "", () => {
-                                this.viewCtrl.dismiss({
-                                    toRequest: true
+                            
+                            let nextModal = this.modalCtrl.create(NextContentPage);
+
+                            nextModal.present();
+                            nextModal.onDidDismiss((data) => {
+
+                                let gotModal = this.modalCtrl.create(GotContentPage);
+
+                                gotModal.present();
+                                gotModal.onDidDismiss((data) => {
+                                    this.viewCtrl.dismiss({
+                                        toRequest: true
+                                    });
                                 });
+
                             });
                         });
+
                     }, 1000);
 
                 }, (error) => {
