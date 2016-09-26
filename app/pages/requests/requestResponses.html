@@ -17,7 +17,8 @@
     <div class="quote-wrapper" tappable *ngFor="let item of responses" (click)="gotoMessages(item)">
         <ion-item>
             <ion-avatar item-left>
-                <div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+                <div *ngIf="item.data.supplierProfile.photo" class="avatar-image" [style.background-image]="'url(' + item.data.supplierProfile.photo + ')' | safe_url"></div>
+                <div *ngIf="!item.data.supplierProfile.photo" class="avatar-image" [style.background-image]="'url(' + item.data.supplierProfile.photo + ')' | safe_url"></div>
             </ion-avatar>
             <div class="supplier-name">{{item.data.supplierName}}</div>
             <rating score="{{item.data.reviewRating}}" max="5"></rating><span class="review-count">{{totalReviews}} reviews</span>

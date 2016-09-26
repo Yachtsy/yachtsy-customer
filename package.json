@@ -48,7 +48,8 @@
     "cordova-plugin-network-information"
   ],
   "cordovaPlatforms": [
-    "ios"
+    "ios",
+    "android"
   ],
   "name": "yachtsy",
   "description": "yachtsy desc"

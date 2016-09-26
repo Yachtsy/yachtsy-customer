@@ -40,6 +40,7 @@ export class Home {
     profile
     isInitCategory = false;
     isInitRequests = false;
+    isInitBoats = false;
 
     isInit = false;
 
@@ -70,10 +71,6 @@ export class Home {
     ngOnInit() {
         console.log('HOME ngOnInit');
         this.isLoggedIn = this.FBService.isAuthenticated();
-        if (!this.isLoggedIn){
-            console.log('NO USER SO clearing boats');
-            this.myBoats = null;
-        }
         
         this.getCategoryInfo();
     }
@@ -81,6 +78,8 @@ export class Home {
     onPageWillEnter() {
         this.isLoggedIn = this.FBService.isAuthenticated();
         console.log('HOME - onPageWillEnter: ' + this.isLoggedIn);
+
+        this.getMyBoats();
 
         //if (this.isLoggedIn) {
         //    console.log('HOME - onPageWillEnter - logged in so setting TAB BAR DISPLAY');
@@ -191,13 +190,24 @@ export class Home {
                 //console.log(this.boatInfos);
             });
 
+        this.getMyBoats();
+    }
+
+    getMyBoats() {
         if (this.isLoggedIn) {
-            this.FBService.getMyBoats()
-                .subscribe((data: Array<any>) => {
-                    this.myBoats = {
-                        data: data
-                    };
-                });
+            if (!this.isInitBoats) {
+                this.isInitBoats = true;
+                this.FBService.getMyBoats()
+                    .subscribe((data: Array<any>) => {
+                        this.myBoats = {
+                            data: data
+                        };
+                    });
+            }
+        }
+        else {
+            console.log('NO USER SO clearing boats');
+            this.myBoats = null;
         }
     }
 
