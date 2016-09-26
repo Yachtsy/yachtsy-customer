@@ -21,7 +21,8 @@
 			<div *ngFor="let quote of item.data.quotes" tappable>
 				<ion-item tappable *ngIf="quote.data.initialQuoteSeen != true" (click)="quoteClick(item, quote)">
 				    <ion-avatar item-left>
-			      		<div class="avatar-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+	                    <div *ngIf="quote.data.supplierProfile.photo" class="avatar-image" [style.background-image]="'url(' + quote.data.supplierProfile.photo + ')' | safe_url"></div>
+	                    <div *ngIf="!quote.data.supplierProfile.photo" class="avatar-image" [style.background-image]="'url(img/default-photo.png)' | safe_url"></div>
 			    	</ion-avatar>
 					<div class="supplier-name">{{quote.data.supplierNickName}}</div>
 					<div class="quote-content">{{quote.data.initialMessage}}</div>
