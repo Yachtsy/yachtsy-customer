@@ -22,7 +22,7 @@ export class ReviewModal {
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    return this.viewCtrl.dismiss();
   }
 
   onRatingChange(event) {
@@ -35,17 +35,16 @@ export class ReviewModal {
       requestId: this.requestId,
       supplierId: this.supplierId,
       review: {
-        reviewer: GlobalService.userProfile.firstName + ' ' + GlobalService.userProfile.lastName.substr(0,1).toUpperCase() + '.',
+        reviewer: GlobalService.userProfile.firstName + ' ' + GlobalService.userProfile.lastName.substr(0, 1).toUpperCase() + '.',
         rating: this.rating,
         comments: "he is great"
       }
     }
 
-    this.fbserv.submitReview(reviewObj)
+    this.close()
       .then(() => {
-        this.close();
+        this.fbserv.submitReview(reviewObj)
       });
   }
-
 
 }
