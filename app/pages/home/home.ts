@@ -187,6 +187,7 @@ export class Home {
                         this.boatInfos.push(data[i].data);
                     }
                 }
+                GlobalService.boatInfos = this.boatInfos;
                 //console.log(this.boatInfos);
             });
 
@@ -199,19 +200,21 @@ export class Home {
                 this.isInitBoats = true;
                 this.FBService.getMyBoats()
                     .subscribe((data: Array<any>) => {
-                        console.log('my boats: ' + data);
+                        console.log('my boats: ' + JSON.stringify(data));
                         this.myBoats = {
                             data: data
                         };
+                        GlobalService.myBoats = this.myBoats;
                     });
             }
         }
         else {
             console.log('NO USER SO clearing boats');
             this.myBoats = null;
+            GlobalService.myBoats = this.myBoats;
         }
     }
-
+ 
     itemTapped(item) {
         console.log('item tapped');
 
@@ -294,12 +297,9 @@ export class Home {
         }
 
         GlobalService.categoryData = categoryData;
-        GlobalService.myBoats = this.myBoats;
 
         console.log('nav -> form');
         let navParams = {
-            categoryData: categoryData,
-            myBoats: myBoats,
             categoryId: categoryId,
             categoryName: categoryName,
             locationType: locationType

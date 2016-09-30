@@ -17,12 +17,15 @@ export var myRequests = {
 export var avatarImage = 'img/default-photo.png';
 export var serviceImage = 'img/default-service.png';
 
+export var descriptionIdentifier = 'Description: ';
+
 export var categoryData = [];
 export var myBoats: any;
+export var boatInfos: any;
 export var boatStartFormIndex = 0;
 export var boatInfoCount = 0;
 
-export var userProfile = null;
+export var userProfile:any = {};
 
 // export var isOnlineStatus = false;
 

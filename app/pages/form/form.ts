@@ -192,8 +192,6 @@ export class Form {
 
     onKeyUp(item) {
 
-        var descriptionIdentifier = 'Description: ';
-
         console.log('onKeyUp', item);
         console.log('answerObj', this.answerObj);
         console.log('current form answers:', this.formAnswers)
@@ -208,7 +206,7 @@ export class Form {
 
             var descIndex = -1;
             for (var i = 0; i < thisPageAnswers.length; i++) {
-                if (thisPageAnswers[i].startsWith(descriptionIdentifier)) {
+                if (thisPageAnswers[i].startsWith(GlobalService.descriptionIdentifier)) {
                     descIndex = i;
                     break;
                 }
@@ -226,7 +224,7 @@ export class Form {
 
             if (answerObj) {
 
-                var desription = descriptionIdentifier + answerObj;
+                var desription = GlobalService.descriptionIdentifier + answerObj;
 
                 if (descIndex === -1) {
                     thisPageAnswers.push(desription);
@@ -242,7 +240,7 @@ export class Form {
             if (answerObj) {
                 console.log('pushing the item on', answerObj);
                 this.formAnswers[this.formPageIndex]['ans'] = [];
-                this.formAnswers[this.formPageIndex]['ans'].push(descriptionIdentifier + answerObj);
+                this.formAnswers[this.formPageIndex]['ans'].push(GlobalService.descriptionIdentifier + answerObj);
                 if (this.curField.isBoatInfo === true) {
                     this.boatName = answerObj;
                     this.boatIndex = -1;

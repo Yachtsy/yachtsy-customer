@@ -1,0 +1,139 @@
+.boats {
+    
+    .form-content {
+        height: auto;
+    }
+
+    scroll-content {
+        overflow-y: hidden;
+    }
+
+    .header {
+        background-color: white;
+    }
+
+    .toolbar {
+        padding: 0px;
+    }
+
+    .button {
+        border-radius: 0px;
+    }
+
+    .radio {
+        color: #005677;
+    }
+
+    .form-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+    }
+
+    ion-slide {
+        width: 100%;
+        display: block;
+        overflow: scroll;
+    }
+    /*
+    .slide-zoom {
+        height: 100%;
+    }
+    */
+    ion-card {
+        margin: 0px;
+        margin-bottom: 1px;
+        width: 100%;
+        box-shadow: 0;
+        background: white;
+        border-radius: 0px;  
+    }
+
+    ion-card-header {
+        padding: 40px;
+    }
+
+    .label {
+        color: white;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1.4rem;
+    }
+
+    ion-card-header {
+        background-color: #005677;
+        color: white;
+        white-space: normal;
+    }
+
+    // ion-card {
+    //     background: #f8f8f8;
+    // }
+
+    ion-card ion-card-header .item {
+        padding-left: 0px;
+        background: none;
+    }
+
+    ion-card ion-list .item {
+        padding-left: 0px;
+    }
+
+    ion-card ion-list .item .item-inner {
+        padding-left: 16px;
+    }
+
+    ion-card ion-list .item .item-inner input {
+        margin-left: 0px;
+    }
+
+    ion-footer .button {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    ion-list .item .item-inner ion-label {
+        margin: 0px;
+    }
+
+    .item-input {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0px 16px;
+        border: none;
+        box-shadow: none;
+    }
+
+    .item.item-datetime .input-label {
+        position: absolute;
+        left: 16px;
+        top: 10px;
+        color: #aaa;
+    }
+
+    .item.item-datetime input {
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        width: 140px;
+        padding: 0px;
+        text-align: right;
+    }
+
+    .item-checkbox .item-inner {
+        border: none;
+    }
+
+    .item-checkbox .item-inner .input-wrapper ion-label {
+        margin: 0px;
+    }
+}
+
+.progress-bar {
+    background: #c2b560;
+    height: 3px;
+}

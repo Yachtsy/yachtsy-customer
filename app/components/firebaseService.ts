@@ -284,6 +284,21 @@ export class FirebaseService {
         });
     }
 
+    updateMyBoat(boatId, boatInfo) {
+        var authData = firebase.auth().currentUser
+        var userBoatsRef = firebase.database().ref().child('users/' + authData.uid + '/boats/' + boatId);
+
+        userBoatsRef.set(boatInfo, (error) => {
+
+            if (!error) {
+                console.log('updated boat: ' + boatId + ' - ' + boatInfo);
+            } else {
+                console.log('error updating boat');
+            }
+
+        });
+    }
+
 
     sendMessage(requestId, supplierId, message) {
         var authData = firebase.auth().currentUser

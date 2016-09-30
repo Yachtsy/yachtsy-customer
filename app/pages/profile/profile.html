@@ -8,8 +8,8 @@
 
 <ion-content>
 
-    <div class="profile-wrapper">
-        <div *ngIf="profile" class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}"></div>
+    <div class="profile-wrapper" *ngIf="profile">
+        <div *ngIf="profile" class="profile-image" [ngStyle]="{'background-image': 'url(' + profile.image + ')'}" (click)="takePicture()"></div>
         <div class="profile-name">{{profile.firstName}} {{profile.lastName}}</div>
         <div class="profile-name">{{profile.email}}</div>
     </div>
@@ -26,6 +26,9 @@
         </button>
         <button ion-item detail-none (click)="itemTapped(3)">
             Debug
+        </button>
+        <button ion-item detail-none (click)="itemTapped(4)">
+            My Boats
         </button>
     </ion-list>
 
