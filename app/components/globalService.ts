@@ -106,3 +106,16 @@ export var doAlert = function(message, alertCtrl) {
 	});
 	alert.present();
 }
+
+export var hideLocationList = function(isHide) {
+  var list = document.getElementsByClassName('pac-container');
+  if (list) {
+    for (var i = 0; i < list.length; i++)
+      if (isHide) {
+        (<HTMLInputElement>list[i]).className = (<HTMLInputElement>list[i]).className.replace(' hide', '');
+        (<HTMLInputElement>list[i]).className += ' hide';
+      }
+      else
+        (<HTMLInputElement>list[i]).className = (<HTMLInputElement>list[i]).className.replace(' hide', '');
+  }
+}

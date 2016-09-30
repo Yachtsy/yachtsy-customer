@@ -255,16 +255,22 @@ export class MyApp {
                       lastName: completionRequest.supplierLastName
                     };
 
+                    console.log('presenting modal: ' + key);
+                    GlobalService.hideLocationList(true);
+
                     let modal;
                     if (completionRequest.confirmed === undefined) {
-                      console.log('presenting modal: ' + key);
-                      let modal = this.modalCtrl.create(CompletionModal, params);
-                      modal.present();
+                      modal = this.modalCtrl.create(CompletionModal, params);
                     } else if (completionRequest.confirmed === true && !completionRequest.reviewed) {
-                      let modal = this.modalCtrl.create(ReviewModal, params);
-                      modal.present();
+                      modal = this.modalCtrl.create(ReviewModal, params);
                     }
 
+                    if (modal) {
+                      modal.present();
+                      modal.onDidDismiss((data) => {
+                        GlobalService.hideLocationList(false);
+                      });
+                    }
                   });
                 }
               });

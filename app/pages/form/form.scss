@@ -139,6 +139,10 @@
     margin-top: 20px;
 }
 
+.pac-container.hide {
+    display: none !important;
+}
+
 .pac-container:after{
     content:none !important;
 }

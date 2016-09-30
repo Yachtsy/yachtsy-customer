@@ -118,9 +118,14 @@ export class Messages {
                             .map((key) => {
                                 if (this.userId === msgData[key].data.uid) {
                                     msgData[key].data.position = 'left';
-                                    msgData[key].data.img = {
-                                        url: 'img/default-photo.png'
-                                    };
+                                    if (GlobalService.userProfile.photo)
+                                        msgData[key].data.img = {
+                                            url: GlobalService.userProfile.photo
+                                        };
+                                    else
+                                        msgData[key].data.img = {
+                                            url: 'img/default-photo.png'
+                                        };
                                 }
                                 else {
                                     msgData[key].data.img = this.profileImage;

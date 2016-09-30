@@ -6,6 +6,7 @@
       <img />
 
       <h5 text-center>Please give your pro a review</h5>
+      <input type="text" [(ngModel)]="comments" placeholder="write a comment...">
       <rating style="font-size: 25px" text-center score="0" max="5" fontsize="25px" (update)="onRatingChange($event)"></rating>
     </div>
   </div>

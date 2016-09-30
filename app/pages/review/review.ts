@@ -13,6 +13,7 @@ export class ReviewModal {
 
   requestId
   supplierId
+  comments
   rating: number
 
   constructor(private viewCtrl: ViewController, public navParams: NavParams, public nav: NavController, public fbserv: FirebaseService) {
@@ -37,7 +38,7 @@ export class ReviewModal {
       review: {
         reviewer: GlobalService.userProfile.firstName + ' ' + GlobalService.userProfile.lastName.substr(0, 1).toUpperCase() + '.',
         rating: this.rating,
-        comments: "he is great"
+        comments: this.comments
       }
     }
 
