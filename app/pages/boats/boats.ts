@@ -32,7 +32,7 @@ export class Boats {
     contentsBottom = 0;
     footerBottom = 0;
 
-    boatIndex = 0;
+    boatIndex = -1;
 
     sliderOptions = {};
     slides: any;
@@ -68,13 +68,15 @@ export class Boats {
     showNextButton = true;
 
     ngOnInit() {
-        console.log('ngOnInit - form');
+        console.log('ngOnInit - boats');
 
         this.maxStep = 1;
         this.formPageIndex = 0;
         this.formAnswers = [];
         this.answerObj = {};
         this.dateTime = null;
+
+        this.boatIndex = -1;
 
         console.log('init positions')
         this.contentsBottom = 44;
@@ -130,7 +132,7 @@ export class Boats {
             isBoatInfo: true,
         }];
 
-        if (GlobalService.myBoats) {
+        if (GlobalService.myBoats && GlobalService.myBoats.data) {
             for (var i = 0; i < GlobalService.myBoats.data.length; i++) {
                 boatListField[0].possible_values.push({
                     can_describe: false,
@@ -201,11 +203,14 @@ export class Boats {
                 }
             }
             else
-                this.formAnswers = [];
+                this.formAnswers[this.formPageIndex] = {};
         }
         console.log('init form answers', this.formAnswers);
 
-        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
+        if (this.formAnswers[this.formPageIndex] && this.formAnswers[this.formPageIndex]['ans'])
+            this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
+        else
+            this.formAnswersLength = 0;
     }
 
     touchSlide(event) {
@@ -335,32 +340,36 @@ export class Boats {
             return;
         }
 
-        if (this.curField.allows_multiple_values) {
-
-            // if already present and tapped again remove it
-            var alreadyPresent
-            var currentAnswers = this.formAnswers[this.formPageIndex]['ans'];
-
-            var idx = currentAnswers.indexOf(item.label);
-            if (idx !== -1) {
-                this.formAnswers[this.formPageIndex]['ans'].splice(idx, 1);
-            } else {
-                this.formAnswers[this.formPageIndex]['ans'].push(item.label);
-            }
-
-        } else {
-
-            this.formAnswers[this.formPageIndex]['ans'] = [];
-            this.formAnswers[this.formPageIndex]['ans'].push(item.label);
-            if (!this.lastPage) {
-                this.next();
-            }
-        }
-
-        this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
-
         if (this.formPageIndex === 0) {
             this.boatIndex = item.value - 1;
+            this.next();
+        }
+        else {
+            if (this.formAnswers[this.formPageIndex] && this.formAnswers[this.formPageIndex]['ans']) {
+                if (this.curField.allows_multiple_values) {
+
+                    // if already present and tapped again remove it
+                    var alreadyPresent
+                    var currentAnswers = this.formAnswers[this.formPageIndex]['ans'];
+
+                    var idx = currentAnswers.indexOf(item.label);
+                    if (idx !== -1) {
+                        this.formAnswers[this.formPageIndex]['ans'].splice(idx, 1);
+                    } else {
+                        this.formAnswers[this.formPageIndex]['ans'].push(item.label);
+                    }
+
+                } else {
+
+                    this.formAnswers[this.formPageIndex]['ans'] = [];
+                    this.formAnswers[this.formPageIndex]['ans'].push(item.label);
+                    if (!this.lastPage) {
+                        this.next();
+                    }
+                }
+
+                this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
+            }
         }
     }
 

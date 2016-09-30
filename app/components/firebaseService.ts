@@ -150,6 +150,21 @@ export class FirebaseService {
         });
     }
 
+    updateProfileImage(image) {
+        var authData = firebase.auth().currentUser
+        var userRef = firebase.database().ref().child('users/' + authData.uid);
+
+        userRef.update({ photo: image }, (error) => {
+
+            if (!error) {
+                console.log('updated profile image');
+            } else {
+                console.log('error updating profile image');
+            }
+
+        });
+    }
+
 
     snapToArr(snapshot) {
         var arr = []

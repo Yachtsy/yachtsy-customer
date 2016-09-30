@@ -25,7 +25,7 @@ export var boatInfos: any;
 export var boatStartFormIndex = 0;
 export var boatInfoCount = 0;
 
-export var userProfile:any = {};
+export var userProfile = null;
 
 // export var isOnlineStatus = false;
 

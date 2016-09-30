@@ -17,6 +17,7 @@ import {DebugPage} from '../debug/debug';
 export class Profile {
 
     profile: any = {};
+    profileUpdated
     activeUser
 
     constructor(public FBService: FirebaseService,
@@ -35,28 +36,29 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        this.getProfile();
+        this.profileUpdated = false;
+        this.profile = GlobalService.userProfile;
+        if (this.FBService.isAuthenticated() && !this.profile) {
+            this.getProfileCount = 0;
+            this.getProfile();
+        }
+    }
 
+    getProfileCount
+    getProfile() {
+        setTimeout(() => {
+            this.profile = GlobalService.userProfile;
+            if (!this.profile) {
+                this.getProfileCount++;
+                if (this.getProfileCount > 10)
+                    return;
+                else
+                    this.getProfile();
+            }
+        }, 1000);
     }
 
     ngOnInit() {
-        this.profile = {
-            name: '',
-            image: GlobalService.avatarImage
-        };
-    }
-
-    getProfile() {
-        if (!this.FBService.isAuthenticated()) {
-            this.profile = {
-                name: '',
-                image: GlobalService.avatarImage
-            };
-            return;
-        }
-
-        this.profile = GlobalService.userProfile;
-        this.profile.image = GlobalService.avatarImage;
     }
 
     itemTapped(idx) {
@@ -73,6 +75,13 @@ export class Profile {
         else if (idx === 4) {
             let boatsModal = this.modalCtrl.create(Boats);
             boatsModal.present();
+        }
+    }
+    
+    updateClick() {
+        if (this.profileUpdated) {
+            this.FBService.updateProfileImage(this.profile.photo);
+            this.profileUpdated = false;
         }
     }
 
@@ -116,7 +125,9 @@ export class Profile {
             console.log('image taken');
             var base64Image = "data:image/jpeg;base64," + imageData;
             base64Image = base64Image.replace(/\r?\n|\r/g, '');
-            this.profile.image = base64Image;
+            this.profile.photo = base64Image;
+            GlobalService.userProfile.photo = base64Image;
+            this.profileUpdated = true;
         }, (err) => {
             console.log(err);
         });
