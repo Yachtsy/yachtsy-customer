@@ -1,33 +1,28 @@
-<ion-header>
 
+<ion-header>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
     <div class="profile-wrapper">
 
-        <div class="profile-image" [style.background-image]="profileImage"></div>
+        <div class="profile-image" [style.background-image]="'url(' + profileImage.url + ')' | safe_url"></div>
 
         <div class="profile-main-wrapper">
-            <!--<div class="profile-name">{{firstName}} {{lastName}}</div>-->
             <div class="profile-desc">{{request.categoryName}} - {{request.locationName}}</div>
 
             <div class="profile-details-wrapper">
-                <div class="details-set price">${{request.quotes[supplierId].price}}</div>
-                <div class="details-set">total price</div>
+                <div class="details-set">${{request.quotes[supplierId].price}} total price</div>
 
-                <p> {{firstName}} {{lastName}} marked this request as complete on {{dateMarkedComplete}}?</p>
+                <p>{{firstName}} {{lastName}} marked this request as complete on {{dateMarkedComplete}}?</p>
 
-                <p>Please confirm if this is correct:</p>
-
-                <button block (click)="yes()">Yes</button>
-                <button block (click)="no()">No</button>
+                <p>Please confirm this is correct:</p>
 
             </div>
         </div>
     </div>
 
-
-
+    <button block (click)="yes()">Yes</button>
+    <button block (click)="no()">No</button>
 
 </ion-content>

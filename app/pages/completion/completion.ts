@@ -29,12 +29,10 @@ export class CompletionModal {
 
   profileImage
 
-  getSafeURL(url) {
-    var safe_url = this.sanitizer.bypassSecurityTrustStyle('url(' + url + ')');
-    return safe_url;
-  }
-
   ngOnInit() {
+    this.profileImage = {
+        url: "img/default-photo.png"
+    };
 
     this.fbserv.getRequest(this.requestId)
       .subscribe((res: any) => {
@@ -44,11 +42,8 @@ export class CompletionModal {
         let profile = this.request.quotes[this.supplierId].supplierProfile;
 
         if (typeof profile.photo === 'string' && profile.photo.length > 0) {
-          var profileImage = profile.photo;
-          profileImage = profileImage.replace(/\r?\n|\r/g, '');
-          this.profileImage = this.getSafeURL(profileImage);
+          this.profileImage.url = profile.photo;
         }
-
       });
   }
 

@@ -526,6 +526,9 @@ export class Form {
         console.log('request submitted');
         //console.log(this.formAnswers);
 
+        if (Keyboard)
+            Keyboard.close();
+
         // if (!GlobalService.isOnline()) {
         //     GlobalService.displayOfflineAlert(this.alertCtrl);
         //     return;

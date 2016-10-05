@@ -1,0 +1,33 @@
+.completion-modal {
+
+	ion-content {
+		padding: 0px;
+
+		scroll-content {
+			padding: 0px;
+			background: #d8d8d8;
+
+			.profile-wrapper {
+				margin: 1%;
+				margin-bottom: 10px;
+				padding: 5px 5px 5px 5px;
+				padding-top: 30px;
+				background: white;
+				font-size: 1.4rem;
+
+				.profile-main-wrapper {
+
+					.profile-desc {
+						font-size: 1.6rem;
+						font-style: italic;						
+					}
+
+					.details-set {
+						font-size: 1.2rem;
+						color: #005677;
+					}
+				}
+			}
+		}
+	}
+}
