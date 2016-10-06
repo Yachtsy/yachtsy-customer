@@ -31,9 +31,14 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      //Keyboard.hideKeyboardAccessoryBar(true);
-      Keyboard.disableScroll(true);
-      StatusBar.styleDefault();
+      if (Keyboard) {
+        console.log('Keyboard settings');
+        Keyboard.hideKeyboardAccessoryBar(true);
+        Keyboard.disableScroll(true);
+      }
+
+      if (StatusBar)
+        StatusBar.styleDefault();
 
       if (platform.is('ios')) {
         GlobalService.mainTabBarDefaultDisplayInfo = '-webkit-flex';
@@ -256,7 +261,6 @@ export class MyApp {
                     };
 
                     console.log('presenting modal: ' + key);
-                    GlobalService.hideLocationList(true);
 
                     let modal;
                     if (completionRequest.confirmed === undefined) {
@@ -266,9 +270,15 @@ export class MyApp {
                     }
 
                     if (modal) {
+                      GlobalService.hideLocationList(true);
+                      if (Keyboard)
+                        Keyboard.hideKeyboardAccessoryBar(false);
+
                       modal.present();
                       modal.onDidDismiss((data) => {
                         GlobalService.hideLocationList(false);
+                        if (Keyboard)
+                          Keyboard.hideKeyboardAccessoryBar(true);
                       });
                     }
                   });

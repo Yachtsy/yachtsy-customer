@@ -79,7 +79,7 @@ export class Boats {
         this.boatIndex = -1;
 
         console.log('init positions')
-        this.contentsBottom = 44;
+        this.contentsBottom = 0;
         this.footerBottom = 0;
 
         if (this.platform.is('ios')) {
@@ -115,6 +115,25 @@ export class Boats {
             });
         }
 
+        this.loadCallCount = 0;
+        this.loadCategoryData();
+    }
+
+    loadCallCount
+    loadCategoryData() {
+        if (GlobalService.boatInfos && GlobalService.myBoats && GlobalService.myBoats.data)
+            this.initBoatData();
+        else {
+            this.loadCallCount++;
+            if (this.loadCallCount >= 60)
+                return;
+            setTimeout(() => {
+                this.loadCategoryData();
+            }, 500);
+        }
+    }
+
+    initBoatData() {
         var categoryData = {
             fields:     []
         };

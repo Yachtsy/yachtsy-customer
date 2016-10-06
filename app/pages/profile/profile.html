@@ -3,20 +3,17 @@
         <ion-title>
             YOU
         </ion-title>
-        <ion-buttons end>
-            <button (click)="updateClick()">Update</button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
 
     <div class="profile-wrapper" *ngIf="!profile">
-        <div class="profile-image" [style.background-image]="'url(img/default-photo.png)' | safe_url" (click)="takePicture()"></div>
+        <div tappable class="profile-image" [style.background-image]="'url(img/default-photo.png)' | safe_url" (click)="takePicture()"></div>
     </div>
     <div class="profile-wrapper" *ngIf="profile">
-        <div *ngIf="!profile.photo" class="profile-image" [style.background-image]="'url(img/default-photo.png)' | safe_url" (click)="takePicture()"></div>
-        <div *ngIf="profile.photo" class="profile-image" [style.background-image]="'url(' + profile.photo + ')' | safe_url" (click)="takePicture()"></div>
+        <div tappable *ngIf="!profile.photo" class="profile-image" [style.background-image]="'url(img/default-photo.png)' | safe_url" (click)="takePicture()"></div>
+        <div tappable *ngIf="profile.photo" class="profile-image" [style.background-image]="'url(' + profile.photo + ')' | safe_url" (click)="takePicture()"></div>
         <div class="profile-name">{{profile.firstName}} {{profile.lastName}}</div>
         <div class="profile-name">{{profile.email}}</div>
     </div>

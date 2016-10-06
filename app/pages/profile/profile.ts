@@ -17,7 +17,6 @@ import {DebugPage} from '../debug/debug';
 export class Profile {
 
     profile: any = {};
-    profileUpdated
     activeUser
 
     constructor(public FBService: FirebaseService,
@@ -36,7 +35,6 @@ export class Profile {
 
     onPageWillEnter() {
         GlobalService.mainTabBarElement.style.display = GlobalService.mainTabBarDefaultDisplayInfo;
-        this.profileUpdated = false;
         this.profile = GlobalService.userProfile;
         if (this.FBService.isAuthenticated() && !this.profile) {
             this.getProfileCount = 0;
@@ -78,13 +76,6 @@ export class Profile {
         }
     }
     
-    updateClick() {
-        if (this.profileUpdated) {
-            this.FBService.updateProfileImage(this.profile.photo);
-            this.profileUpdated = false;
-        }
-    }
-
     takePicture() {
         if (typeof Camera === 'undefined') {
             console.log('Camera plugin is not available.');
@@ -101,7 +92,7 @@ export class Profile {
                     }
                 }, {
                     text: 'Choose from Library',
-                    role: 'cancel',
+                    role: 'destructive',
                     handler: () => {
                       this.getPicture(Camera.PictureSourceType.PHOTOLIBRARY);
                     }
@@ -127,7 +118,8 @@ export class Profile {
             base64Image = base64Image.replace(/\r?\n|\r/g, '');
             this.profile.photo = base64Image;
             GlobalService.userProfile.photo = base64Image;
-            this.profileUpdated = true;
+
+            this.FBService.updateProfileImage(this.profile.photo);
         }, (err) => {
             console.log(err);
         });

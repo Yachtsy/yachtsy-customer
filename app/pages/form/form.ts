@@ -93,7 +93,7 @@ export class Form {
         this.dateTime = null;
 
         console.log('init positions')
-        this.contentsBottom = 44;
+        this.contentsBottom = 0;
         this.footerBottom = 0;
 
         if (this.platform.is('ios')) {
@@ -256,11 +256,25 @@ export class Form {
     }
 
     onDateTimeChange(event) {
-        this.dateTime = event.target.value;
-        if (this.dateTime != null) {
+        var selDate = new Date(event.target.value);
+        var curDate = new Date();
+
+        curDate.setHours(0);
+        curDate.setMinutes(0);
+        curDate.setSeconds(0);
+
+        if (selDate < curDate) {
+            this.dateTime = null;
             this.formAnswers[this.formPageIndex]['ans'] = [];
-            this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);
         }
+        else {
+            this.dateTime = event.target.value;
+            if (this.dateTime != null) {
+                this.formAnswers[this.formPageIndex]['ans'] = [];
+                this.formAnswers[this.formPageIndex]['ans'].push(this.dateTime);
+            }
+        }
+        
         this.formAnswersLength = this.formAnswers[this.formPageIndex]['ans'].length;
     }
 

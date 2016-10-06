@@ -15,14 +15,12 @@
 
 </ion-header>
 
-
-
 <ion-content class="form-content" [ngStyle]="{bottom: contentsBottom + 'px'}">
     <!--*ngIf="categoryData"-->
     <progressbar [animate]="true" [max]="maxStep" [value]="(formPageIndex+1)"><span style="color: white; white-space: nowrap;">&nbsp;</span></progressbar>
 
     <!--*ngIf="categoryData"-->
-    <ion-slides [options]="sliderOptions">
+    <ion-slides [options]="sliderOptions" *ngIf="categoryData">
         <ion-slide *ngFor="let field of categoryData.fields; let field_id = index;" (touchmove)="touchSlide($event)">
 
             <ion-card>
